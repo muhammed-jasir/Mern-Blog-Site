@@ -7,8 +7,8 @@ const authRoutes = require('./routes/auth-routes')
 dotenv.config();
 
 mongoose.connect(process.env.MONGO)
-.then(() => console.log('MongoDB is connected !!'))
-.catch((error) => console.log(error));
+    .then(() => console.log('MongoDB is connected !!'))
+    .catch((error) => console.log(error));
 
 const app = express();
 app.use(express.json());
@@ -24,3 +24,12 @@ app.get('/', function (req, res) {
     res.send('Hello World')
 });
 
+app.use((error, req, res, next) => {
+    const statusCode = error.statusCode || 500;
+    const message = error.message || 'Internal Server Error';
+    res.status(statusCode).json({
+        success: false,
+        statusCode,
+        message,
+    });
+});
