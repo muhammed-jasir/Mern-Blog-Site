@@ -10,18 +10,18 @@ const Header = () => {
     return (
         <header>
             <Navbar className='bg-slate-100 flex items-center justify-between w-full sm:px-10 px-2 py-2 z-10'>
-                <Link to='/' className="flex items-center whitespace-nowrap text-2xl font-semibold dark:text-white">
-                    <h2 className=''>
+                <Link to='/'>
+                    <h2 className='flex items-center whitespace-nowrap text-2xl font-semibold dark:text-white'>
                         <span className='bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% rounded-3xl px-2 py-1 pb-2 text-white'>The Blog </span> Spot
                     </h2>
                 </Link>
 
-                <div className='flex'>
+                <div className='hidden lg:flex'>
                     <TextInput
                         type='text'
                         placeholder='Search...'
                         rightIcon={IoSearchOutline}
-                        className='hidden lg:flex '
+                        className='w-full'
                     />
                 </div>
 
@@ -36,20 +36,19 @@ const Header = () => {
                     </Button>
 
                     <Button
-                        className='w-12 h-12 max-sm:hidden'
+                        className='w-12 h-12 hidden sm:inline'
                         color='gray'
                         pill
                     >
-                        <FaMoon size='23' />
+                        <FaMoon />
                     </Button>
 
                     <Link to='/login' className='flex'>
                         <Button
                             gradientDuoTone="greenToBlue"
-                            outline
                         >
                             Login
-                        </Button>'
+                        </Button>
                     </Link>
                     <NavbarToggle />
                 </div>
