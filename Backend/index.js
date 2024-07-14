@@ -1,7 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-const userRoute = require('./routes/user-route.js')
+const userRoutes = require('./routes/user-route')
+const authRoutes = require('./routes/auth-routes')
 
 dotenv.config();
 
@@ -16,7 +17,8 @@ app.listen(3000, () => {
     console.log('Server is running on port 3000');
 });
 
-app.use('/api/user', userRoute);
+app.use("/api/user", userRoutes);
+app.use("/api/auth", authRoutes);
 
 app.get('/', function (req, res) {
     res.send('Hello World')
