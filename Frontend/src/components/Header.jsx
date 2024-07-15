@@ -22,6 +22,7 @@ const Header = () => {
                         placeholder='Search...'
                         rightIcon={IoSearchOutline}
                         className='w-full'
+                        sizing='md'
                     />
                 </div>
 

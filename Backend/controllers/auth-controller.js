@@ -6,7 +6,17 @@ const signup = async (req, res, next) => {
     const { username, email, password } = req.body;
 
     if (!username || !email || !password || username === '' || email === '' || password === '') {
-        next(errorHandlers(400, "All Fields are Required"));
+        return next(errorHandlers(400, "All Fields are Required"));
+    }
+
+    const existingUsername = await User.findOne({ username });
+    if (existingUsername) {
+        return next(errorHandlers(400, "Username already Exists"));
+    }
+
+    const existingUserEmail = await User.findOne({ email });
+    if (existingUserEmail) {
+        return next(errorHandlers(400, "Email is already Registered"));
     }
 
     const hashedPassword = bcrypt.hashSync(password, 10);
@@ -21,7 +31,7 @@ const signup = async (req, res, next) => {
 
     try {
         await newUser.save();
-        res.json('Signup Successfull');
+        res.json({ success: true, message: 'Signup Successful' });
     } catch (error) {
         next(error);
     }
