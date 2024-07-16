@@ -5,7 +5,6 @@ import { toast } from 'react-toastify';
 
 const Signup = () => {
     const [formData, setFormData] = useState({});
-    // const [errorMessage, setErrorMessage] = useState(null);
     const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate();
@@ -13,7 +12,6 @@ const Signup = () => {
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.id]: e.target.value.trim() })
     };
-    console.log(formData);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -27,9 +25,9 @@ const Signup = () => {
             return toast.error('Invalid Email format');
         }
 
-        const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+        const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{6,}$/;
         if (!passwordRegex.test(formData.password)) {
-            return toast.error('Password must be at least 6 characters and include alphabets, digits, and symbols');
+            return toast.error('Password must be at least 6 characters and include both alphabets and digits.');
         }
 
         try {
@@ -44,14 +42,17 @@ const Signup = () => {
             });
             const data = await res.json();
 
-            if (!res.ok || !data.success) {
+            if (!res.ok || data.success == false) {
                 setLoading(false);
                 return toast.error(data.message || 'Signup failed. Please try again.');
             }
 
             setLoading(false);
-            toast.success('Signup Successful!');
-            navigate('/login');
+
+            if (res.ok) {
+                toast.success('Signup Successful!');
+                navigate("/login");
+            }
 
         } catch (error) {
             toast.error('Something went wrong. Please try again.');
