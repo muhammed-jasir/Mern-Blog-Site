@@ -1,13 +1,21 @@
 import { Button, Label, Spinner, TextInput } from 'flowbite-react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify';
+import { loginFailure, loginStart, loginSucccess } from '../redux/user/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Login = () => {
     const [formData, setFormData] = useState({});
-    const [loading, setLoading] = useState(false);
-
+    const { loading, error: errorMessage } = useSelector(state => state.user)
+    const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (errorMessage) {
+            toast.error(errorMessage);
+        }
+    }, [errorMessage]);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.id]: e.target.value.trim() })
@@ -17,20 +25,20 @@ const Login = () => {
         e.preventDefault();
 
         if (!formData.email || !formData.password) {
-            return toast.error('All Fields are Required');
+            return dispatch(loginFailure('All Fields are Required'));
         }
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(String(formData.email).toLowerCase())) {
-            return toast.error('Invalid Email format');
+            return dispatch(loginFailure('Invalid Email format'));
         }
 
         if (formData.password.length < 6) {
-            return toast.error('Password must be at least 6 characters long');
+            return dispatch(loginFailure('Password must be at least 6 characters long'));
         }
 
         try {
-            setLoading(true);
+            dispatch(loginStart());
 
             const res = await fetch("/api/auth/login", {
                 method: "POST",
@@ -42,21 +50,17 @@ const Login = () => {
             const data = await res.json();
 
             if (!res.ok || data.success === false) {
-                setLoading(false);
-                console.log(error)
-                return toast.error(data.message || 'Login failed. Please try again.');
+                return dispatch(loginFailure(data.message || 'Login failed. Please try again.'));
             }
-
-            setLoading(false);
 
             if (res.ok) {
                 toast.success('Login Successful!');
+                dispatch(loginSucccess(data));
                 navigate("/");
             }
 
         } catch (error) {
-            toast.error('Something went wrong. Please try again.');
-            setLoading(false);
+            dispatch(loginFailure(error.message || 'Something went wrong. Please try again.'))
         }
     };
 
