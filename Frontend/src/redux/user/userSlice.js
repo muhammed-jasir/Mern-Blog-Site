@@ -1,4 +1,4 @@
-import { configureStore, createSlice, current } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
     currentUser:null,

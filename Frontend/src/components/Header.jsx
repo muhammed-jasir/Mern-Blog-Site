@@ -1,10 +1,12 @@
-import { Button, Navbar, NavbarCollapse, NavbarLink, NavbarToggle, TextInput } from 'flowbite-react'
+import { Avatar, Button, Dropdown, Navbar, NavbarCollapse, NavbarLink, NavbarToggle, TextInput } from 'flowbite-react'
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { IoSearchOutline } from "react-icons/io5";
 import { FaMoon } from "react-icons/fa";
+import { useSelector } from 'react-redux';
 
 const Header = () => {
+    const { currentUser } = useSelector(state => state.user);
     const path = useLocation().pathname;
 
     return (
@@ -44,13 +46,49 @@ const Header = () => {
                         <FaMoon />
                     </Button>
 
-                    <Link to='/login' className='flex'>
-                        <Button
-                            gradientDuoTone="greenToBlue"
-                        >
-                            Login
-                        </Button>
-                    </Link>
+                    {
+                        currentUser
+                            ? (
+                                <Dropdown
+                                    arrowIcon={false}
+                                    inline
+                                    label={
+                                        <Avatar
+                                            img={currentUser.profilePic}
+                                            alt='user'
+                                            rounded 
+                                            bordered
+                                        />
+                                    }
+                                >
+                                    <Dropdown.Header>
+                                        <span className='block text-md font-bold mb-1'>{currentUser.username}</span>
+                                        <span className='block text-sm font-semibold truncate'>{currentUser.email}</span>
+                                    </Dropdown.Header>
+
+                                    <Link to='/profile'>
+                                        <Dropdown.Item>
+                                            <span className='font-semibold'>Profile</span>
+                                        </Dropdown.Item>
+                                    </Link>
+                                    <Dropdown.Divider />
+                                    <Dropdown.Item>
+                                        <span className='font-semibold'>Sign Out</span>
+                                    </Dropdown.Item>
+                                </Dropdown>
+                            )
+                            : (
+                                <Link to='/login' className='flex'>
+                                    <Button
+                                        gradientDuoTone="greenToBlue"
+                                    >
+                                        Login
+                                    </Button>
+                                </Link>
+                            )
+                    }
+
+
                     <NavbarToggle />
                 </div>
 
