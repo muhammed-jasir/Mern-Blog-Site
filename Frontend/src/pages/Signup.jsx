@@ -2,6 +2,7 @@ import { Button, Label, Spinner, TextInput } from 'flowbite-react'
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify';
+import OAuth from '../components/OAuth';
 
 const Signup = () => {
     const [formData, setFormData] = useState({});
@@ -55,7 +56,7 @@ const Signup = () => {
             }
 
         } catch (error) {
-            toast.error('Something went wrong. Please try again.');
+            toast.error('Something went wrong. Please try again.' || error.message);
             setLoading(false);
         }
     };
@@ -121,14 +122,19 @@ const Signup = () => {
                                     ? (
                                         <>
                                             <Spinner size='md' />
-                                            <span className='pl-3'>Loading...</span>
+                                            <span className='pl-3 text-lg'>
+                                                Loading ...
+                                            </span>
                                         </>
                                     )
                                     : (
-                                        'Sign Up'
-                                    )
-                            }
+                                        <span className='text-lg'>
+                                            Sign Up
+                                        </span>)
+                                    }
                         </Button>
+
+                        <OAuth />
 
                         <div className='text-center'>
                             <Link to='/login' className='text-blue-600 hover:underline hover:underline-offset-4'>

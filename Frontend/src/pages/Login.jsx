@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify';
 import { loginFailure, loginStart, loginSucccess } from '../redux/user/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import OAuth from '../components/OAuth';
 
 const Login = () => {
     const [formData, setFormData] = useState({});
@@ -60,7 +61,7 @@ const Login = () => {
             }
 
         } catch (error) {
-            dispatch(loginFailure(error.message || 'Something went wrong. Please try again.'))
+            dispatch(loginFailure('Something went wrong. Please try again.' || error.message  ))
         }
     };
 
@@ -113,14 +114,18 @@ const Login = () => {
                                     ? (
                                         <>
                                             <Spinner size='md' />
-                                            <span className='pl-3'>Loading...</span>
+                                            <span className='pl-3 text-lg'>Loading ...</span>
                                         </>
                                     )
                                     : (
-                                        'Login'
+                                        <span className='text-lg'>
+                                            Login
+                                        </span>
                                     )
                             }
                         </Button>
+
+                        <OAuth />
 
                         <div className='text-center'>
                             <Link to='/sign-up' className='text-blue-600 hover:underline hover:underline-offset-4'>
