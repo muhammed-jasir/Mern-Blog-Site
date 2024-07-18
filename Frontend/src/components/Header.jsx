@@ -6,6 +6,7 @@ import { BsMoonFill } from "react-icons/bs";
 import { BsSun } from "react-icons/bs";
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleTheme } from './../redux/theme/themeSlice';
+import { HiLogout, HiUser } from "react-icons/hi";
 
 const Header = () => {
     const { currentUser } = useSelector(state => state.user);
@@ -75,13 +76,13 @@ const Header = () => {
                                         <span className='block text-sm font-semibold truncate'>{currentUser.email}</span>
                                     </Dropdown.Header>
 
-                                    <Link to='/profile'>
-                                        <Dropdown.Item>
+                                    <Link to='/dashboard?tab=profile'>
+                                        <Dropdown.Item icon={HiUser}>
                                             <span className='font-semibold'>Profile</span>
                                         </Dropdown.Item>
                                     </Link>
                                     <Dropdown.Divider />
-                                    <Dropdown.Item>
+                                    <Dropdown.Item icon={HiLogout}>
                                         <span className='font-semibold'>Sign Out</span>
                                     </Dropdown.Item>
                                 </Dropdown>

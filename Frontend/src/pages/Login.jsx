@@ -5,13 +5,15 @@ import { toast } from 'react-toastify';
 import { loginFailure, loginStart, loginSucccess } from '../redux/user/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import OAuth from '../components/OAuth';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const Login = () => {
-    const [formData, setFormData] = useState({});
     const { loading, error: errorMessage } = useSelector(state => state.user)
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
+    const [formData, setFormData] = useState({});
+    const [showPassword, setShowPassword] = useState(false);
+    
     useEffect(() => {
         if (errorMessage) {
             toast.error(errorMessage);
@@ -61,7 +63,7 @@ const Login = () => {
             }
 
         } catch (error) {
-            dispatch(loginFailure('Something went wrong. Please try again.' || error.message  ))
+            dispatch(loginFailure('Something went wrong. Please try again.' || error.message))
         }
     };
 
@@ -91,16 +93,22 @@ const Login = () => {
                                 onChange={handleChange}
                             />
                         </div>
-                        <div>
+                        <div className='relative'>
                             <Label className='text-md' htmlFor='password'>Password</Label>
                             <TextInput
-                                type='password'
+                                type={showPassword ? 'text' : 'password'}
                                 placeholder='Password'
                                 className='w-full mt-1'
                                 sizing='md'
                                 id='password'
                                 onChange={handleChange}
                             />
+                            <span
+                                className='absolute right-3 top-10 cursor-pointer text-xl text-slate-800 dark:text-slate-300'
+                                onClick={() => setShowPassword(prevState => !prevState)}
+                            >
+                                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                            </span>
                         </div>
 
                         <Button

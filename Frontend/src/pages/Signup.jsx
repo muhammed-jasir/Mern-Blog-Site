@@ -3,10 +3,12 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify';
 import OAuth from '../components/OAuth';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const Signup = () => {
     const [formData, setFormData] = useState({});
     const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
     const navigate = useNavigate();
 
@@ -99,16 +101,22 @@ const Signup = () => {
                                 onChange={handleChange}
                             />
                         </div>
-                        <div>
+                        <div className='relative'>
                             <Label className='text-md' htmlFor='password'>Password</Label>
                             <TextInput
-                                type='password'
+                                type={showPassword ? 'text' : 'password'}
                                 placeholder='Password'
                                 className='w-full mt-1'
                                 sizing='md'
                                 id='password'
                                 onChange={handleChange}
                             />
+                            <span
+                                className='absolute right-3 top-10 cursor-pointer text-xl text-slate-800 dark:text-slate-300'
+                                onClick={() => setShowPassword(prevState => !prevState) }
+                            >
+                                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                            </span>
                         </div>
 
                         <Button
@@ -131,7 +139,7 @@ const Signup = () => {
                                         <span className='text-lg'>
                                             Sign Up
                                         </span>)
-                                    }
+                            }
                         </Button>
 
                         <OAuth />
