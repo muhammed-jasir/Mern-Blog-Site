@@ -49,7 +49,8 @@ const OAuth = () => {
     return (
         <Button
             type='button'
-            gradientDuoTone="purpleToPink"
+            gradientDuoTone="purpleToBlue"
+            // gradientMonochrome="purple"
             outline
             className=''
             onClick={handleGoogle}

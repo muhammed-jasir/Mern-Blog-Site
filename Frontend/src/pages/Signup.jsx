@@ -63,7 +63,7 @@ const Signup = () => {
 
     return (
         <section className='flex justify-center items-center m-6 sm:m-12'>
-            <div className='bg-slate-100 rounded-xl px-6 py-6 sm:px-12 sm:py-8 flex flex-col w-full max-w-md'>
+            <div className='bg-slate-200 dark:bg-slate-800 rounded-xl px-6 py-6 sm:px-12 sm:py-8 flex flex-col w-full max-w-md'>
                 <div className='flex justify-center'>
                     <Link to='/' >
                         <h2 className="text-2xl sm:text-3xl font-bold dark:text-white text-center">
@@ -137,7 +137,7 @@ const Signup = () => {
                         <OAuth />
 
                         <div className='text-center'>
-                            <Link to='/login' className='text-blue-600 hover:underline hover:underline-offset-4'>
+                            <Link to='/login' className='text-blue-600 dark:text-slate-300 hover:underline hover:underline-offset-4'>
                                 Already have an account?
                             </Link>
                         </div>

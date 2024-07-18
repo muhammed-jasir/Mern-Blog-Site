@@ -2,16 +2,20 @@ import { Avatar, Button, Dropdown, Navbar, NavbarCollapse, NavbarLink, NavbarTog
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { IoSearchOutline } from "react-icons/io5";
-import { FaMoon } from "react-icons/fa";
-import { useSelector } from 'react-redux';
+import { BsMoonFill } from "react-icons/bs";
+import { BsSun } from "react-icons/bs";
+import { useSelector, useDispatch } from 'react-redux';
+import { toggleTheme } from './../redux/theme/themeSlice';
 
 const Header = () => {
     const { currentUser } = useSelector(state => state.user);
     const path = useLocation().pathname;
+    const dispatch = useDispatch();
+    const { theme } = useSelector(state => state.theme)
 
     return (
         <header>
-            <Navbar className='bg-slate-100 flex items-center justify-between w-full sm:px-10 px-2 py-2 z-10'>
+            <Navbar className='bg-slate-200 dark:bg-slate-800 flex items-center justify-between w-full sm:px-10 px-2 py-2 z-10'>
                 <Link to='/'>
                     <h2 className='flex items-center whitespace-nowrap text-2xl font-semibold dark:text-white'>
                         <span className='bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% rounded-3xl px-2 py-1 pb-2 text-white'>The Blog </span> Spot
@@ -31,19 +35,24 @@ const Header = () => {
                 <div className='flex gap-4 items-center md:order-2'>
 
                     <Button
-                        className='w-12 h-12 lg:hidden'
+                        className='w-10 h-10 lg:hidden'
                         color='gray'
                         pill
                     >
-                        <IoSearchOutline size='23' color="black" />
+                        <IoSearchOutline size='20' />
                     </Button>
 
+
                     <Button
-                        className='w-12 h-12 hidden sm:inline'
+                        className='w-10 h-10 max-sm:hidden'
                         color='gray'
                         pill
+                        onClick={() => dispatch(toggleTheme())}
                     >
-                        <FaMoon />
+                        {
+                            theme === 'light' ? <BsMoonFill size='23'  /> : <BsSun size='23'/>
+                        }
+                        
                     </Button>
 
                     {
@@ -56,7 +65,7 @@ const Header = () => {
                                         <Avatar
                                             img={currentUser.profilePic}
                                             alt='user'
-                                            rounded 
+                                            rounded
                                             bordered
                                         />
                                     }
