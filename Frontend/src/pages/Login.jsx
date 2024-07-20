@@ -13,12 +13,6 @@ const Login = () => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({});
     const [showPassword, setShowPassword] = useState(false);
-    
-    useEffect(() => {
-        if (errorMessage) {
-            toast.error(errorMessage);
-        }
-    }, [errorMessage]);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.id]: e.target.value.trim() })
@@ -28,17 +22,22 @@ const Login = () => {
         e.preventDefault();
 
         if (!formData.email || !formData.password) {
+            toast.error('All Fields are Required');
             return dispatch(loginFailure('All Fields are Required'));
         }
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(String(formData.email).toLowerCase())) {
+            toast.error('Invalid Email format');
             return dispatch(loginFailure('Invalid Email format'));
         }
 
         if (formData.password.length < 6) {
+            toast.error('Password must be at least 6 characters long');
             return dispatch(loginFailure('Password must be at least 6 characters long'));
         }
+
+
 
         try {
             dispatch(loginStart());
@@ -53,6 +52,7 @@ const Login = () => {
             const data = await res.json();
 
             if (!res.ok || data.success === false) {
+                toast.error(data.message || 'Login failed. Please try again.');
                 return dispatch(loginFailure(data.message || 'Login failed. Please try again.'));
             }
 
@@ -63,7 +63,8 @@ const Login = () => {
             }
 
         } catch (error) {
-            dispatch(loginFailure('Something went wrong. Please try again.' || error.message))
+            toast.error('Something went wrong. Please try again.' || error.message);
+            dispatch(loginFailure('Something went wrong. Please try again.' || error.message));
         }
     };
 

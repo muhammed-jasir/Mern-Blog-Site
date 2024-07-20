@@ -1,30 +1,41 @@
 import { Button, Label, TextInput } from 'flowbite-react';
-import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect, useState, useRef } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { useRef } from 'react';
+
 import { app } from '../firebase';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
+
 import { toast } from 'react-toastify';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
+import { updateFailure, updateStart, updateSuccess } from '../redux/user/userSlice';
+
 const Profile = () => {
     const { currentUser } = useSelector(state => state.user);
     const [showPassword, setShowPassword] = useState(false);
+
     const [imageFile, setImageFile] = useState(null);
     const [imageUrl, setImageUrl] = useState(null);
     const imagePickerRef = useRef(null);
     const [imageUploadProgress, setImageUploadProgress] = useState(null);
-    const [imageUploadError, setImageUploadError] = useState(null);
+    const [imageUploading, setImageUploading] = useState(false);
+
+    const [formData, setFormData] = useState({});
+
+    const dispatch = useDispatch();
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file && file.type.startsWith('image/')) {
-            setImageFile(file);
-            setImageUrl(URL.createObjectURL(file));
+            if (file.size <= 2 * 1024 * 1024) {
+                setImageFile(file);
+                setImageUrl(URL.createObjectURL(file));
+            } else {
+                toast.error(`Please select an image file smaller than 2MB.`);
+            }
         } else {
-            setImageUploadError('Please select a valid image file.');
             toast.error('Please select a valid image file.');
         }
 
@@ -37,7 +48,7 @@ const Profile = () => {
     }, [imageFile]);
 
     const uploadImage = async () => {
-        setImageUploadError(null);
+        setImageUploading(true);
         const storage = getStorage(app);
         const imgName = new Date().getTime() + imageFile.name;
         const storageRef = ref(storage, imgName);
@@ -50,28 +61,79 @@ const Profile = () => {
                 setImageUploadProgress(progress.toFixed(0));
             },
             (error) => {
-                setImageUploadError('Error uploading image: image size should be below 2MB.');
-                toast.error('Error uploading image: image size should be below 2MB.');
+                toast.error('Error uploading image. Please try again.');
+
                 setImageUploadProgress(null);
                 setImageFile(null);
                 setImageUrl(null);
+                setImageUploading(false);
             },
             () => {
                 getDownloadURL(uploadTask.snapshot.ref)
                     .then((downloadURL) => {
                         setImageUrl(downloadURL);
                         setImageUploadProgress(null);
+                        setFormData({ ...formData, profilePic: downloadURL });
+                        setImageUploading(false);
                     })
             }
         );
 
     }
 
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.id]: e.target.value.trim() })
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        if (Object.keys(formData).length === 0) {
+            toast.error('No changes detected. Please make some changes to update your profile.');
+            return;
+        }
+
+        if (imageUploading) {
+            toast.error('Please wait while the image is being uploaded.');
+            return;
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(String(formData.email).toLowerCase())) {
+            toast.error('Invalid Email format');
+            return dispatch(updateFailure('Invalid Email format'));
+        }
+
+        try {
+            dispatch(updateStart());
+            const res = await fetch(`/api/user/update/${currentUser._id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+            const data = await res.json();
+
+            if (!res.ok || data.success === false) {
+                toast.error(data.message || 'Failed to update profile.');
+                return dispatch(updateFailure(data.message || 'Failed to update profile.'));
+            } else {
+                dispatch(updateSuccess(data));
+                toast.success('Profile updated successfully!');
+            }
+
+        } catch (error) {
+            toast.error(error.message || 'Failed to update profile.');
+            dispatch(updateFailure(error.message || 'Failed to update profile.'));
+        }
+    }
+
     return (
         <div className='flex flex-col items-center mt-5 mb-8 px-4 sm:px-6 lg:px-8'>
             <h1 className='text-3xl mt-5 mb-8 font-semibold'>Profile</h1>
             <div className='bg-slate-200 dark:bg-slate-800 px-8 py-8 max-w-md w-full rounded-lg shadow-lg'>
-                <form className='flex flex-col items-center justify-center gap-5 w-full'>
+                <form className='flex flex-col items-center justify-center gap-5 w-full' onSubmit={handleSubmit}>
                     <div className='relative flex cursor-pointer w-full justify-center'>
                         <img
                             src={imageUrl || currentUser.profilePic}
@@ -129,6 +191,7 @@ const Profile = () => {
                             sizing='md'
                             id='username'
                             defaultValue={currentUser.username}
+                            onChange={handleChange}
                         />
                     </div>
                     <div className='w-full'>
@@ -140,6 +203,7 @@ const Profile = () => {
                             sizing='md'
                             id='email'
                             defaultValue={currentUser.email}
+                            onChange={handleChange}
                         />
                     </div>
                     <div className='w-full relative'>
@@ -150,6 +214,7 @@ const Profile = () => {
                             className='mt-1'
                             sizing='md'
                             id='password'
+                            onChange={handleChange}
                         />
                         <span
                             className='absolute right-3 top-10 cursor-pointer text-xl text-slate-800 dark:text-slate-300'

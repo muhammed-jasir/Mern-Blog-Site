@@ -8,16 +8,22 @@ const updateProfile = async (req, res, next) => {
     if (req.user.userId !== req.params.userId) {
         return next(errorHandlers(403, 'You are not allowed to update this profile'));
     }
-
+    
+    if (req.body.email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(String(req.body.email).toLowerCase())) {
+            return next(errorHandlers(400,'Invalid Email format'));
+        }
+    }
 
     if (req.body.password) {
         if (req.body.password.length < 6) {
             return next(errorHandlers(400, 'Password must be at least 6 characters long'));
         }
 
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]?)[A-Za-z\d@$!%*?&]{6,}$/;
         if (!passwordRegex.test(req.body.password)) {
-            return next(errorHandlers(400, 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'));
+            return next(errorHandlers(400, 'Password must contain at least one uppercase letter, one lowercase letter, one digit.'));
         }
 
         req.body.password = bcryptjs.hashSync(req.body.password, 10);
@@ -42,7 +48,7 @@ const updateProfile = async (req, res, next) => {
             email: req.body.email,
             profilePic: req.body.profilePic
         };
-        
+
         if (req.body.password) {
             updateData.password = req.body.password;
         }

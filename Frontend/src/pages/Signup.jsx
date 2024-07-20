@@ -32,14 +32,15 @@ const Signup = () => {
             return toast.error('Invalid Email format');
         }
 
-        if(formData.password.length < 6) {
+        if (formData.password.length < 6) {
             return toast.error('Password must be at least 6 characters long');
         }
 
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]?)[A-Za-z\d@$!%*?&]{6,}$/;
         if (!passwordRegex.test(formData.password)) {
-            return toast.error('Password must include at least one uppercase letter, one lowercase letter, one digit, and one special character.');
-        }
+            return toast.error('Password must contain at least one uppercase letter, one lowercase letter, one digit.');
+        };
+
 
         try {
             setLoading(true);
@@ -121,7 +122,7 @@ const Signup = () => {
                             />
                             <span
                                 className='absolute right-3 top-10 cursor-pointer text-xl text-slate-800 dark:text-slate-300'
-                                onClick={() => setShowPassword(prevState => !prevState) }
+                                onClick={() => setShowPassword(prevState => !prevState)}
                             >
                                 {showPassword ? <FaEyeSlash /> : <FaEye />}
                             </span>
