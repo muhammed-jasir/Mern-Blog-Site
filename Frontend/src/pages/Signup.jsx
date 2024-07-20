@@ -23,14 +23,22 @@ const Signup = () => {
             return toast.error('All Fields are Required');
         }
 
+        if (formData.username.length < 3 || formData.username.length > 20) {
+            return toast.error('Username must be between 3 and 20 characters long');
+        }
+
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(String(formData.email).toLowerCase())) {
             return toast.error('Invalid Email format');
         }
 
-        const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{6,}$/;
+        if(formData.password.length < 6) {
+            return toast.error('Password must be at least 6 characters long');
+        }
+
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
         if (!passwordRegex.test(formData.password)) {
-            return toast.error('Password must be at least 6 characters and include both alphabets and digits.');
+            return toast.error('Password must include at least one uppercase letter, one lowercase letter, one digit, and one special character.');
         }
 
         try {
