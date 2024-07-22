@@ -1,18 +1,45 @@
-import { Avatar, Button, Dropdown, Navbar, NavbarCollapse, NavbarLink, NavbarToggle, TextInput } from 'flowbite-react'
 import React from 'react'
+import { Avatar, Button, Dropdown, Navbar, NavbarCollapse, NavbarLink, NavbarToggle, TextInput } from 'flowbite-react'
 import { Link, useLocation } from 'react-router-dom'
 import { IoSearchOutline } from "react-icons/io5";
-import { BsMoonFill } from "react-icons/bs";
-import { BsSun } from "react-icons/bs";
+import { BsMoonFill, BsSun } from "react-icons/bs";
+import { HiLogout, HiUser } from "react-icons/hi";
+
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleTheme } from './../redux/theme/themeSlice';
-import { HiLogout, HiUser } from "react-icons/hi";
+import { logoutFailure, logoutSuccess } from '../redux/user/userSlice';
+
+import { toast } from 'react-toastify';
 
 const Header = () => {
     const { currentUser } = useSelector(state => state.user);
+    const { error } = useSelector(state => state.user)
     const path = useLocation().pathname;
     const dispatch = useDispatch();
-    const { theme } = useSelector(state => state.theme)
+    const { theme } = useSelector(state => state.theme);
+
+    const handleLogout = async () => {
+        try {
+            const res = await fetch('/api/user/signout', {
+                method: 'POST',
+            });
+            const data = await res.json();
+
+            if (!res.ok || data.success === false) {
+                toast.error(error.message || 'Failed to Signout')
+                dispatch(logoutFailure(error.message || 'Failed to Signout.'));
+                return;
+            }
+
+            if (res.ok) {
+                toast.success(data.message || 'Signed out successfully!');
+                dispatch(logoutSuccess());
+            }
+        } catch (error) {
+            toast.error(error.message || 'Failed to Signout')
+            dispatch(logoutFailure(error.message || 'Failed to Signout.'));
+        }
+    }
 
     return (
         <header>
@@ -51,9 +78,9 @@ const Header = () => {
                         onClick={() => dispatch(toggleTheme())}
                     >
                         {
-                            theme === 'light' ? <BsMoonFill size='23'  /> : <BsSun size='23'/>
+                            theme === 'light' ? <BsMoonFill size='23' /> : <BsSun size='23' />
                         }
-                        
+
                     </Button>
 
                     {
@@ -76,13 +103,13 @@ const Header = () => {
                                         <span className='block text-sm font-semibold truncate'>{currentUser.email}</span>
                                     </Dropdown.Header>
 
-                                    <Link to='/dashboard?tab=profile'>
+                                    <Link to='/profile'>
                                         <Dropdown.Item icon={HiUser}>
                                             <span className='font-semibold'>Profile</span>
                                         </Dropdown.Item>
                                     </Link>
                                     <Dropdown.Divider />
-                                    <Dropdown.Item icon={HiLogout}>
+                                    <Dropdown.Item icon={HiLogout} onClick={handleLogout}>
                                         <span className='font-semibold'>Sign Out</span>
                                     </Dropdown.Item>
                                 </Dropdown>

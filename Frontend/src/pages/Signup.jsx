@@ -122,7 +122,7 @@ const Signup = () => {
                             />
                             <span
                                 className='absolute right-3 top-10 cursor-pointer text-xl text-slate-800 dark:text-slate-300'
-                                onClick={() => setShowPassword(prevState => !prevState)}
+                                onClick={() => setShowPassword(!showPassword)}
                             >
                                 {showPassword ? <FaEyeSlash /> : <FaEye />}
                             </span>

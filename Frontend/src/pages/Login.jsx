@@ -8,7 +8,7 @@ import OAuth from '../components/OAuth';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const Login = () => {
-    const { loading, error: errorMessage } = useSelector(state => state.user)
+    const { loading, error } = useSelector(state => state.user)
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [formData, setFormData] = useState({});
@@ -106,7 +106,7 @@ const Login = () => {
                             />
                             <span
                                 className='absolute right-3 top-10 cursor-pointer text-xl text-slate-800 dark:text-slate-300'
-                                onClick={() => setShowPassword(prevState => !prevState)}
+                                onClick={() => setShowPassword(!showPassword)}
                             >
                                 {showPassword ? <FaEyeSlash /> : <FaEye />}
                             </span>

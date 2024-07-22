@@ -18,7 +18,6 @@ const Dashboard = () => {
 
     return (
         <div className=''>
-
             {tab === 'profile' && <Profile />}
         </div>
     )

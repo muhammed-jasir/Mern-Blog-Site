@@ -9,6 +9,7 @@ import Projects from './pages/Projects';
 import Header from './components/Header';
 import FooterComp from './components/Footer';
 import PrivateRoute from './components/PrivateRoute';
+import Profile from './components/Profile';
 
 const App = () => {
     return (
@@ -21,6 +22,7 @@ const App = () => {
                 <Route path='/sign-up' element={<Signup />} />
                 <Route element={<PrivateRoute />}>
                     <Route path='/dashboard' element={<Dashboard />} />
+                    <Route path='/profile' element={<Profile />} />
                 </Route>
                 <Route path='/projects' element={<Projects />} />
             </Routes>

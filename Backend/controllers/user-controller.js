@@ -8,11 +8,11 @@ const updateProfile = async (req, res, next) => {
     if (req.user.userId !== req.params.userId) {
         return next(errorHandlers(403, 'You are not allowed to update this profile'));
     }
-    
+
     if (req.body.email) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(String(req.body.email).toLowerCase())) {
-            return next(errorHandlers(400,'Invalid Email format'));
+            return next(errorHandlers(400, 'Invalid Email format'));
         }
     }
 
@@ -66,17 +66,28 @@ const updateProfile = async (req, res, next) => {
 
 }
 
-const deleteUser = async (req, res, next) => { 
-    if(req.user.userId !== req.params.userId) {
+const deleteUser = async (req, res, next) => {
+    if (req.user.userId !== req.params.userId) {
         return next(errorHandlers(403, 'You are not allowed to delete this User'));
     }
 
     try {
         await User.findByIdAndDelete(req.params.userId);
-        res.status(200).json({message: 'User deleted successfully!!'  });
+        res.status(200).json({ message: 'User deleted successfully!!' });
     } catch (error) {
         next(error);
     }
 }
 
-module.exports = { updateProfile, deleteUser };
+const signout = (req, res, next) => {
+    try {
+        res
+        .clearCookie('access_token')
+        .status(200)
+        .json({ message: 'Sign out successful!!' });
+    } catch (error) {
+        next(error);
+    }
+}
+
+module.exports = { updateProfile, deleteUser, signout };

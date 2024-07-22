@@ -1,4 +1,4 @@
-import { Button, Label, Modal, TextInput } from 'flowbite-react';
+import { Button, Label, Modal, Spinner, TextInput } from 'flowbite-react';
 import React, { useEffect, useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -11,11 +11,13 @@ import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 
-import { deleteFailure, deleteStart, deleteSuccess, updateFailure, updateStart, updateSuccess } from '../redux/user/userSlice';
+import { deleteFailure, deleteStart, deleteSuccess, logoutFailure, logoutSuccess, updateFailure, updateStart, updateSuccess } from '../redux/user/userSlice';
 
 const Profile = () => {
     const { currentUser } = useSelector(state => state.user);
     const [showPassword, setShowPassword] = useState(false);
+    const { theme } = useSelector(state => state.theme);
+    const { loading, error } = useSelector(state => state.user)
 
     const [imageFile, setImageFile] = useState(null);
     const [imageUrl, setImageUrl] = useState(null);
@@ -100,12 +102,6 @@ const Profile = () => {
             return;
         }
 
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(String(formData.email).toLowerCase())) {
-            toast.error('Invalid Email format');
-            return dispatch(updateFailure('Invalid Email format'));
-        }
-
         try {
             dispatch(updateStart());
             const res = await fetch(`/api/user/update/${currentUser._id}`, {
@@ -119,10 +115,11 @@ const Profile = () => {
 
             if (!res.ok || data.success === false) {
                 toast.error(data.message || 'Failed to update profile.');
-                return dispatch(updateFailure(data.message || 'Failed to update profile.'));
+                dispatch(updateFailure(data.message || 'Failed to update profile.'));
+                return;
             } else {
-                dispatch(updateSuccess(data));
                 toast.success('Profile updated successfully!');
+                dispatch(updateSuccess(data));
             }
 
         } catch (error) {
@@ -139,18 +136,40 @@ const Profile = () => {
                 method: 'DELETE',
             });
             const data = await res.json();
-            if(!res.ok || data.success === false) {
+            if (!res.ok || data.success === false) {
                 toast.error(data.message || 'Failed to delete user.');
                 dispatch(deleteFailure(data.message || 'Failed to delete user.'));
+                return;
             } else {
                 toast.success(data.message || 'User deleted successfully!');
                 dispatch(deleteSuccess(data));
-                console.log(data)
-                // window.location.href = '/';
             }
         } catch (error) {
             toast.error(error.message || 'Failed to delete user.');
-           dispatch(deleteFailure(error.message || 'Failed to delete user.')); 
+            dispatch(deleteFailure(error.message || 'Failed to delete user.'));
+        }
+    }
+
+    const handleLogout = async () => {
+        try {
+            const res = await fetch('/api/user/signout', {
+                method: 'POST',
+            });
+            const data = await res.json();
+
+            if (!res.ok || data.success === false) {
+                toast.error(error.message || 'Failed to Signout')
+                dispatch(logoutFailure(error.message || 'Failed to Signout.'));
+                return;
+            }
+
+            if (res.ok) {
+                toast.success(data.message || 'Signed out successfully!');
+                dispatch(logoutSuccess());
+            }
+        } catch (error) {
+            toast.error(error.message || 'Failed to Signout')
+            dispatch(logoutFailure(error.message || 'Failed to Signout.'));
         }
     }
 
@@ -243,7 +262,7 @@ const Profile = () => {
                         />
                         <span
                             className='absolute right-3 top-10 cursor-pointer text-xl text-slate-800 dark:text-slate-300'
-                            onClick={() => setShowPassword(prevState => !prevState)}
+                            onClick={() => setShowPassword(!showPassword)}
                         >
                             {showPassword ? <FaEyeSlash /> : <FaEye />}
                         </span>
@@ -254,20 +273,35 @@ const Profile = () => {
                         className='w-full mt-3'
                         type='submit'
                         outline
+                        disabled={loading}
                     >
-                        <span className='text-lg'>
-                            Update Profile
-                        </span>
+                        {
+                                loading
+                                    ? (
+                                        <>
+                                            <Spinner size='md' />
+                                            <span className='pl-3 text-lg'>Loading ...</span>
+                                        </>
+                                    )
+                                    : (
+                                        <span className='text-lg'>
+                                            Update Profile
+                                        </span>
+                                    )
+                            }
                     </Button>
                 </form>
-                <div className='flex justify-between mt-5 text-red-500 text-md font-semibold'>
+                <div className='flex justify-between mt-5 text-red-700 dark:text-slate-200 text-lg font-semibold'>
                     <span
                         className='cursor-pointer hover:underline hover:underline-offset-4'
                         onClick={() => setShowModal(true)}
                     >
                         Delete Account
                     </span>
-                    <span className='cursor-pointer hover:underline hover:underline-offset-4'>
+                    <span
+                        className='cursor-pointer hover:underline hover:underline-offset-4'
+                        onClick={handleLogout}
+                    >
                         Sign Out
                     </span>
                 </div>
@@ -278,21 +312,24 @@ const Profile = () => {
                 onClose={() => setShowModal(false)}
                 popup
                 size='md'
-                className='bg-slate-100 dark:bg-slate-800'
+                className=''
             >
-                <Modal.Header />
-                <Modal.Body >
+                <Modal.Header className={`${theme === 'dark' ? 'bg-slate-800' : 'bg-slate-300'}`} />
+                <Modal.Body className={`${theme === 'dark' ? 'bg-slate-800' : 'bg-slate-300'}`} >
                     <div className="text-center">
-                        <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
-                        <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-                            Are you sure you want to delete this product?
+                        <HiOutlineExclamationCircle className="mx-auto mb-2 h-14 w-14 text-red-700" />
+                        <h2 className={`mb-2 text-lg font-bold text-gray-800 ${theme === 'dark' && 'text-slate-200'}`}>
+                            Are you sure ?
+                        </h2>
+                        <h3 className={`mb-5 text-lg font-semibold text-gray-800 ${theme === 'dark' && 'text-slate-200'}`}>
+                            Do you want to delete this Account ?
                         </h3>
-                        <div className="flex justify-center gap-4">
+                        <div className="flex justify-around mb-5">
                             <Button color="failure" onClick={handleDeleteUser}>
-                                Yes, I'm sure
+                                <span className='text-md font-bold'>Yes, I'm sure</span>
                             </Button>
                             <Button color="gray" onClick={() => setShowModal(false)}>
-                                No, cancel
+                                <span className='text-md font-bold'>No, cancel</span>
                             </Button>
                         </div>
                     </div>
