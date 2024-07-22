@@ -1,4 +1,4 @@
-import { Button, Label, TextInput } from 'flowbite-react';
+import { Button, Label, Modal, TextInput } from 'flowbite-react';
 import React, { useEffect, useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -9,8 +9,9 @@ import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/
 import { toast } from 'react-toastify';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import { HiOutlineExclamationCircle } from "react-icons/hi";
 
-import { updateFailure, updateStart, updateSuccess } from '../redux/user/userSlice';
+import { deleteFailure, deleteStart, deleteSuccess, updateFailure, updateStart, updateSuccess } from '../redux/user/userSlice';
 
 const Profile = () => {
     const { currentUser } = useSelector(state => state.user);
@@ -23,6 +24,7 @@ const Profile = () => {
     const [imageUploading, setImageUploading] = useState(false);
 
     const [formData, setFormData] = useState({});
+    const [showModal, setShowModal] = useState(false);
 
     const dispatch = useDispatch();
 
@@ -126,6 +128,29 @@ const Profile = () => {
         } catch (error) {
             toast.error(error.message || 'Failed to update profile.');
             dispatch(updateFailure(error.message || 'Failed to update profile.'));
+        }
+    }
+
+    const handleDeleteUser = async () => {
+        setShowModal(false);
+        try {
+            dispatch(deleteStart());
+            const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+                method: 'DELETE',
+            });
+            const data = await res.json();
+            if(!res.ok || data.success === false) {
+                toast.error(data.message || 'Failed to delete user.');
+                dispatch(deleteFailure(data.message || 'Failed to delete user.'));
+            } else {
+                toast.success(data.message || 'User deleted successfully!');
+                dispatch(deleteSuccess(data));
+                console.log(data)
+                // window.location.href = '/';
+            }
+        } catch (error) {
+            toast.error(error.message || 'Failed to delete user.');
+           dispatch(deleteFailure(error.message || 'Failed to delete user.')); 
         }
     }
 
@@ -236,7 +261,10 @@ const Profile = () => {
                     </Button>
                 </form>
                 <div className='flex justify-between mt-5 text-red-500 text-md font-semibold'>
-                    <span className='cursor-pointer hover:underline hover:underline-offset-4'>
+                    <span
+                        className='cursor-pointer hover:underline hover:underline-offset-4'
+                        onClick={() => setShowModal(true)}
+                    >
                         Delete Account
                     </span>
                     <span className='cursor-pointer hover:underline hover:underline-offset-4'>
@@ -245,6 +273,32 @@ const Profile = () => {
                 </div>
             </div>
 
+            <Modal
+                show={showModal}
+                onClose={() => setShowModal(false)}
+                popup
+                size='md'
+                className='bg-slate-100 dark:bg-slate-800'
+            >
+                <Modal.Header />
+                <Modal.Body >
+                    <div className="text-center">
+                        <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
+                        <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                            Are you sure you want to delete this product?
+                        </h3>
+                        <div className="flex justify-center gap-4">
+                            <Button color="failure" onClick={handleDeleteUser}>
+                                Yes, I'm sure
+                            </Button>
+                            <Button color="gray" onClick={() => setShowModal(false)}>
+                                No, cancel
+                            </Button>
+                        </div>
+                    </div>
+
+                </Modal.Body>
+            </Modal>
         </div>
     )
 }
