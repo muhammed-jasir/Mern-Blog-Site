@@ -61,7 +61,7 @@ const login = async (req, res, next) => {
         }
 
         const token = jwt.sign(
-            { userId: validUser._id },
+            { userId: validUser._id, isAdmin: validUser.isAdmin },
             process.env.JWT_SECRET
         );
 
@@ -83,7 +83,7 @@ const google = async (req, res, next) => {
         const user = await User.findOne({ email });
         if (user) {
             const token = jwt.sign(
-                { userId: user._id },
+                { userId: user._id, isAdmin: user.isAdmin },
                 process.env.JWT_SECRET
             );
 
@@ -106,7 +106,7 @@ const google = async (req, res, next) => {
             await newUser.save();
 
             const token = jwt.sign(
-                { userId: newUser._id },
+                { userId: newUser._id, isAdmin: newUser.isAdmin },
                 process.env.JWT_SECRET
             );
 

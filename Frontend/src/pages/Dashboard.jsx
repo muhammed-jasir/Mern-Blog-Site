@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import Profile from '../components/Profile';
+import DashSidebar from '../components/DashSidebar';
+import CreatePost from './CreatePost';
 
 const Dashboard = () => {
     const location = useLocation();
@@ -13,12 +15,18 @@ const Dashboard = () => {
         if (tabFromUrl) {
             setTab(tabFromUrl);
         }
-        
+
     }, [location.search])
 
     return (
-        <div className=''>
-            {tab === 'profile' && <Profile />}
+        <div className='flex flex-col md:flex-row'>
+            <div className='md:min-w-60'>
+                <DashSidebar />
+            </div>
+            <main className='flex-grow flex-1'>
+                {tab === 'profile' && <Profile />}
+                {tab === 'create-post' && <CreatePost />}
+            </main>
         </div>
     )
 }

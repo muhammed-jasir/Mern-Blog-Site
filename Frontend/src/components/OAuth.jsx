@@ -50,7 +50,6 @@ const OAuth = () => {
         <Button
             type='button'
             gradientDuoTone="purpleToBlue"
-            // gradientMonochrome="purple"
             outline
             className=''
             onClick={handleGoogle}

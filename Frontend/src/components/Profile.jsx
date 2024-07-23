@@ -150,7 +150,7 @@ const Profile = () => {
         }
     }
 
-    const handleLogout = async () => {
+    const handleSignout = async () => {
         try {
             const res = await fetch('/api/user/signout', {
                 method: 'POST',
@@ -158,8 +158,8 @@ const Profile = () => {
             const data = await res.json();
 
             if (!res.ok || data.success === false) {
-                toast.error(error.message || 'Failed to Signout')
-                dispatch(logoutFailure(error.message || 'Failed to Signout.'));
+                toast.error(data.message || 'Failed to Signout')
+                dispatch(logoutFailure(data.message || 'Failed to Signout.'));
                 return;
             }
 
@@ -174,7 +174,7 @@ const Profile = () => {
     }
 
     return (
-        <div className='flex flex-col items-center mt-5 mb-8 px-4 sm:px-6 lg:px-8'>
+        <div className='flex flex-col items-center mt-5 mb-10 px-4 sm:px-6 lg:px-8'>
             <h1 className='text-3xl mt-5 mb-8 font-semibold'>Profile</h1>
             <div className='bg-slate-200 dark:bg-slate-800 px-8 py-8 max-w-md w-full rounded-lg shadow-lg'>
                 <form className='flex flex-col items-center justify-center gap-5 w-full' onSubmit={handleSubmit}>
@@ -273,22 +273,22 @@ const Profile = () => {
                         className='w-full mt-3'
                         type='submit'
                         outline
-                        disabled={loading}
+                        disabled={loading || imageUploading}
                     >
                         {
-                                loading
-                                    ? (
-                                        <>
-                                            <Spinner size='md' />
-                                            <span className='pl-3 text-lg'>Loading ...</span>
-                                        </>
-                                    )
-                                    : (
-                                        <span className='text-lg'>
-                                            Update Profile
-                                        </span>
-                                    )
-                            }
+                            loading
+                                ? (
+                                    <>
+                                        <Spinner size='md' />
+                                        <span className='pl-3 text-lg'>Loading ...</span>
+                                    </>
+                                )
+                                : (
+                                    <span className='text-lg'>
+                                        Update Profile
+                                    </span>
+                                )
+                        }
                     </Button>
                 </form>
                 <div className='flex justify-between mt-5 text-red-700 dark:text-slate-200 text-lg font-semibold'>
@@ -300,7 +300,7 @@ const Profile = () => {
                     </span>
                     <span
                         className='cursor-pointer hover:underline hover:underline-offset-4'
-                        onClick={handleLogout}
+                        onClick={handleSignout}
                     >
                         Sign Out
                     </span>

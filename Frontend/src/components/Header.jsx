@@ -3,7 +3,7 @@ import { Avatar, Button, Dropdown, Navbar, NavbarCollapse, NavbarLink, NavbarTog
 import { Link, useLocation } from 'react-router-dom'
 import { IoSearchOutline } from "react-icons/io5";
 import { BsMoonFill, BsSun } from "react-icons/bs";
-import { HiLogout, HiUser } from "react-icons/hi";
+import { HiLogout, HiUser, HiViewGrid } from "react-icons/hi";
 
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleTheme } from './../redux/theme/themeSlice';
@@ -18,7 +18,7 @@ const Header = () => {
     const dispatch = useDispatch();
     const { theme } = useSelector(state => state.theme);
 
-    const handleLogout = async () => {
+    const handleSignout = async () => {
         try {
             const res = await fetch('/api/user/signout', {
                 method: 'POST',
@@ -26,8 +26,8 @@ const Header = () => {
             const data = await res.json();
 
             if (!res.ok || data.success === false) {
-                toast.error(error.message || 'Failed to Signout')
-                dispatch(logoutFailure(error.message || 'Failed to Signout.'));
+                toast.error(data.message || 'Failed to Signout')
+                dispatch(logoutFailure(data.message || 'Failed to Signout.'));
                 return;
             }
 
@@ -103,13 +103,22 @@ const Header = () => {
                                         <span className='block text-sm font-semibold truncate'>{currentUser.email}</span>
                                     </Dropdown.Header>
 
-                                    <Link to='/profile'>
+                                    {currentUser.isAdmin &&
+                                        <Link to='/dashboard'>
+                                            <Dropdown.Item icon={HiViewGrid}>
+                                                <span className='font-semibold'>Dashboard</span>
+                                            </Dropdown.Item>
+                                        </Link>
+                                    }
+
+                                    <Link to={currentUser.isAdmin ? '/dashboard?tab=profile' : '/profile'}>
                                         <Dropdown.Item icon={HiUser}>
                                             <span className='font-semibold'>Profile</span>
                                         </Dropdown.Item>
                                     </Link>
+
                                     <Dropdown.Divider />
-                                    <Dropdown.Item icon={HiLogout} onClick={handleLogout}>
+                                    <Dropdown.Item icon={HiLogout} onClick={handleSignout}>
                                         <span className='font-semibold'>Sign Out</span>
                                     </Dropdown.Item>
                                 </Dropdown>
