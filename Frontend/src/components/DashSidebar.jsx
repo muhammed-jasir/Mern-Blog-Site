@@ -58,6 +58,10 @@ const DashSidebar = () => {
                             Profile
                         </Sidebar.Item>
 
+                        <Sidebar.Item as={Link} to={`/dashboard?tab=create-post`} icon={IoIosCreate}>
+                            Create Post
+                        </Sidebar.Item>
+
                     </Sidebar.ItemGroup>
                     <Sidebar.ItemGroup>
                         <Sidebar.Item icon={HiLogout} onClick={handleSignout}>
