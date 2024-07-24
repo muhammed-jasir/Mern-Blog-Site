@@ -1,6 +1,6 @@
 import { Sidebar } from 'flowbite-react'
 import React, { useEffect, useState } from 'react'
-import { HiChartPie, HiLogout, HiUser } from 'react-icons/hi'
+import { HiChartPie, HiDocumentText, HiLogout, HiUser } from 'react-icons/hi'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import { logoutFailure, logoutSuccess } from '../redux/user/userSlice'
@@ -48,8 +48,8 @@ const DashSidebar = () => {
     return (
         <div className={`w-full md:h-full md:min-w-56 md:min-h-screen ${theme === 'dark' ? 'bg-slate-700' : 'bg-slate-200'}`}>
             <Sidebar className={`w-full md:h-full ${theme === 'dark' ? 'bg-slate-700' : 'bg-slate-200'} `}>
-                <Sidebar.Items>
-                    <Sidebar.ItemGroup>
+                <Sidebar.Items className='flex gap-1 md:gap-5 flex-col'>
+                    <Sidebar.ItemGroup className='flex flex-col gap-1 md:gap-3 '>
                         <Sidebar.Item as={Link} to={`/dashboard`} icon={HiChartPie} >
                             Dashboard
                         </Sidebar.Item>
@@ -58,8 +58,12 @@ const DashSidebar = () => {
                             Profile
                         </Sidebar.Item>
 
-                        <Sidebar.Item as={Link} to={`/dashboard?tab=create-post`} icon={IoIosCreate}>
-                            Create Post
+                        <Sidebar.Item as={Link} to={`/dashboard?tab=create-post`} active={tab === 'create-post'} icon={IoIosCreate}>
+                            Create post
+                        </Sidebar.Item>
+
+                        <Sidebar.Item as={Link} to={`/posts`} active={tab === 'posts'} icon={HiDocumentText}>
+                            Posts
                         </Sidebar.Item>
 
                     </Sidebar.ItemGroup>
