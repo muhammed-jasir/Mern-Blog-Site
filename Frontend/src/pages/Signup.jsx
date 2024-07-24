@@ -52,14 +52,13 @@ const Signup = () => {
                 },
                 body: JSON.stringify(formData),
             });
+            
             const data = await res.json();
 
             if (!res.ok || data.success == false) {
                 setLoading(false);
                 return toast.error(data.message || 'Signup failed. Please try again.');
             }
-
-            setLoading(false);
 
             if (res.ok) {
                 toast.success('Signup Successful!');
@@ -68,6 +67,7 @@ const Signup = () => {
 
         } catch (error) {
             toast.error('Something went wrong. Please try again.' || error.message);
+        }  finally {
             setLoading(false);
         }
     };

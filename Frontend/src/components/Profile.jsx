@@ -9,6 +9,7 @@ import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/
 import { toast } from 'react-toastify';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 
 import { deleteFailure, deleteStart, deleteSuccess, logoutFailure, logoutSuccess, updateFailure, updateStart, updateSuccess } from '../redux/user/userSlice';
@@ -17,7 +18,7 @@ const Profile = () => {
     const { currentUser } = useSelector(state => state.user);
     const [showPassword, setShowPassword] = useState(false);
     const { theme } = useSelector(state => state.theme);
-    const { loading, error } = useSelector(state => state.user)
+    const { loading } = useSelector(state => state.user)
 
     const [imageFile, setImageFile] = useState(null);
     const [imageUrl, setImageUrl] = useState(null);
@@ -52,37 +53,45 @@ const Profile = () => {
     }, [imageFile]);
 
     const uploadImage = async () => {
-        setImageUploading(true);
-        const storage = getStorage(app);
-        const imgName = new Date().getTime() + imageFile.name;
-        const storageRef = ref(storage, imgName);
-        const uploadTask = uploadBytesResumable(storageRef, imageFile);
+        try {
+            setImageUploading(true);
+            const storage = getStorage(app);
+            const imgName = new Date().getTime() + imageFile.name;
+            const storageRef = ref(storage, imgName);
+            const uploadTask = uploadBytesResumable(storageRef, imageFile);
 
-        uploadTask.on(
-            'state_changed',
-            (snapshot) => {
-                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                setImageUploadProgress(progress.toFixed(0));
-            },
-            (error) => {
-                toast.error('Error uploading image. Please try again.');
+            uploadTask.on(
+                'state_changed',
+                (snapshot) => {
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    setImageUploadProgress(progress.toFixed(0));
+                },
+                (error) => {
+                    toast.error('Error uploading image. Please try again.');
 
-                setImageUploadProgress(null);
-                setImageFile(null);
-                setImageUrl(null);
-                setImageUploading(false);
-            },
-            () => {
-                getDownloadURL(uploadTask.snapshot.ref)
-                    .then((downloadURL) => {
-                        setImageUrl(downloadURL);
-                        setImageUploadProgress(null);
-                        setFormData({ ...formData, profilePic: downloadURL });
-                        setImageUploading(false);
-                    })
-            }
-        );
+                    setImageUploadProgress(null);
+                    setImageFile(null);
+                    setImageUrl(null);
+                    setImageUploading(false);
+                },
+                () => {
+                    getDownloadURL(uploadTask.snapshot.ref)
+                        .then((downloadURL) => {
+                            setImageUrl(downloadURL);
+                            setImageUploadProgress(null);
+                            setFormData({ ...formData, profilePic: downloadURL });
+                            setImageUploading(false);
+                        })
+                }
+            );
+        } catch (error) {
+            toast.error('Error uploading image. Please try again.');
 
+            setImageUploadProgress(null);
+            setImageFile(null);
+            setImageUrl(null);
+            setImageUploading(false);
+        }
     }
 
     const handleChange = (e) => {
@@ -135,7 +144,9 @@ const Profile = () => {
             const res = await fetch(`/api/user/delete/${currentUser._id}`, {
                 method: 'DELETE',
             });
+
             const data = await res.json();
+
             if (!res.ok || data.success === false) {
                 toast.error(data.message || 'Failed to delete user.');
                 dispatch(deleteFailure(data.message || 'Failed to delete user.'));
@@ -144,6 +155,7 @@ const Profile = () => {
                 toast.success(data.message || 'User deleted successfully!');
                 dispatch(deleteSuccess(data));
             }
+
         } catch (error) {
             toast.error(error.message || 'Failed to delete user.');
             dispatch(deleteFailure(error.message || 'Failed to delete user.'));
@@ -182,7 +194,8 @@ const Profile = () => {
                         <img
                             src={imageUrl || currentUser.profilePic}
                             alt='profile pic'
-                            className={`rounded-full border-8 border-slate-300 dark:border-slate-300 object-cover h-32 w-32
+                            className={`
+                                        rounded-full border-8 border-slate-300 dark:border-slate-300 object-cover h-32 w-32
                                         ${imageUploadProgress && imageUploadProgress < 100 && 'opacity-60'}
                                     `}
                             onClick={() => imagePickerRef.current.click()}
