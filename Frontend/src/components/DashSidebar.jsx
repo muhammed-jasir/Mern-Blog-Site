@@ -45,36 +45,35 @@ const DashSidebar = () => {
             dispatch(logoutFailure(error.message || 'Failed to Signout.'));
         }
     }
+
     return (
-        <div className={`w-full md:h-full md:min-w-56 md:min-h-screen ${theme === 'dark' ? 'bg-slate-700' : 'bg-slate-200'}`}>
-            <Sidebar className={`w-full md:h-full ${theme === 'dark' ? 'bg-slate-700' : 'bg-slate-200'} `}>
-                <Sidebar.Items className='flex gap-1 md:gap-5 flex-col'>
-                    <Sidebar.ItemGroup className='flex flex-col gap-1 md:gap-3 '>
-                        <Sidebar.Item as={Link} to={`/dashboard`} icon={HiChartPie} >
-                            Dashboard
-                        </Sidebar.Item>
+        <Sidebar className={`w-full md:h-full md:md:min-w-60 md:min-h-screen`}>
+            <Sidebar.Items className='flex gap-1 md:gap-3 flex-col pt-3 px-1'>
+                <Sidebar.ItemGroup className='flex flex-col gap-1'>
+                    <Sidebar.Item as={Link} to={`/dashboard`} icon={HiChartPie} >
+                        Dashboard
+                    </Sidebar.Item>
 
-                        <Sidebar.Item as={Link} to={`/dashboard?tab=profile`} active={tab === 'profile'} icon={HiUser} label={'Admin'} labelColor="dark">
-                            Profile
-                        </Sidebar.Item>
+                    <Sidebar.Item as={Link} to={`/dashboard?tab=profile`} active={tab === 'profile'} icon={HiUser} label={'Admin'} labelColor="dark">
+                        Profile
+                    </Sidebar.Item>
 
-                        <Sidebar.Item as={Link} to={`/dashboard?tab=create-post`} active={tab === 'create-post'} icon={IoIosCreate}>
-                            Create post
-                        </Sidebar.Item>
+                    <Sidebar.Item as={Link} to={`/dashboard?tab=create-post`} active={tab === 'create-post'} icon={IoIosCreate}>
+                        Create post
+                    </Sidebar.Item>
 
-                        <Sidebar.Item as={Link} to={`/dashboard?tab=posts`} active={tab === 'posts'} icon={HiDocumentText}>
-                            Posts
-                        </Sidebar.Item>
+                    <Sidebar.Item as={Link} to={`/dashboard?tab=posts`} active={tab === 'posts'} icon={HiDocumentText}>
+                        Posts
+                    </Sidebar.Item>
 
-                    </Sidebar.ItemGroup>
-                    <Sidebar.ItemGroup>
-                        <Sidebar.Item icon={HiLogout} onClick={handleSignout}>
-                            Sign Out
-                        </Sidebar.Item>
-                    </Sidebar.ItemGroup>
-                </Sidebar.Items>
-            </Sidebar>
-        </div>
+                </Sidebar.ItemGroup>
+                <Sidebar.ItemGroup>
+                    <Sidebar.Item icon={HiLogout} onClick={handleSignout}>
+                        Sign Out
+                    </Sidebar.Item>
+                </Sidebar.ItemGroup>
+            </Sidebar.Items>
+        </Sidebar>
     )
 }
 

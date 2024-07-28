@@ -7,12 +7,12 @@ body {
 }
 
 .dark .ql-toolbar {
-    background-color: rgb(15 23 42); 
+    background-color: rgb(13, 29, 59); 
     color: rgb(249 250 251);
 }
 
 .dark .ql-container {
-    background-color: rgb(15 23 42); 
+    background-color: rgb(55, 65, 81); 
     color: rgb(249 250 251);
 }
 

@@ -1,14 +1,18 @@
-import { Button, Table } from 'flowbite-react';
+import { Button, Modal, Table } from 'flowbite-react';
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { HiOutlineExclamationCircle } from "react-icons/hi";
 
 const Posts = () => {
     const { currentUser } = useSelector(state => state.user);
     const [posts, setPosts] = useState([]);
     const navigate = useNavigate();
     const [showMore, setShowMore] = useState(true);
+    const [showModal, setShowModal] = useState(false);
+    const { theme } = useSelector(state => state.theme)
+    const [postIdToDelete, setPostIdToDelete] = useState('');
 
     useEffect(() => {
         const FetchPosts = async () => {
@@ -67,12 +71,36 @@ const Posts = () => {
         }
     };
 
+    const handleDeletePost = async () => {
+        setShowModal(false);
+        try {
+            const res = await fetch(`/api/post/delete-post/${postIdToDelete}/${currentUser._id}`,
+                {
+                    method: 'DELETE',
+                }
+            );
+            const data = await res.json();
+
+            if (!res.ok || data.success === false) {
+                toast.error(data.message || 'Failed to delete post.');
+                return;
+            }
+
+            if (res.ok) {
+                toast.success(data.message || 'Post deleted successfully!');
+                setPosts((prevPosts) => prevPosts.filter((post) => post._id !== postIdToDelete));
+            }
+        } catch (error) {
+            toast.error(error.message || 'Failed to delete post.');
+        }
+    };
+
     return (
         <div className='flex justify-center my-10 px-8'>
             {currentUser.isAdmin ? (
                 posts.length > 0 ? (
                     <div className='overflow-x-auto scrollbar-hide'>
-                        <Table hoverable className='shadow-md text-center bg-slate-300 text-slate-900 dark:bg-slate-800 dark:text-slate-300 rounded-lg'>
+                        <Table hoverable className='shadow-md text-center bg-slate-200 text-slate-900 dark:bg-slate-800 dark:text-slate-300 rounded-lg'>
                             <Table.Head>
                                 <Table.HeadCell>Date</Table.HeadCell>
                                 <Table.HeadCell>Image</Table.HeadCell>
@@ -111,7 +139,13 @@ const Posts = () => {
                                                         Edit
                                                     </Button>
                                                 </Link>
-                                                <Button color='failure'>
+                                                <Button
+                                                    color='failure'
+                                                    onClick={() => {
+                                                        setShowModal(true);
+                                                        setPostIdToDelete(post._id);
+                                                    }}
+                                                >
                                                     Delete
                                                 </Button>
                                             </div>
@@ -139,11 +173,6 @@ const Posts = () => {
                         <h1>
                             You have no Posts to view. Please create a new post.
                         </h1>
-                        <Link to={'/dashboard?tab=create-post'}>
-                            <Button>
-                                Create a new post
-                            </Button>
-                        </Link>
                     </div>
                 )) : (
                 <div className='text-center'>
@@ -151,6 +180,35 @@ const Posts = () => {
                 </div>
             )
             }
+            <Modal
+                show={showModal}
+                onClose={() => setShowModal(false)}
+                popup
+                size='md'
+                className=''
+            >
+                <Modal.Header className={`${theme === 'dark' ? 'bg-slate-800' : 'bg-slate-300'}`} />
+                <Modal.Body className={`${theme === 'dark' ? 'bg-slate-800' : 'bg-slate-300'}`} >
+                    <div className="text-center">
+                        <HiOutlineExclamationCircle className="mx-auto mb-2 h-14 w-14 text-red-700" />
+                        <h2 className={`mb-2 text-lg font-bold text-gray-800 ${theme === 'dark' && 'text-slate-200'}`}>
+                            Are you sure ?
+                        </h2>
+                        <h3 className={`mb-5 text-lg font-semibold text-gray-800 ${theme === 'dark' && 'text-slate-200'}`}>
+                            Do you want to delete this Post ?
+                        </h3>
+                        <div className="flex justify-around mb-5">
+                            <Button color="failure" onClick={handleDeletePost}>
+                                <span className='text-md font-bold'>Yes, I'm sure</span>
+                            </Button>
+                            <Button color="gray" onClick={() => setShowModal(false)}>
+                                <span className='text-md font-bold'>No, cancel</span>
+                            </Button>
+                        </div>
+                    </div>
+
+                </Modal.Body>
+            </Modal>
         </div >
     )
 }
