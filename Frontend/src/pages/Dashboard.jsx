@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom'
 import Profile from '../components/Profile';
 import DashSidebar from '../components/DashSidebar';
 import CreatePost from './CreatePost';
-import DashPosts from '../components/DashPosts';
+import Posts from '../components/Posts';
 
 const Dashboard = () => {
     const location = useLocation();
@@ -27,7 +27,7 @@ const Dashboard = () => {
             <main className='flex-grow flex-1'>
                 {tab === 'profile' && <Profile />}
                 {tab === 'create-post' && <CreatePost />}
-                {tab === 'posts' && <DashPosts />}
+                {tab === 'posts' && <Posts />}
             </main>
         </div>
     )

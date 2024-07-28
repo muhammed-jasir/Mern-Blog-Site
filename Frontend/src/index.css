@@ -6,7 +6,6 @@ body {
     height: 100vh;
 }
 
-/* Dark mode */
 .dark .ql-toolbar {
     background-color: rgb(15 23 42); 
     color: rgb(249 250 251);
@@ -17,7 +16,6 @@ body {
     color: rgb(249 250 251);
 }
 
-/* Light mode */
 .ql-toolbar {
     background-color: rgb(241 245 249);
     color: rgb(17 24 39);

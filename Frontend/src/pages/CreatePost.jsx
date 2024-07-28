@@ -1,11 +1,10 @@
 import { Button, FileInput, Label, Select, Spinner, TextInput } from 'flowbite-react'
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import ReactQuill from 'react-quill';
-import 'quill/dist/quill.bubble.css';
-import 'quill/dist/quill.snow.css';
+import 'react-quill/dist/quill.snow.css';
 
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
@@ -29,6 +28,28 @@ const CreatePost = () => {
 
     const [formData, setFormData] = useState({});
     const navigate = useNavigate();
+    const quillRef = useRef(null);
+
+    const toolbarOptions = [
+        ['bold', 'italic', 'underline', 'strike'],
+        ['blockquote', 'code-block'],
+        ['link', 'image', 'video', 'formula'],
+        [{ 'header': 1 }, { 'header': 2 }],
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'list': 'check' }],
+        [{ 'script': 'sub' }, { 'script': 'super' }],
+        [{ 'indent': '-1' }, { 'indent': '+1' }],
+        [{ 'direction': 'rtl' }],
+        [{ 'size': ['small', false, 'large', 'huge'] }],
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+        [{ 'color': [] }, { 'background': [] }],
+        [{ 'font': [] }],
+        [{ 'align': [] }],
+        ['clean']
+    ];
+
+    const modules = {
+        toolbar: toolbarOptions
+    };
 
     const handleAddCategory = () => {
         const category = newCategory.trim().toLowerCase();
@@ -37,13 +58,13 @@ const CreatePost = () => {
             setSelectedCategory(category);
             setNewCategory('');
             setIsOther(false);
-            setFormData({ ...formData, category: category }); 
+            setFormData({ ...formData, category: category });
             toast.success('Category added successfully!');
         } else {
             toast.error('Invalid or duplicate category.');
         }
     };
-    
+
     const handleImageUpload = async () => {
         try {
             if (!imageFile || !imageFile.type.startsWith('image/')) {
@@ -103,8 +124,8 @@ const CreatePost = () => {
             return;
         }
 
-        if (formData.content.length < 10) {
-            toast.error('Content must be at least 10 characters long');
+        if (formData.content.length < 50) {
+            toast.error('Content must be at least 50 characters long');
             return;
         }
 
@@ -169,7 +190,7 @@ const CreatePost = () => {
                                 if (value !== 'other') {
                                     setNewCategory('');
                                 }
-                            }} 
+                            }}
                             value={selectedCategory}
                         >
                             <option value="" className='text-md text-center' >Select a Category</option>
@@ -188,23 +209,23 @@ const CreatePost = () => {
 
                     {isOther && (
                         <div className='flex gap-3 w-full'>
-                        <TextInput
-                            type='text'
-                            placeholder='Add new category'
-                            value={newCategory}
-                            onChange={(e) => setNewCategory(e.target.value)}
-                            className='flex-1 w-full'
-                        />
-                        <Button
-                            type='button'
-                            gradientMonochrome="info"
-                            size='md'
-                            outline
-                            onClick={handleAddCategory}
-                        >
-                            Add Category
-                        </Button>
-                    </div>
+                            <TextInput
+                                type='text'
+                                placeholder='Add new category'
+                                value={newCategory}
+                                onChange={(e) => setNewCategory(e.target.value)}
+                                className='flex-1 w-full'
+                            />
+                            <Button
+                                type='button'
+                                gradientMonochrome="info"
+                                size='md'
+                                outline
+                                onClick={handleAddCategory}
+                            >
+                                Add Category
+                            </Button>
+                        </div>
                     )}
 
                     <div className='flex flex-col md:flex-row items-center justify-center gap-3 md:gap-3 w-full'>
@@ -276,31 +297,12 @@ const CreatePost = () => {
 
                     <div className='w-full'>
                         <ReactQuill
+                            ref={quillRef}
+                            placeholder='write something'
                             theme='snow'
                             className={`h-80 w-full ${theme === 'dark' ? 'dark' : 'light'}`}
                             onChange={(value) => setFormData({ ...formData, content: value })}
-
-                            modules={{
-                                toolbar: [
-                                    [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
-                                    [{ 'size': [] }],
-                                    [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
-                                    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-                                    [{ 'color': [] }, { 'background': [] }],
-                                    [{ 'script': 'sub' }, { 'script': 'super' }],
-                                    [{ 'align': [] }],
-                                    ['link', 'image', 'video'],
-                                    ['clean'],
-                                ],
-                            }}
-
-                            formats={[
-                                'header', 'font', 'size',
-                                'bold', 'italic', 'underline', 'strike', 'blockquote',
-                                'list', 'bullet', 'indent',
-                                'link', 'image', 'video',
-                                'color', 'background', 'script', 'align'
-                            ]}
+                            modules={modules}
                         />
                     </div>
                     <div className='w-full mt-16 max-sm:mt-28'>

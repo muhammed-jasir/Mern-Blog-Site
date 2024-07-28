@@ -43,7 +43,7 @@ const Header = () => {
 
     return (
         <header>
-            <Navbar className='bg-slate-200 dark:bg-slate-800 flex items-center justify-between w-full sm:px-10 px-2 py-2 z-10'>
+            <Navbar className='bg-slate-300 dark:bg-slate-800 flex items-center justify-between w-full sm:px-10 px-2 py-2 z-10'>
                 <Link to='/'>
                     <h2 className='flex items-center whitespace-nowrap text-2xl font-semibold dark:text-white'>
                         <span className='bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% rounded-3xl px-2 py-1 pb-2 text-white'>The Blog </span> Spot

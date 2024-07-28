@@ -12,7 +12,7 @@ import PrivateRoute from './components/PrivateRoute';
 import Profile from './components/Profile';
 import AdminPrivateRoute from './components/AdminPrivateRoute';
 import CreatePost from './pages/CreatePost';
-import DashPosts from './components/DashPosts';
+import Posts from './components/Posts';
 
 const App = () => {
     return (
@@ -29,8 +29,8 @@ const App = () => {
                 <Route element={<AdminPrivateRoute />}>
                     <Route path='/dashboard' element={<Dashboard />} />
                     <Route path='/create-post' element={<CreatePost />} />
-                    <Route path='/posts' element={<DashPosts />} />
                 </Route>
+                <Route path='/posts' element={<Posts />} />
                 <Route path='/projects' element={<Projects />} />
             </Routes>
             <FooterComp />

@@ -62,7 +62,7 @@ const DashSidebar = () => {
                             Create post
                         </Sidebar.Item>
 
-                        <Sidebar.Item as={Link} to={`/posts`} active={tab === 'posts'} icon={HiDocumentText}>
+                        <Sidebar.Item as={Link} to={`/dashboard?tab=posts`} active={tab === 'posts'} icon={HiDocumentText}>
                             Posts
                         </Sidebar.Item>
 

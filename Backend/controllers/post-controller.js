@@ -16,8 +16,8 @@ const createPost = async (req, res, next) => {
         return next(errorHandlers(400, 'Title must be between 5 and 100 characters long'));
     }
 
-    if (req.body.content.length < 10) {
-        return next(errorHandlers(400, 'Content must be at least 10 characters long'));
+    if (req.body.content.length < 50) {
+        return next(errorHandlers(400, 'Content must be at least 50 characters long'));
     }
 
     const slug = slugify(req.body.title, {
