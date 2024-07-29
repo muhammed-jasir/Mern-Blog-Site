@@ -19,7 +19,6 @@ const Posts = () => {
             try {
                 const res = await fetch(`/api/post/get-posts?userId=${currentUser._id}`);
                 const data = await res.json();
-                console.log(data);
 
                 if (!res.ok || data.success === false) {
                     toast.error(data.message || 'Failed to fetch posts.');
@@ -34,7 +33,6 @@ const Posts = () => {
                 }
 
             } catch (error) {
-                console.log(error);
                 toast.error(error.message || 'Failed to fetch posts.');
             }
         };
@@ -118,13 +116,13 @@ const Posts = () => {
                                             <img
                                                 src={post.image}
                                                 alt='post image'
-                                                className='h-16 w-16 object-cover rounded-md'
+                                                className='h-16 w-16 object-contain rounded-md'
                                             />
                                         </Table.Cell>
                                         <Table.Cell>
                                             {post.title}
                                         </Table.Cell>
-                                        <Table.Cell>
+                                        <Table.Cell className='capitalize'>
                                             {post.category}
                                         </Table.Cell>
                                         <Table.Cell>
@@ -134,9 +132,9 @@ const Posts = () => {
                                                         View
                                                     </Button>
                                                 </Link>
-                                                <Link to={`/post/${post.slug}`}>
+                                                <Link to={`/update-post/${post._id}`}>
                                                     <Button color='success'>
-                                                        Edit
+                                                        Update
                                                     </Button>
                                                 </Link>
                                                 <Button

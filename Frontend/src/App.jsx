@@ -13,6 +13,7 @@ import Profile from './components/Profile';
 import AdminPrivateRoute from './components/AdminPrivateRoute';
 import CreatePost from './pages/CreatePost';
 import Posts from './components/Posts';
+import UpdatePost from './pages/UpdatePost';
 
 const App = () => {
     return (
@@ -29,6 +30,7 @@ const App = () => {
                 <Route element={<AdminPrivateRoute />}>
                     <Route path='/dashboard' element={<Dashboard />} />
                     <Route path='/create-post' element={<CreatePost />} />
+                    <Route path='/update-post/:postId' element={<UpdatePost />} />
                 </Route>
                 <Route path='/posts' element={<Posts />} />
                 <Route path='/projects' element={<Projects />} />

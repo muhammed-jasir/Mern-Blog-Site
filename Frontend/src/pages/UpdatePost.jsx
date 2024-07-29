@@ -1,7 +1,7 @@
 import { Button, FileInput, Label, Select, Spinner, Textarea, TextInput } from 'flowbite-react'
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -13,7 +13,8 @@ import { toast } from 'react-toastify';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 import { app } from '../firebase';
 
-const CreatePost = () => {
+const UpdatePost = () => {
+    const { currentUser } = useSelector(state => state.user);
     const { theme } = useSelector(state => state.theme);
     const [loading, setLoading] = useState(false);
 
@@ -29,6 +30,36 @@ const CreatePost = () => {
     const [formData, setFormData] = useState({});
     const navigate = useNavigate();
     const quillRef = useRef(null);
+
+    const { postId } = useParams();
+
+    useEffect(() => {
+        const fetchPost = async () => {
+            try {
+                const res = await fetch(`/api/post/get-posts?postId=${postId}`);
+                const data = await res.json();
+
+                if (!res.ok || data.success === false) {
+                    toast.error(data.message || 'Failed to fetch post.');
+                    return;
+                }
+
+                if (res.ok) {
+                    const post = data.posts[0];
+                    setFormData(post);
+                    setSelectedCategory(post.category);
+                    setIsOther(post.category === 'other');
+                    if (!categories.includes(post.category) && post.category !== 'other') {
+                        setCategories([...categories, post.category]);
+                    }
+                }
+
+            } catch (error) {
+                toast.error(error.message || 'Failed to fetch post.');
+            }
+        }
+        fetchPost();
+    }, [postId]);
 
     const toolbarOptions = [
         ['bold', 'italic', 'underline', 'strike'],
@@ -99,6 +130,7 @@ const CreatePost = () => {
                         setImageUploadProgress(null);
                         setFormData({ ...formData, image: downloadUrl });
                         setImageUploading(false);
+                        toast.success('Image uploaded successfully!');
                     });
                 },
             );
@@ -142,8 +174,8 @@ const CreatePost = () => {
         try {
             setLoading(true);
 
-            const res = await fetch('/api/post/create-post', {
-                method: 'POST',
+            const res = await fetch(`/api/post/update-post/${formData._id}/${currentUser._id}`, {
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -153,15 +185,15 @@ const CreatePost = () => {
             const data = await res.json();
 
             if (!res.ok || data.success === false) {
-                toast.error(data.message || 'Error creating post. Please try again.');
+                toast.error(data.message || 'Failed to update post.');
                 return;
             } else {
-                toast.success('Post created successfully.');
+                toast.success('Post updated successfully!');
                 navigate(`/post/${data.slug}`);
             }
 
         } catch (error) {
-            toast.error(error.message || 'Error creating post. Please try again.');
+            toast.error(error.message || 'Failed to update post.');
         } finally {
             setLoading(false);
         }
@@ -169,7 +201,7 @@ const CreatePost = () => {
 
     return (
         <div className='flex items-center flex-col mb-10  mt-5 min-h-screen px-4 sm:px-6 lg:px-8'>
-            <h1 className='font-semibold text-3xl mb-8 mt-5'>Create post</h1>
+            <h1 className='font-semibold text-3xl mb-8 mt-5'>Update post</h1>
             <div className='bg-slate-300 dark:bg-slate-800 px-8 py-8 max-w-3xl lg:max-w-4xl w-full rounded-lg shadow-lg'>
                 <form className='flex flex-col gap-10 items-center justify-center' onSubmit={handleSubmit}>
                     <div className='w-full'>
@@ -183,7 +215,8 @@ const CreatePost = () => {
                             sizing='md'
                             id='title'
                             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                        />
+                            value={formData.title || ''}
+                            />
                     </div>
 
                     <div className='w-full'>
@@ -203,6 +236,7 @@ const CreatePost = () => {
                                 }
                             }}
                             value={selectedCategory}
+
                         >
                             <option value="" className='text-md text-center' >Select a Category</option>
                             {categories.map((category) => (
@@ -249,7 +283,8 @@ const CreatePost = () => {
                             className='mt-1 rounded-md text-lg w-full'
                             rows={4}
                             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                        />
+                            value={formData.description || ''}
+                            />
                     </div>
 
                     <div className='flex flex-col md:flex-row items-center justify-center gap-3 md:gap-3 w-full'>
@@ -326,7 +361,8 @@ const CreatePost = () => {
                             className={`h-80 w-full ${theme === 'dark' ? 'dark' : 'light'}`}
                             onChange={(value) => setFormData({ ...formData, content: value })}
                             modules={modules}
-                        />
+                            value={formData.content || ''}
+                            />
                     </div>
                     <div className='w-full mt-20 max-sm:mt-28'>
                         <Button
@@ -346,7 +382,7 @@ const CreatePost = () => {
                                         </>
                                     )
                                     : (
-                                        <span className='text-lg font-semibold'>Publish Post</span>
+                                        <span className='text-lg font-semibold'>Update Post</span>
                                     )
                             }
                         </Button>
@@ -357,4 +393,4 @@ const CreatePost = () => {
     )
 }
 
-export default CreatePost
+export default UpdatePost

@@ -12,6 +12,11 @@ const postSchema = new mongoose.Schema(
             unique: true,
             trim: true,
         },
+        description: {
+            type: String,
+            required: true,
+            trim: true,
+        },
         category: {
             type: String,
             required: true,

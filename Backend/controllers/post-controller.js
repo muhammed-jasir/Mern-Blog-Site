@@ -8,12 +8,16 @@ const createPost = async (req, res, next) => {
         return next(errorHandlers(403, 'Unauthorized: Only admin can create a post'));
     }
 
-    if (!req.body.title || !req.body.content || !req.body.category) {
+    if (!req.body.title || !req.body.description || !req.body.content || !req.body.category) {
         return next(errorHandlers(400, 'All Fields are Required'));
     }
 
     if (req.body.title.length < 5 || req.body.title.length > 100) {
         return next(errorHandlers(400, 'Title must be between 5 and 100 characters long'));
+    }
+
+    if (req.body.description.length < 10 || req.body.description.length > 300 ) {
+        return next(errorHandlers(400, 'Description must be between 10 and 300 characters long'));
     }
 
     if (req.body.content.length < 50) {
@@ -59,6 +63,7 @@ const getPosts = async (req, res, next) => {
                 ...(req.query.searchTerm && {
                     $or: [
                         { title: { $regex: req.query.searchTerm, $options: 'i' } },
+                        { description: { $regex: req.query.searchTerm, $options: 'i' } },
                         { content: { $regex: req.query.searchTerm, $options: 'i' } },
                     ],
                 }),
@@ -104,4 +109,39 @@ const deletePost = async (req, res, next) => {
     }
 };
 
-module.exports = { createPost, getPosts, deletePost };
+const updatePost = async (req, res, next) => {
+    if (!req.user.isAdmin || req.user.userId !== req.params.userId) {
+        return next(errorHandlers(403, 'Unauthorized: Only admin can update a post'));
+    }
+
+    if (!req.body.title || !req.body.description || !req.body.content || !req.body.category) {
+        return next(errorHandlers(400, 'All Fields are Required'));
+    }
+
+    try {
+        const updatedPost = await Post.findByIdAndUpdate(
+            req.params.postId,
+            {
+                $set: {
+                    title: req.body.title,
+                    description: req.body.description,
+                    content: req.body.content,
+                    category: req.body.category,
+                    image: req.body.image,
+                    slug: slugify(req.body.title, {
+                        lower: true,
+                        strict: true,
+                        replacement: '-',
+                    }),
+                }
+            }, {new: true }
+        )
+
+        res.status(200).json(updatedPost);
+        
+    } catch (error) {
+        next(error);
+    }
+};
+
+module.exports = { createPost, getPosts, deletePost, updatePost };
