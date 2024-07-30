@@ -102,7 +102,7 @@ const Users = () => {
     return (
         <div className='flex justify-center my-10 px-8'>
             {loading ? (
-                <div className="flex justify-center items-center">
+                <div className="flex justify-center items-center min-h-screen">
                     <Spinner size="xl" />
                 </div>
             ) : currentUser.isAdmin ? (
@@ -127,7 +127,7 @@ const Users = () => {
                                             <img
                                                 src={user.profilePic}
                                                 alt='user'
-                                                className='h-16 w-16 object-cover rounded-full bg-gray-500'
+                                                className='max-sm:h-10 h-16 w-16 object-cover rounded-full bg-gray-500'
                                             />
                                         </Table.Cell>
                                         <Table.Cell>

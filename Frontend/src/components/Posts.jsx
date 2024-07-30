@@ -100,7 +100,7 @@ const Posts = () => {
     return (
         <div className='flex justify-center my-10 px-8'>
             {loading ? (
-                <div className="flex justify-center items-center">
+                <div className="flex justify-center items-center min-h-screen">
                     <Spinner size="xl" />
                 </div>
             ) : currentUser.isAdmin ? (
@@ -124,7 +124,7 @@ const Posts = () => {
                                             <img
                                                 src={post.image}
                                                 alt='post image'
-                                                className='h-12 w-20 object-cover rounded-md bg-gray-500'
+                                                className='w-20 object-cover rounded-md bg-gray-500'
                                             />
                                         </Table.Cell>
                                         <Table.Cell>

@@ -14,6 +14,8 @@ import AdminPrivateRoute from './components/AdminPrivateRoute';
 import CreatePost from './pages/CreatePost';
 import Posts from './components/Posts';
 import UpdatePost from './pages/UpdatePost';
+import Users from './components/Users';
+import PostPage from './components/PostPage';
 
 const App = () => {
     return (
@@ -31,8 +33,10 @@ const App = () => {
                     <Route path='/dashboard' element={<Dashboard />} />
                     <Route path='/create-post' element={<CreatePost />} />
                     <Route path='/update-post/:postId' element={<UpdatePost />} />
+                    <Route path='/users' element={<Users />} />
+                    <Route path='/posts' element={<Posts />} />
                 </Route>
-                <Route path='/posts' element={<Posts />} />
+                <Route path='/post/:slug' element={<PostPage />} />
                 <Route path='/projects' element={<Projects />} />
             </Routes>
             <FooterComp />

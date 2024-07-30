@@ -30,3 +30,119 @@ body {
     height: 100%;
     font-size: 1.05rem;
 }
+
+.post-content p {
+    margin-bottom: 0.5rem;
+}
+
+.post-content h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    font-family: sans-serif;
+    margin: 1.5rem 0;
+}
+
+.post-content h2 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    font-family: sans-serif;
+    margin: 1.5rem 0;
+}
+
+.post-content h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    font-family: sans-serif;
+    margin: 1.5rem 0;
+}
+
+.post-content h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: sans-serif;
+    margin: 1.5rem 0;
+}
+
+.post-content h5 { 
+    font-size: 0.9rem;
+    font-weight: 600;
+    font-family: sans-serif;
+    margin: 1.5rem 0;
+}
+
+.post-content h6 {
+    font-size: 0.8rem;
+    font-weight: 600;
+    font-family: sans-serif;
+    margin: 1.5rem 0;
+}
+
+.post-content ul,
+.post-content ol {
+    margin-bottom: 0.5rem;
+}
+
+.post-content li {
+    margin-bottom: 0.25rem;
+}
+
+.post-content blockquote {
+    margin-left: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: rgba(241, 245, 249, 0.1);
+}
+
+.post-content a{
+    color: rgb(73, 149, 199);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.post-content a:hover {
+    color: rgb(13, 29, 59);
+    text-decoration: underline;
+}
+
+.post-content img {
+    max-width: 100%;
+    height: auto;
+}
+
+.post-content code {
+    font-family: monospace;
+    padding: 0.25rem 0.5rem;
+    background-color: rgba(241, 245, 249, 0.1);
+    border-radius: 0.25rem;
+}
+
+.post-content pre code {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    font-family: monospace;
+    line-height: 1.5;
+    background-color: rgba(241, 245, 249, 0.1);
+    border-radius: 0.25rem;
+}
+
+.post-content pre {
+    background-color: rgb(18, 26, 32);
+    padding: 1rem;
+    color: rgb(249 250 251);
+    border-radius: 0.25rem;
+    overflow-x: auto;
+}
+
+.post-content strong {
+    font-weight: bold;
+}
+
+.post-content em {
+    font-style: italic;
+}
+
+.post-content del {
+    text-decoration: line-through;
+}
