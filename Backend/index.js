@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 const userRoutes = require('./routes/user-route')
 const authRoutes = require('./routes/auth-routes');
 const postRoutes = require('./routes/post-route');
+const commentRoutes = require('./routes/comment-route');
 
 const cookieParser = require('cookie-parser');
 
@@ -26,6 +27,7 @@ app.listen(3000, () => {
 app.use("/api/user", userRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/post", postRoutes);
+app.use("/api/comment", commentRoutes);
 
 app.get('/', function (req, res) {
     res.send('Hello World')

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify';
 import CallToAction from './CallToAction';
+import Comments from './Comments';
 
 function PostPage() {
     const { slug } = useParams();
@@ -90,7 +91,11 @@ function PostPage() {
             >
             </div>
 
-            <CallToAction />
+            <div className='max-w-5xl mx-auto w-full'>
+                <CallToAction />
+            </div>
+
+            <Comments postId={post._id} />
 
         </main>
     )
