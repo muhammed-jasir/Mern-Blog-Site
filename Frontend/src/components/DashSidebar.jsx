@@ -1,6 +1,6 @@
 import { Sidebar } from 'flowbite-react'
 import React, { useEffect, useState } from 'react'
-import { HiChartPie, HiDocumentText, HiLogout, HiUser } from 'react-icons/hi'
+import { HiChartPie, HiDocumentText, HiLogout, HiOutlineUserGroup, HiUser } from 'react-icons/hi'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import { logoutFailure, logoutSuccess } from '../redux/user/userSlice'
@@ -64,6 +64,10 @@ const DashSidebar = () => {
 
                     <Sidebar.Item as={Link} to={`/dashboard?tab=posts`} active={tab === 'posts'} icon={HiDocumentText}>
                         Posts
+                    </Sidebar.Item>
+
+                    <Sidebar.Item as={Link} to={`/dashboard?tab=users`} active={tab === 'users'} icon={HiOutlineUserGroup}>
+                        Users
                     </Sidebar.Item>
 
                 </Sidebar.ItemGroup>

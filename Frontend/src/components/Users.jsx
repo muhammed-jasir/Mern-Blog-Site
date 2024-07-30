@@ -4,45 +4,46 @@ import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { HiOutlineExclamationCircle } from "react-icons/hi";
+import { FaCheck, FaTimes } from 'react-icons/fa';
 
-const Posts = () => {
+const Users = () => {
     const { currentUser } = useSelector(state => state.user);
-    const [posts, setPosts] = useState([]);
+    const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const [showMore, setShowMore] = useState(true);
     const [showModal, setShowModal] = useState(false);
     const { theme } = useSelector(state => state.theme)
-    const [postIdToDelete, setPostIdToDelete] = useState('');
+    const [userIdToDelete, setUserIdToDelete] = useState('');
 
     useEffect(() => {
-        const FetchPosts = async () => {
+        const FetchUsers = async () => {
             setLoading(true);
             try {
-                const res = await fetch(`/api/post/get-posts?userId=${currentUser._id}`);
+                const res = await fetch(`/api/user/get-users`);
                 const data = await res.json();
 
                 if (!res.ok || data.success === false) {
-                    toast.error(data.message || 'Failed to fetch posts.');
+                    toast.error(data.message || 'Failed to fetch users.');
                     return;
                 }
 
                 if (res.ok) {
-                    setPosts(data.posts);
-                    if (data.posts.length < 9) {
+                    setUsers(data.users)
+                    if (data.users.length < 9) {
                         setShowMore(false);
                     }
                 }
 
             } catch (error) {
-                toast.error(error.message || 'Failed to fetch posts.');
+                toast.error(error.message || 'Failed to fetch users.');
             } finally {
                 setLoading(false);
             }
         };
 
         if (currentUser.isAdmin) {
-            FetchPosts();
+            FetchUsers();
         } else {
             toast.error('You do not have permission to view this page.');
             navigate('/login')
@@ -51,32 +52,33 @@ const Posts = () => {
     }, [currentUser._id, navigate]);
 
     const handleShowMore = async () => {
-        const startIndex = posts.length;
+        const startIndex = users.length;
         try {
-            const res = await fetch(`/api/post/get-posts?userId=${currentUser._id}&startIndex=${startIndex}`);
+            const res = await fetch(`/api/post/get-users?startIndex=${startIndex}`);
             const data = await res.json();
 
             if (!res.ok || data.success === false) {
-                toast.error(data.message || 'Failed to fetch more posts.');
+                toast.error(data.message || 'Failed to fetch more users.');
                 return;
             }
 
             if (res.ok) {
-                setPosts((prevPosts) => [...prevPosts, ...data.posts]);
-                if (data.posts.length < 9) {
+                setUsers((prevUsers) => [...prevUsers, ...data.users]);
+                if (data.users.length < 9) {
                     setShowMore(false);
                 }
             }
 
         } catch (error) {
-            toast.error(error.message || 'Failed to fetch more posts.');
+            toast.error(error.message || 'Failed to fetch more users.');
         }
     };
 
-    const handleDeletePost = async () => {
+    const handleDeleteUser = async () => {
         setShowModal(false);
+
         try {
-            const res = await fetch(`/api/post/delete-post/${postIdToDelete}/${currentUser._id}`,
+            const res = await fetch(`/api/user/delete/${userIdToDelete}`,
                 {
                     method: 'DELETE',
                 }
@@ -84,16 +86,16 @@ const Posts = () => {
             const data = await res.json();
 
             if (!res.ok || data.success === false) {
-                toast.error(data.message || 'Failed to delete post.');
+                toast.error(data.message || 'Failed to delete user.');
                 return;
             }
 
             if (res.ok) {
-                toast.success(data.message || 'Post deleted successfully!');
-                setPosts((prevPosts) => prevPosts.filter((post) => post._id !== postIdToDelete));
+                toast.success(data.message || 'User deleted successfully!');
+                setUsers((prevUsers) => prevUsers.filter((user) => user._id !== userIdToDelete));
             }
         } catch (error) {
-            toast.error(error.message || 'Failed to delete post.');
+            toast.error(error.message || 'Failed to delete user.');
         }
     };
 
@@ -104,52 +106,46 @@ const Posts = () => {
                     <Spinner size="xl" />
                 </div>
             ) : currentUser.isAdmin ? (
-                posts.length > 0 ? (
+                users.length > 0 ? (
                     <div className='overflow-x-auto scrollbar-hide'>
                         <Table hoverable className='shadow-md text-center bg-slate-200 text-slate-900 dark:bg-slate-800 dark:text-slate-300 rounded-lg'>
                             <Table.Head>
                                 <Table.HeadCell>Date</Table.HeadCell>
                                 <Table.HeadCell>Image</Table.HeadCell>
-                                <Table.HeadCell>Title</Table.HeadCell>
-                                <Table.HeadCell>Category</Table.HeadCell>
+                                <Table.HeadCell>Username</Table.HeadCell>
+                                <Table.HeadCell>Email</Table.HeadCell>
+                                <Table.HeadCell>Admin</Table.HeadCell>
                                 <Table.HeadCell>Actions</Table.HeadCell>
                             </Table.Head>
-                            {posts.map((post) => (
-                                <Table.Body key={post._id} className='divide-y'>
+                            {users.map((user) => (
+                                <Table.Body key={user._id} className='divide-y'>
                                     <Table.Row>
                                         <Table.Cell>
-                                            {new Date(post.updatedAt).toLocaleDateString()}
+                                            {new Date(user.createdAt).toLocaleDateString()}
                                         </Table.Cell>
                                         <Table.Cell>
                                             <img
-                                                src={post.image}
-                                                alt='post image'
-                                                className='h-12 w-20 object-cover rounded-md bg-gray-500'
+                                                src={user.profilePic}
+                                                alt='user'
+                                                className='h-16 w-16 object-cover rounded-full bg-gray-500'
                                             />
                                         </Table.Cell>
                                         <Table.Cell>
-                                            {post.title}
+                                            {user.username}
                                         </Table.Cell>
-                                        <Table.Cell className='capitalize'>
-                                            {post.category}
+                                        <Table.Cell>
+                                            {user.email}
+                                        </Table.Cell>
+                                        <Table.Cell>
+                                            {user.isAdmin ? <FaCheck className='text-green-600'/> : <FaTimes className='text-red-600'/>}
                                         </Table.Cell>
                                         <Table.Cell>
                                             <div className='flex gap-3'>
-                                                <Link to={`/post/${post.slug}`}>
-                                                    <Button color='blue'>
-                                                        View
-                                                    </Button>
-                                                </Link>
-                                                <Link to={`/update-post/${post._id}`}>
-                                                    <Button color='success'>
-                                                        Update
-                                                    </Button>
-                                                </Link>
                                                 <Button
                                                     color='failure'
                                                     onClick={() => {
                                                         setShowModal(true);
-                                                        setPostIdToDelete(post._id);
+                                                        setUserIdToDelete(user._id);
                                                     }}
                                                 >
                                                     Delete
@@ -177,7 +173,7 @@ const Posts = () => {
                 ) : (
                     <div>
                         <h1>
-                            You have no Posts to view. Please create a new post.
+                            No users found.
                         </h1>
                     </div>
                 )) : (
@@ -201,10 +197,10 @@ const Posts = () => {
                             Are you sure ?
                         </h2>
                         <h3 className={`mb-5 text-lg font-semibold text-gray-800 ${theme === 'dark' && 'text-slate-200'}`}>
-                            Do you want to delete this Post ?
+                            Do you want to delete this User ?
                         </h3>
                         <div className="flex justify-around mb-5">
-                            <Button color="failure" onClick={handleDeletePost}>
+                            <Button color="failure" onClick={handleDeleteUser}>
                                 <span className='text-md font-bold'>Yes, I'm sure</span>
                             </Button>
                             <Button color="gray" onClick={() => setShowModal(false)}>
@@ -219,4 +215,4 @@ const Posts = () => {
     )
 }
 
-export default Posts
+export default Users
