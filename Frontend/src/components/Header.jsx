@@ -70,15 +70,14 @@ const Header = () => {
                         <IoSearchOutline size='20' />
                     </Button>
 
-
                     <Button
-                        className='w-10 h-10 max-sm:hidden'
+                        className='w-9 h-9 max-sm:hidden'
                         color='gray'
                         pill
                         onClick={() => dispatch(toggleTheme())}
                     >
                         {
-                            theme === 'light' ? <BsMoonFill size='23' /> : <BsSun size='23' />
+                            theme === 'light' ? <BsMoonFill size='20' /> : <BsSun size='20' />
                         }
 
                     </Button>

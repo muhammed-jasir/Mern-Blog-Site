@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify';
 import CallToAction from './CallToAction';
-import Comments from './Comments';
+import CommentSection from './CommentSection';
 
 function PostPage() {
     const { slug } = useParams();
@@ -27,7 +27,6 @@ function PostPage() {
 
             } catch (error) {
                 toast.error(error.message || 'Failed to fetch post.');
-                console.log(error)
             } finally {
                 setLoading(false);
             }
@@ -95,7 +94,7 @@ function PostPage() {
                 <CallToAction />
             </div>
 
-            <Comments postId={post._id} />
+            <CommentSection postId={post._id} />
 
         </main>
     )

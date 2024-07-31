@@ -176,12 +176,12 @@ const Posts = () => {
                     </div>
                 ) : (
                     <div>
-                        <h1>
+                        <h1 className='text-lg font-semibold'>
                             You have no Posts to view. Please create a new post.
                         </h1>
                     </div>
                 )) : (
-                <div className='text-center'>
+                <div className='text-center text-lg font-semibold'>
                     <h1>You do not have permission to view this page.</h1>
                 </div>
             )

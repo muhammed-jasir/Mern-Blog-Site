@@ -1,108 +1,57 @@
-import { Button, Textarea } from 'flowbite-react';
-import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react'
+import moment from 'moment'
 import { toast } from 'react-toastify';
 
-const Comments = ({ postId }) => {
-    const { currentUser } = useSelector(state => state.user);
-    const [comment, setComment] = useState('');
+function Comments({ comment }) {
+    const [user, setUser] = useState({});
+    console.log(user)
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
-        if (!comment) {
-            toast.error('Please enter a comment');
-            return;
-        }
-
-        if (comment.length > 300) {
-            toast.error('Comment must be less than 300 characters');
-            return;
-        }
-
-        try {
-            const res = await fetch(`/api/comment/create`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    postId,
-                    content: comment,
-                    userId: currentUser._id,
-                }),
-            });
-
-            const data = await res.json();
-
-            if (!res.ok || data.success === false) {
-                toast.error(data.message || 'Failed to add comment. Please try again later');
-                return;
+    useEffect(() => {
+        const getUser = async () => {
+            try {
+                const res = await fetch(`/api/user/${comment.userId}`);
+                const data = await res.json();
+                if (!res.ok || data.success === false) {
+                    console.error(data.message);
+                    return;
+                }
+                if (res.ok) {
+                    setUser(data);
+                }
+            } catch (error) {
+                console.error(error.message);
             }
-
-            if (res.ok) {
-                toast.success('Comment added successfully');
-                setComment('');
-            }
-        } catch (error) {
-            toast.error('Failed to add comment. Please try again later');
         }
 
-    }
+        getUser();
+    }, [comment]);
 
     return (
-        <div className='max-w-4xl mx-auto w-full'>
-            {currentUser ? (
-                <div className='flex items-center gap-3 w-full p-5 border border-slate-500 rounded-xl'>
-                    <img
-                        src={currentUser.profilePic}
-                        alt='avatar'
-                        className='w-12 h-12 rounded-full object-cover'
-                    />
-                    <div className='w-full'>
-                        <div className='mb-2 font-medium text-md'>
-                            <Link to={`/profile/${currentUser._id}`} className='hover:underline hover:underline-offset-2' >
-                                @{currentUser.username}
-                            </Link>
-                        </div>
-                        <form onSubmit={handleSubmit}>
-                            <Textarea
-                                placeholder='Write a comment...'
-                                rows={3}
-                                className='w-full'
-                                maxLength='300'
-                                onChange={(e) => setComment(e.target.value)}
-                                value={comment}
-                            />
-                            <div className='flex justify-between items-center mt-5'>
-                                <p className='max-sm:text-xs text-md text-gray-500'>
-                                    {300 - comment.length} characters remaining...
-                                </p>
-                                <Button
-                                    size='sm'
-                                    type='submit'
-                                    gradientDuoTone='greenToBlue'
-                                >
-                                    Comment
-                                </Button>
-                            </div>
-                        </form>
-                    </div>
-
-
-
+        <div className='flex item-center gap-3 w-full p-5 border border-slate-500 rounded-md mb-3'>
+            <div className='flex-shrink-0'>
+                <img
+                    src={user.profilePic}
+                    alt='profile'
+                    className='w-12 h-12 rounded-full object-cover'
+                />
+            </div>
+            <div className='flex-1'>
+                <div>
+                    <span
+                        className='me-2 font-bold text-sm truncate'
+                    >
+                        {user ? `@${user.username}` : 'anonymous user'}
+                    </span>
+                    <span
+                        className='font-normal text-sm'
+                    >
+                        {moment(comment.createdAt).fromNow()}
+                    </span>
                 </div>
-            ) : (
-                <div className='flex text-md gap-3 font-medium p-3'>
-                    <p className=''>You must login to leave a comment.</p>
-                    <Link to={'/login'} className='hover:underline hover:underline-offset-2 text-blue-500'>
-                        Login
-                    </Link>
+                <div className='m-2'>
+                    <p>{comment.content}</p>
                 </div>
-            )
-
-            }
+            </div>
         </div>
     )
 }

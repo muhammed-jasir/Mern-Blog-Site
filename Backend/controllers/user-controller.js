@@ -135,4 +135,19 @@ const getUsers = async (req, res, next) => {
     }
 }
 
-module.exports = { updateProfile, deleteUser, signout, getUsers };
+const getUser = async (req, res, next) => {
+    try {
+        const user = await User.findById(req.params.userId);
+
+        if (!user) {
+            return next(errorHandlers(404, 'User not found'));
+        }
+        
+        const {password, ...rest} = user.toObject();
+        res.status(200).json(rest);
+    } catch (error) {
+        next(error)
+    }
+}
+
+module.exports = { updateProfile, deleteUser, signout, getUsers, getUser };
