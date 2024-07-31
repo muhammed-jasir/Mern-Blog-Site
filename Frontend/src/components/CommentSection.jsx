@@ -1,16 +1,21 @@
-import { Button, Textarea, Spinner } from 'flowbite-react';
+import { Button, Textarea, Spinner, Modal } from 'flowbite-react';
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Comments from './Comments';
+import { HiOutlineExclamationCircle } from 'react-icons/hi';
 
 const CommentSection = ({ postId }) => {
     const { currentUser } = useSelector(state => state.user);
+    const { theme } = useSelector(state => state.theme);
     const [comment, setComment] = useState('');
     const [comments, setComments] = useState([]);
     const [showMore, setShowMore] = useState(true);
     const [loading, setLoading] = useState(false);
+    const [showModal, setShowModal] = useState(false);
+    const [commentIdToDelete, setCommentIdToDelete] = useState(null);
+
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -139,10 +144,40 @@ const CommentSection = ({ postId }) => {
 
     const handleEdit = async (comment, editedContent) => {
         setComments(
-            comments.map((com) => 
+            comments.map((com) =>
                 com._id === comment._id ? { ...com, content: editedContent } : com
             )
         );
+    };
+
+    const handleDeleteComment = async () => {
+        setShowModal(false);
+        try {
+            if (!currentUser) {
+                navigate('/login');
+                toast.error('Please sign in to delete a comment.');
+                return;
+            }
+
+            const res = await fetch(`/api/comment/delete-comment/${commentIdToDelete}`,
+                {
+                    method: 'DELETE',
+                },
+            );
+            const data = await res.json();
+
+            if (!res.ok || data.success === false) {
+                toast.error(data.message || 'Failed to delete comment.');
+                return;
+            }
+
+            if (res.ok) {
+                toast.success(data.message || 'Comment deleted successfully!');
+                setComments(comments.filter((comment) => comment._id !== commentIdToDelete));
+            }
+        } catch (error) {
+            toast.error('Failed to delete comment. Please try again later.');
+        }
     };
 
     return (
@@ -217,6 +252,10 @@ const CommentSection = ({ postId }) => {
                                     comment={comment}
                                     onLike={handleLike}
                                     onEdit={handleEdit}
+                                    onDelete={(commentId) => {
+                                        setShowModal(true);
+                                        setCommentIdToDelete(commentId);
+                                    }}
                                 />
                             </div>
                         ))}
@@ -234,6 +273,35 @@ const CommentSection = ({ postId }) => {
                     </>
                 )}
             </div>
+            <Modal
+                show={showModal}
+                onClose={() => setShowModal(false)}
+                popup
+                size='md'
+                className=''
+            >
+                <Modal.Header className={`${theme === 'dark' ? 'bg-slate-800' : 'bg-slate-300'}`} />
+                <Modal.Body className={`${theme === 'dark' ? 'bg-slate-800' : 'bg-slate-300'}`} >
+                    <div className="text-center">
+                        <HiOutlineExclamationCircle className="mx-auto mb-2 h-14 w-14 text-red-700" />
+                        <h2 className={`mb-2 text-lg font-bold text-gray-800 ${theme === 'dark' && 'text-slate-200'}`}>
+                            Are you sure ?
+                        </h2>
+                        <h3 className={`mb-5 text-lg font-semibold text-gray-800 ${theme === 'dark' && 'text-slate-200'}`}>
+                            Do you want to delete this comment ?
+                        </h3>
+                        <div className="flex justify-around mb-5">
+                            <Button color="failure" onClick={handleDeleteComment}>
+                                <span className='text-md font-bold'>Yes, I'm sure</span>
+                            </Button>
+                            <Button color="gray" onClick={() => setShowModal(false)}>
+                                <span className='text-md font-bold'>No, cancel</span>
+                            </Button>
+                        </div>
+                    </div>
+
+                </Modal.Body>
+            </Modal>
         </div>
     )
 }

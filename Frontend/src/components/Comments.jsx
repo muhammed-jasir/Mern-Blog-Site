@@ -5,7 +5,7 @@ import { FaThumbsUp } from "react-icons/fa";
 import { useSelector } from 'react-redux';
 import { Button, Textarea } from 'flowbite-react';
 
-function Comments({ comment, onLike, onEdit }) {
+function Comments({ comment, onLike, onEdit, onDelete }) {
     const [user, setUser] = useState({});
     const { currentUser } = useSelector(state => state.user);
     const [isEditing, setIsEditing] = useState(false);
@@ -76,7 +76,7 @@ function Comments({ comment, onLike, onEdit }) {
                     className='w-12 h-12 rounded-full object-cover'
                 />
             </div>
-            <div className='flex-1 w-full p-3'>
+            <div className='flex-1 w-full p-2'>
                 <div className='flex items-center mb-2'>
                     <span
                         className='me-2 font-bold text-sm truncate'
@@ -137,7 +137,7 @@ function Comments({ comment, onLike, onEdit }) {
                     >
                         <FaThumbsUp className='text-sm' />
                     </button>
-                    <p className='text-gray-500 text-sm'>
+                    <p className='text-gray-500 text-sm font-semibold'>
                         {
                             comment.numberOfLikes > 0 && comment.numberOfLikes + " " + (comment.numberOfLikes === 1 ? "like" : "likes")
                         }
@@ -148,13 +148,21 @@ function Comments({ comment, onLike, onEdit }) {
                                 <button
                                     type='button'
                                     onClick={handleEdit}
-                                    className='text-sm text-gray-500 hover:text-blue-600'
+                                    className='text-sm font-semibold text-green-500 hover:text-green-700'
                                 >
                                     Edit
                                 </button>
                             )
                         )
                     }
+
+                    <button
+                        type='button'
+                        onClick={() => onDelete(comment._id)}
+                        className='text-sm font-semibold text-red-500 hover:text-red-700'
+                    >
+                        Delete
+                    </button>
                 </div>
             </div>
         </div >
