@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import moment from 'moment'
 import { toast } from 'react-toastify';
+import { FaThumbsUp } from "react-icons/fa";
+import { useSelector } from 'react-redux';
 
-function Comments({ comment }) {
+function Comments({ comment, onLike }) {
     const [user, setUser] = useState({});
-    console.log(user)
+    const { currentUser } = useSelector(state => state.user);
 
     useEffect(() => {
         const getUser = async () => {
@@ -12,14 +14,14 @@ function Comments({ comment }) {
                 const res = await fetch(`/api/user/${comment.userId}`);
                 const data = await res.json();
                 if (!res.ok || data.success === false) {
-                    console.error(data.message);
+                    toast.error(data.message || 'Failed to fetch user information');
                     return;
                 }
                 if (res.ok) {
                     setUser(data);
                 }
             } catch (error) {
-                console.error(error.message);
+                toast.error('Failed to fetch user information');
             }
         }
 
@@ -36,7 +38,7 @@ function Comments({ comment }) {
                 />
             </div>
             <div className='flex-1'>
-                <div>
+                <div className='flex items-center mb-1'>
                     <span
                         className='me-2 font-bold text-sm truncate'
                     >
@@ -48,8 +50,24 @@ function Comments({ comment }) {
                         {moment(comment.createdAt).fromNow()}
                     </span>
                 </div>
-                <div className='m-2'>
+                <div className='mb-2'>
                     <p>{comment.content}</p>
+                </div>
+                <div className='flex items-center border-t border-t-slate-400 pt-3 gap-2'>
+                    <button 
+                        type='button' 
+                        onClick={() => onLike(comment._id)}
+                        className={`text-sm text-gray-400 hover:text-blue-600 ${
+                            currentUser && comment.likes.includes(currentUser._id) && '!text-blue-600'  
+                        }`}
+                    >
+                        <FaThumbsUp  className='text-sm'/>
+                    </button>
+                    <p className='text-gray-400 text-sm'>
+                        {
+                            comment.numberOfLikes > 0 && comment.numberOfLikes + " " + (comment.numberOfLikes === 1? "like" : "likes")
+                        }
+                    </p>
                 </div>
             </div>
         </div>

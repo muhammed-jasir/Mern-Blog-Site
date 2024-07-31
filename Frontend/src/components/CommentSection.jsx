@@ -1,7 +1,7 @@
-import { Button, Textarea } from 'flowbite-react';
+import { Button, Textarea, Spinner } from 'flowbite-react';
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Comments from './Comments';
 
@@ -9,6 +9,9 @@ const CommentSection = ({ postId }) => {
     const { currentUser } = useSelector(state => state.user);
     const [comment, setComment] = useState('');
     const [comments, setComments] = useState([]);
+    const [showMore, setShowMore] = useState(true);
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -56,10 +59,11 @@ const CommentSection = ({ postId }) => {
 
     useEffect(() => {
         const fetchComments = async () => {
+            setLoading(true);
             try {
                 const res = await fetch(`/api/comment/get-comments/${postId}`);
                 const data = await res.json();
-                console.log(data)
+
                 if (!res.ok || data.success === false) {
                     toast.error(data.message || 'Failed to fetch comments. Please try again later');
                     return;
@@ -67,13 +71,71 @@ const CommentSection = ({ postId }) => {
 
                 if (res.ok) {
                     setComments(data);
+                    if (data.length < 5) {
+                        setShowMore(false)
+                    }
                 }
             } catch (error) {
                 toast.error('Failed to fetch comments. Please try again later');
+            } finally {
+                setLoading(false);
             }
         }
         fetchComments();
-    }, [postId])
+    }, [postId]);
+
+    const handleShowMore = async () => {
+        const startIndex = comments.length;
+        try {
+            const res = await fetch(`/api/comment/get-comments/${postId}?startIndex=${startIndex}`);
+            const data = await res.json();
+
+            if (!res.ok || data.success === false) {
+                toast.error(data.message || 'Failed to fetch more comments.');
+                return;
+            }
+
+            if (res.ok) {
+                setComments((prevComments) => [...prevComments, ...data]);
+                if (data.length < 5) {
+                    setShowMore(false);
+                }
+            }
+        } catch (error) {
+            toast.error('Failed to fetch more comments.');
+        }
+    };
+
+    const handleLike = async (commentId) => {
+        try {
+            if (!currentUser) {
+                navigate('/login');
+                toast.error('Please sign in to like a comment.');
+                return;
+            }
+
+            const res = await fetch(`/api/comment/like-comment/${commentId}`,
+                {
+                    method: 'PUT',
+                }
+            );
+            const data = await res.json();
+
+            if (!res.ok || data.success === false) {
+                toast.error(data.message || 'Failed to like comment. Please try again later.');
+                return;
+            }
+
+            if (res.ok) {
+                setComments(comments.map(comment =>
+                    comment._id === commentId ? { ...comment, likes: data.likes, numberOfLikes: data.numberOfLikes } : comment
+                ));
+            }
+
+        } catch (error) {
+            toast.error('Failed to like comment. Please try again later.');
+        }
+    };
 
     return (
         <div className='max-w-4xl mx-auto w-full'>
@@ -123,7 +185,11 @@ const CommentSection = ({ postId }) => {
                 </div>
             )}
             <div className='my-10 w-full max-w-4xl'>
-                {comments.length === 0 ? (
+                {loading ? (
+                    <div className="flex justify-center items-center min-h-screen">
+                        <Spinner size="xl" />
+                    </div>
+                ) : comments.length === 0 ? (
                     <div className='flex items-center justify-center font-semibold text-lg'>
                         <p className='text-gray-500'>
                             No comments yet.
@@ -137,14 +203,26 @@ const CommentSection = ({ postId }) => {
                                 <p>{comments.length}</p>
                             </div>
                         </div>
-                        {comments.map(comment => (
+                        {comments.map((comment, index) => (
                             <div className='w-full'>
                                 <Comments
-                                    key={comment._id}
+                                    key={index}
                                     comment={comment}
+                                    onLike={handleLike}
                                 />
                             </div>
                         ))}
+                        <div className='mt-5 flex justify-center'>
+                            {showMore && (
+                                <Button
+                                    className='px-5 font-bold'
+                                    color='light'
+                                    onClick={handleShowMore}
+                                >
+                                    Show More
+                                </Button>
+                            )}
+                        </div>
                     </>
                 )}
             </div>
