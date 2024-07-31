@@ -22,7 +22,7 @@ const CommentSection = ({ postId }) => {
         }
 
         if (comment.length > 300) {
-            toast.error('Comment must be less than 300 characters');
+            toast.error('Comment must be less than or equal 300 characters');
             return;
         }
 
@@ -137,6 +137,14 @@ const CommentSection = ({ postId }) => {
         }
     };
 
+    const handleEdit = async (comment, editedContent) => {
+        setComments(
+            comments.map((com) => 
+                com._id === comment._id ? { ...com, content: editedContent } : com
+            )
+        );
+    };
+
     return (
         <div className='max-w-4xl mx-auto w-full'>
             {currentUser ? (
@@ -157,7 +165,6 @@ const CommentSection = ({ postId }) => {
                                 placeholder='Write a comment...'
                                 rows={3}
                                 className='w-full'
-                                maxLength='300'
                                 onChange={(e) => setComment(e.target.value)}
                                 value={comment}
                             />
@@ -184,7 +191,7 @@ const CommentSection = ({ postId }) => {
                     </Link>
                 </div>
             )}
-            <div className='my-10 w-full max-w-4xl'>
+            <div className='my-10 w-full max-w-4xl mx-auto'>
                 {loading ? (
                     <div className="flex justify-center items-center min-h-screen">
                         <Spinner size="xl" />
@@ -209,6 +216,7 @@ const CommentSection = ({ postId }) => {
                                     key={index}
                                     comment={comment}
                                     onLike={handleLike}
+                                    onEdit={handleEdit}
                                 />
                             </div>
                         ))}
