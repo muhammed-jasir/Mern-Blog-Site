@@ -3,8 +3,6 @@ const errorHandlers = require('../utils/errorHandler');
 const User = require('../models/user-model');
 
 const updateProfile = async (req, res, next) => {
-
-
     if (req.user.userId !== req.params.userId) {
         return next(errorHandlers(403, 'You are not allowed to update this profile'));
     }

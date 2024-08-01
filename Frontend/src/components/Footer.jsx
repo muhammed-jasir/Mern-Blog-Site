@@ -35,7 +35,7 @@ const FooterComp = () => {
     ];
 
     return (
-        <Footer container className='border border-t-8 border-teal-400 bg-slate-300 dark:bg-slate-800'>
+        <Footer container className='border border-t-8 border-teal-400 bg-slate-200 dark:bg-slate-800'>
             <div className='w-full max-w-7xl mx-auto'>
                 <div className='flex flex-wrap gap-10 sm:justify-between w-full max-sm:flex-col max-sm:gap-4'>
                     <div className='mt-5'>

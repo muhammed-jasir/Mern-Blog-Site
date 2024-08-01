@@ -121,7 +121,7 @@ const Users = () => {
                                 <Table.HeadCell>Admin</Table.HeadCell>
                                 <Table.HeadCell>Actions</Table.HeadCell>
                             </Table.Head>
-                            <Table.Body className='divide-y'>
+                            <Table.Body className='divide-y divide-gray-400'>
                                 {users.map((user) => (
                                     <Table.Row key={user._id}>
                                         <Table.Cell>

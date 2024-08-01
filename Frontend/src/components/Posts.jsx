@@ -118,7 +118,7 @@ const Posts = () => {
                                 <Table.HeadCell>Category</Table.HeadCell>
                                 <Table.HeadCell>Actions</Table.HeadCell>
                             </Table.Head>
-                            <Table.Body className='divide-y'>
+                            <Table.Body className='divide-y divide-gray-400'>
                                 {posts.map((post) => (
                                     <Table.Row key={post._id}>
                                         <Table.Cell>

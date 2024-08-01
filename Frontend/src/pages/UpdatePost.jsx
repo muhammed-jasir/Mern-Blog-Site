@@ -202,7 +202,7 @@ const UpdatePost = () => {
     return (
         <div className='flex items-center flex-col mb-10  mt-5 min-h-screen px-4 sm:px-6 lg:px-8'>
             <h1 className='font-semibold text-3xl mb-8 mt-5'>Update post</h1>
-            <div className='bg-slate-300 dark:bg-slate-800 px-8 py-8 max-w-3xl lg:max-w-4xl w-full rounded-lg shadow-lg'>
+            <div className='bg-slate-200 dark:bg-slate-800 px-8 py-8 max-w-3xl lg:max-w-4xl w-full rounded-lg shadow-lg'>
                 <form className='flex flex-col gap-10 items-center justify-center' onSubmit={handleSubmit}>
                     <div className='w-full'>
                         <Label className='text-md font-semibold text-gray-700 dark:text-gray-300' htmlFor='title'>

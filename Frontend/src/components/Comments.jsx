@@ -68,7 +68,7 @@ function Comments({ comment, onLike, onEdit, onDelete }) {
     }
 
     return (
-        <div className='flex item-center gap-3 w-full p-4 border border-slate-500 rounded-md mb-3 overflow-hidden'>
+        <div className='flex item-center gap-3 w-full p-4 border border-slate-500 rounded-md mb-3 overflow-hidden bg-slate-200 dark:bg-slate-800'>
             <div className='flex-shrink-0'>
                 <img
                     src={user.profilePic}
@@ -132,7 +132,7 @@ function Comments({ comment, onLike, onEdit, onDelete }) {
                     <button
                         type='button'
                         onClick={() => onLike(comment._id)}
-                        className={`text-sm text-gray-400 hover:text-blue-600 ${currentUser && comment.likes.includes(currentUser._id) && '!text-blue-600'
+                        className={`text-sm text-gray-500 hover:text-blue-600 ${currentUser && comment.likes.includes(currentUser._id) && '!text-blue-600'
                             }`}
                     >
                         <FaThumbsUp className='text-sm' />

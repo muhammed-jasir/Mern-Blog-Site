@@ -187,7 +187,8 @@ const CommentSection = ({ postId }) => {
     return (
         <div className='max-w-4xl mx-auto w-full'>
             {currentUser ? (
-                <div className='flex items-center gap-3 w-full p-5 border border-slate-500 rounded-xl'>
+                <div className='flex gap-3 w-full p-5 border border-slate-500 rounded-xl bg-slate-200 dark:bg-slate-800'>
+                        
                     <img
                         src={currentUser.profilePic}
                         alt='avatar'

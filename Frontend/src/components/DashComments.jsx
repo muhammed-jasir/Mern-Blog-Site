@@ -121,7 +121,7 @@ const DashComments = () => {
                                 <Table.HeadCell>UserId</Table.HeadCell>
                                 <Table.HeadCell>Actions</Table.HeadCell>
                             </Table.Head>
-                            <Table.Body className='divide-y'>
+                            <Table.Body className='divide-y divide-gray-400'>
                                 {comments.map((comment) => (
                                     <Table.Row key={comment._id}>
                                         <Table.Cell>

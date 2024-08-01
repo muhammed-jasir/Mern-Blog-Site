@@ -43,7 +43,7 @@ const Header = () => {
 
     return (
         <header>
-            <Navbar className='bg-slate-300 dark:bg-slate-800 flex items-center justify-between w-full sm:px-10 px-2 py-2 z-10'>
+            <Navbar className='bg-slate-200 dark:bg-slate-800 flex items-center justify-between w-full sm:px-10 px-2 py-2 z-10'>
                 <Link to='/'>
                     <h2 className='flex items-center whitespace-nowrap text-2xl font-semibold dark:text-white'>
                         <span className='bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% rounded-3xl px-2 py-1 pb-2 text-white'>The Blog </span> Spot
@@ -71,7 +71,7 @@ const Header = () => {
                     </Button>
 
                     <Button
-                        className='w-9 h-9 max-sm:hidden'
+                        className='w-10 h-10 max-sm:hidden'
                         color='gray'
                         pill
                         onClick={() => dispatch(toggleTheme())}
@@ -93,7 +93,6 @@ const Header = () => {
                                             img={currentUser.profilePic}
                                             alt='user'
                                             rounded
-                                            bordered
                                         />
                                     }
                                 >
@@ -102,8 +101,8 @@ const Header = () => {
                                         <span className='block text-sm font-semibold truncate'>{currentUser.email}</span>
                                     </Dropdown.Header>
 
-                                    {currentUser.isAdmin &&
-                                        <Link to='/dashboard'>
+                                    {currentUser && currentUser.isAdmin &&
+                                        <Link to='/dashboard?tab=dash'>
                                             <Dropdown.Item icon={HiViewGrid}>
                                                 <span className='font-semibold'>Dashboard</span>
                                             </Dropdown.Item>
