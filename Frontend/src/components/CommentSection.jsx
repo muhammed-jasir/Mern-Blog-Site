@@ -246,9 +246,8 @@ const CommentSection = ({ postId }) => {
                             </div>
                         </div>
                         {comments.map((comment, index) => (
-                            <div className='w-full'>
+                            <div key={comment._id} className='w-full'>
                                 <Comments
-                                    key={index}
                                     comment={comment}
                                     onLike={handleLike}
                                     onEdit={handleEdit}
