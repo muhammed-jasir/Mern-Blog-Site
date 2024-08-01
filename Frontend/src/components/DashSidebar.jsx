@@ -6,6 +6,7 @@ import { toast } from 'react-toastify'
 import { logoutFailure, logoutSuccess } from '../redux/user/userSlice'
 import { Link, useLocation } from 'react-router-dom'
 import { IoIosCreate } from "react-icons/io";
+import { FaComments } from 'react-icons/fa'
 
 const DashSidebar = () => {
     const location = useLocation();
@@ -68,6 +69,10 @@ const DashSidebar = () => {
 
                     <Sidebar.Item as={Link} to={`/dashboard?tab=users`} active={tab === 'users'} icon={HiOutlineUserGroup}>
                         Users
+                    </Sidebar.Item>
+
+                    <Sidebar.Item as={Link} to={`/dashboard?tab=comments`} active={tab === 'comments'} icon={FaComments}>
+                        Comments
                     </Sidebar.Item>
 
                 </Sidebar.ItemGroup>

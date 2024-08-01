@@ -17,6 +17,7 @@ import UpdatePost from './pages/UpdatePost';
 import Users from './components/Users';
 import PostPage from './components/PostPage';
 import ScrollToTop from './components/ScrollToTop';
+import DashComments from './components/DashComments';
 
 const App = () => {
     return (
@@ -37,6 +38,7 @@ const App = () => {
                     <Route path='/update-post/:postId' element={<UpdatePost />} />
                     <Route path='/users' element={<Users />} />
                     <Route path='/posts' element={<Posts />} />
+                    <Route path='/comments' element={<DashComments />} />
                 </Route>
                 <Route path='/post/:slug' element={<PostPage />} />
                 <Route path='/projects' element={<Projects />} />

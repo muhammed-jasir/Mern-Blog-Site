@@ -66,7 +66,7 @@ const CommentSection = ({ postId }) => {
         const fetchComments = async () => {
             setLoading(true);
             try {
-                const res = await fetch(`/api/comment/get-comments/${postId}`);
+                const res = await fetch(`/api/comment/get-post-comments/${postId}`);
                 const data = await res.json();
 
                 if (!res.ok || data.success === false) {
@@ -92,7 +92,7 @@ const CommentSection = ({ postId }) => {
     const handleShowMore = async () => {
         const startIndex = comments.length;
         try {
-            const res = await fetch(`/api/comment/get-comments/${postId}?startIndex=${startIndex}`);
+            const res = await fetch(`/api/comment/get-post-comments/${postId}?startIndex=${startIndex}`);
             const data = await res.json();
 
             if (!res.ok || data.success === false) {
