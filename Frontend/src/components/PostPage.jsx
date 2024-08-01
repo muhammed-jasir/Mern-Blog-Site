@@ -48,7 +48,7 @@ function PostPage() {
     useEffect(() => {
         const fetchRecentPosts = async () => {
             try {
-                const res = await fetch(`/api/post/get-posts?limit=5`);
+                const res = await fetch(`/api/post/get-posts?limit=7`);
                 const data = await res.json();
 
                 if (!res.ok || data.success === false) {
@@ -129,15 +129,17 @@ function PostPage() {
 
             <CommentSection postId={post._id} />
 
-            <div className='flex flex-col justify-center items-center mb-5 w-full max-w-5xl overflow-hidden'>
-                <h1 className='text-xl font-semibold mb-5'>
-                    Recent Articles
+            <div className='flex flex-col mb-5 w-full mx-auto max-w-5xl'>
+                <h1 className='text-2xl sm:text-4xl  font-semibold mb-5 text-center'>
+                    Recent Posts
                 </h1>
 
-                <div className='flex flex-wrap overflow-x-auto gap-5 mt-5 items-center justify-center max-w-5xl'>
+                <div className='flex overflow-x-auto gap-6 pb-4 scrollbar-hide scroll-smooth'>
                     {
                         recentPosts && recentPosts.map((recentPost) => (
-                            <PostCard key={recentPost._id} post={recentPost} />
+                            <div className='flex-shrink-0 w-80'>
+                                <PostCard key={recentPost._id} post={recentPost} />
+                            </div>
                         ))
                     }
                 </div>
