@@ -15,6 +15,7 @@ const CommentSection = ({ postId }) => {
     const [loading, setLoading] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [commentIdToDelete, setCommentIdToDelete] = useState(null);
+    const [loadingMore, setLoadingMore] = useState(false);
 
     const navigate = useNavigate();
 
@@ -90,6 +91,7 @@ const CommentSection = ({ postId }) => {
     }, [postId]);
 
     const handleShowMore = async () => {
+        setLoadingMore(true);
         const startIndex = comments.length;
         try {
             const res = await fetch(`/api/comment/get-post-comments/${postId}?startIndex=${startIndex}`);
@@ -108,6 +110,8 @@ const CommentSection = ({ postId }) => {
             }
         } catch (error) {
             toast.error('Failed to fetch more comments.');
+        } finally {
+            setLoadingMore(false);
         }
     };
 
@@ -264,8 +268,23 @@ const CommentSection = ({ postId }) => {
                                     className='px-5 font-bold'
                                     color='light'
                                     onClick={handleShowMore}
+                                    disabled={loadingMore}
                                 >
-                                    Show More
+                                    {
+                                        loadingMore
+                                            ? (
+                                                <>
+                                                    <Spinner size='md' />
+                                                    <span className='pl-3 text-md'>
+                                                        Loading ...
+                                                    </span>
+                                                </>
+                                            )
+                                            : (
+                                                <span className='text-md'>
+                                                    Show More
+                                                </span>)
+                                    }
                                 </Button>
                             )}
                         </div>

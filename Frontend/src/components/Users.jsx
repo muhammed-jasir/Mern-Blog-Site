@@ -15,6 +15,7 @@ const Users = () => {
     const [showModal, setShowModal] = useState(false);
     const { theme } = useSelector(state => state.theme)
     const [userIdToDelete, setUserIdToDelete] = useState('');
+    const [loadingMore, setLoadingMore] = useState(false);
 
     useEffect(() => {
         const FetchUsers = async () => {
@@ -52,6 +53,7 @@ const Users = () => {
     }, [currentUser._id, navigate]);
 
     const handleShowMore = async () => {
+        setLoadingMore(true);
         const startIndex = users.length;
         try {
             const res = await fetch(`/api/post/get-users?startIndex=${startIndex}`);
@@ -71,6 +73,8 @@ const Users = () => {
 
         } catch (error) {
             toast.error(error.message || 'Failed to fetch more users.');
+        } finally {
+            setLoadingMore(false);
         }
     };
 
@@ -117,9 +121,9 @@ const Users = () => {
                                 <Table.HeadCell>Admin</Table.HeadCell>
                                 <Table.HeadCell>Actions</Table.HeadCell>
                             </Table.Head>
-                            {users.map((user) => (
-                                <Table.Body key={user._id} className='divide-y'>
-                                    <Table.Row>
+                            <Table.Body className='divide-y'>
+                                {users.map((user) => (
+                                    <Table.Row key={user._id}>
                                         <Table.Cell>
                                             {new Date(user.createdAt).toLocaleDateString()}
                                         </Table.Cell>
@@ -137,7 +141,7 @@ const Users = () => {
                                             {user.email}
                                         </Table.Cell>
                                         <Table.Cell>
-                                            {user.isAdmin ? <FaCheck className='text-green-600'/> : <FaTimes className='text-red-600'/>}
+                                            {user.isAdmin ? <FaCheck className='text-green-600' /> : <FaTimes className='text-red-600' />}
                                         </Table.Cell>
                                         <Table.Cell>
                                             <div className='flex gap-3'>
@@ -153,8 +157,8 @@ const Users = () => {
                                             </div>
                                         </Table.Cell>
                                     </Table.Row>
-                                </Table.Body>
-                            ))}
+                                ))}
+                            </Table.Body>
                         </Table>
                         <div className='mt-5 flex justify-center'>
                             {
@@ -163,8 +167,23 @@ const Users = () => {
                                         className='px-5 font-bold'
                                         color='light'
                                         onClick={handleShowMore}
+                                        disabled={loadingMore}
                                     >
-                                        Show More
+                                        {
+                                            loadingMore
+                                                ? (
+                                                    <>
+                                                        <Spinner size='md' />
+                                                        <span className='pl-3 text-md'>
+                                                            Loading ...
+                                                        </span>
+                                                    </>
+                                                )
+                                                : (
+                                                    <span className='text-md'>
+                                                        Show More
+                                                    </span>)
+                                        }
                                     </Button>
                                 )
                             }

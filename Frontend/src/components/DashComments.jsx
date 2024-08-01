@@ -15,6 +15,7 @@ const DashComments = () => {
     const [showModal, setShowModal] = useState(false);
     const { theme } = useSelector(state => state.theme)
     const [commentIdToDelete, setCommentIdToDelete] = useState('');
+    const [loadingMore, setLoadingMore] = useState(false);
 
     useEffect(() => {
         const FetchComments = async () => {
@@ -52,6 +53,7 @@ const DashComments = () => {
     }, [currentUser._id, navigate]);
 
     const handleShowMore = async () => {
+        setLoadingMore(true);
         const startIndex = comments.length;
         try {
             const res = await fetch(`/api/comment/get-comments?startIndex=${startIndex}`);
@@ -71,6 +73,8 @@ const DashComments = () => {
 
         } catch (error) {
             toast.error(error.message || 'Failed to fetch more comments.');
+        } finally {
+            setLoadingMore(false);
         }
     };
 
@@ -117,9 +121,9 @@ const DashComments = () => {
                                 <Table.HeadCell>UserId</Table.HeadCell>
                                 <Table.HeadCell>Actions</Table.HeadCell>
                             </Table.Head>
-                            {comments.map((comment) => (
-                                <Table.Body key={comment._id} className='divide-y'>
-                                    <Table.Row>
+                            <Table.Body className='divide-y'>
+                                {comments.map((comment) => (
+                                    <Table.Row key={comment._id}>
                                         <Table.Cell>
                                             {new Date(comment.createdAt).toLocaleDateString()}
                                         </Table.Cell>
@@ -149,8 +153,8 @@ const DashComments = () => {
                                             </div>
                                         </Table.Cell>
                                     </Table.Row>
-                                </Table.Body>
-                            ))}
+                                ))}
+                            </Table.Body>
                         </Table>
                         <div className='mt-5 flex justify-center'>
                             {
@@ -159,8 +163,23 @@ const DashComments = () => {
                                         className='px-5 font-bold'
                                         color='light'
                                         onClick={handleShowMore}
+                                        disabled={loadingMore}
                                     >
-                                        Show More
+                                        {
+                                            loadingMore
+                                                ? (
+                                                    <>
+                                                        <Spinner size='md' />
+                                                        <span className='pl-3 text-md'>
+                                                            Loading ...
+                                                        </span>
+                                                    </>
+                                                )
+                                                : (
+                                                    <span className='text-md'>
+                                                        Show More
+                                                    </span>)
+                                        }
                                     </Button>
                                 )
                             }

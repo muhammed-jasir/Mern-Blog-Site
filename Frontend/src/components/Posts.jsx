@@ -14,6 +14,7 @@ const Posts = () => {
     const [showModal, setShowModal] = useState(false);
     const { theme } = useSelector(state => state.theme)
     const [postIdToDelete, setPostIdToDelete] = useState('');
+    const [loadingMore, setLoadingMore] = useState(false);
 
     useEffect(() => {
         const FetchPosts = async () => {
@@ -51,6 +52,7 @@ const Posts = () => {
     }, [currentUser._id, navigate]);
 
     const handleShowMore = async () => {
+        setLoadingMore(true);
         const startIndex = posts.length;
         try {
             const res = await fetch(`/api/post/get-posts?userId=${currentUser._id}&startIndex=${startIndex}`);
@@ -70,6 +72,8 @@ const Posts = () => {
 
         } catch (error) {
             toast.error(error.message || 'Failed to fetch more posts.');
+        } finally {
+            setLoadingMore(false);
         }
     };
 
@@ -114,9 +118,9 @@ const Posts = () => {
                                 <Table.HeadCell>Category</Table.HeadCell>
                                 <Table.HeadCell>Actions</Table.HeadCell>
                             </Table.Head>
-                            {posts.map((post) => (
-                                <Table.Body key={post._id} className='divide-y'>
-                                    <Table.Row>
+                            <Table.Body className='divide-y'>
+                                {posts.map((post) => (
+                                    <Table.Row key={post._id}>
                                         <Table.Cell>
                                             {new Date(post.updatedAt).toLocaleDateString()}
                                         </Table.Cell>
@@ -157,8 +161,8 @@ const Posts = () => {
                                             </div>
                                         </Table.Cell>
                                     </Table.Row>
-                                </Table.Body>
-                            ))}
+                                ))}
+                            </Table.Body>
                         </Table>
                         <div className='mt-5 flex justify-center'>
                             {
@@ -167,8 +171,23 @@ const Posts = () => {
                                         className='px-5 font-bold'
                                         color='light'
                                         onClick={handleShowMore}
+                                        disabled={loadingMore}
                                     >
-                                        Show More
+                                        {
+                                            loadingMore
+                                                ? (
+                                                    <>
+                                                        <Spinner size='md' />
+                                                        <span className='pl-3 text-md'>
+                                                            Loading ...
+                                                        </span>
+                                                    </>
+                                                )
+                                                : (
+                                                    <span className='text-md'>
+                                                        Show More
+                                                    </span>)
+                                        }
                                     </Button>
                                 )
                             }
