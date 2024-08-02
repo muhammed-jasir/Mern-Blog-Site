@@ -32,7 +32,8 @@ body {
 }
 
 .post-content p {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
+    line-height: 25px;
 }
 
 .post-content h1 {

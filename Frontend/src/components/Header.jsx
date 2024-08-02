@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Avatar, Button, Dropdown, Navbar, NavbarCollapse, NavbarLink, NavbarToggle, TextInput } from 'flowbite-react'
-import { Link, useLocation } from 'react-router-dom'
-import { IoSearchOutline } from "react-icons/io5";
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { IoLogoXbox, IoSearchOutline } from "react-icons/io5";
 import { BsMoonFill, BsSun } from "react-icons/bs";
 import { HiLogout, HiUser, HiViewGrid } from "react-icons/hi";
 
@@ -13,10 +13,20 @@ import { toast } from 'react-toastify';
 
 const Header = () => {
     const { currentUser } = useSelector(state => state.user);
-    const { error } = useSelector(state => state.user)
+    const location = useLocation();
     const path = useLocation().pathname;
     const dispatch = useDispatch();
     const { theme } = useSelector(state => state.theme);
+    const [searchTerm, setSearchTerm] = useState('');
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const urlParams = new URLSearchParams(location.search);
+        const searchTermFromUrl = urlParams.get('searchTerm');
+        if (searchTermFromUrl) {
+            setSearchTerm(searchTermFromUrl);
+        }
+    }, [location.search]);
 
     const handleSignout = async () => {
         try {
@@ -39,6 +49,14 @@ const Header = () => {
             toast.error(error.message || 'Failed to Signout')
             dispatch(logoutFailure(error.message || 'Failed to Signout.'));
         }
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const urlParams = new URLSearchParams(location.search);
+        urlParams.set('searchTerm', searchTerm);
+        const searchQuery = urlParams.toString(); 
+        navigate(`/search?${searchQuery}`);  
     }
 
     return (
@@ -50,15 +68,17 @@ const Header = () => {
                     </h2>
                 </Link>
 
-                <div className='hidden lg:flex'>
+                <form className='hidden lg:flex' onSubmit={handleSubmit}>
                     <TextInput
                         type='text'
                         placeholder='Search...'
                         rightIcon={IoSearchOutline}
                         className='w-full'
                         sizing='md'
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
                     />
-                </div>
+                </form>
 
                 <div className='flex gap-4 items-center md:order-2'>
 

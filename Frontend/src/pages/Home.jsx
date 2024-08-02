@@ -8,7 +8,15 @@ import { toast } from 'react-toastify';
 const Home = () => {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [showMore, setShowMore] = useState(false);
+
+    const shufflePosts = (posts) => {
+        const shuffledPosts = [...posts];
+        for (let i = shuffledPosts.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffledPosts[i], shuffledPosts[j]] = [shuffledPosts[j], shuffledPosts[i]];
+        }
+        return shuffledPosts;
+    };
 
     useEffect(() => {
         const fetchPosts = async () => {
@@ -22,7 +30,7 @@ const Home = () => {
                 }
 
                 if (res.ok) {
-                    setPosts(data.posts);
+                    setPosts(shufflePosts(data.posts));
                 }
 
             } catch (error) {
@@ -67,9 +75,13 @@ const Home = () => {
                 <CallToAction />
             </div>
 
-            <div className='max-w-6xl mx-auto px-4 my-8'>
-                {
-                    posts && posts.length > 0 && (
+            {loading ? (
+                <div className='flex justify-center items-center min-h-screen'>
+                    <Spinner size='xl' />
+                </div>
+            ) : (
+                <div className='max-w-6xl mx-auto px-4 my-8'>
+                    {posts && posts.length > 0 && (
                         <div className='flex flex-col'>
                             <h1 className='text-2xl sm:text-4xl text-center font-semibold mb-8'>
                                 Recent Articles
@@ -77,15 +89,14 @@ const Home = () => {
                             <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6'>
                                 {
                                     posts && posts.map((post) => (
-
                                         <PostCard key={post._id} post={post} />
                                     ))
                                 }
                             </div>
                         </div>
-                    )
-                }
-            </div>
+                    )}
+                </div>
+            )}
 
             <Link
                 to='/search'

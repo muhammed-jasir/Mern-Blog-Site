@@ -16,6 +16,7 @@ import Posts from './components/Posts';
 import UpdatePost from './pages/UpdatePost';
 import Users from './components/Users';
 import PostPage from './components/PostPage';
+import Search from './pages/Search';
 import ScrollToTop from './components/ScrollToTop';
 import DashComments from './components/DashComments';
 
@@ -29,6 +30,7 @@ const App = () => {
                 <Route path='/about-us' element={<About />} />
                 <Route path='/login' element={<Login />} />
                 <Route path='/sign-up' element={<Signup />} />
+                <Route path='/search' element={<Search />} />
                 <Route element={<PrivateRoute />}>
                     <Route path='/profile' element={<Profile />} />
                 </Route>
