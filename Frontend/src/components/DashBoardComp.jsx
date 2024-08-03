@@ -1,4 +1,4 @@
-import { Button, Table } from 'flowbite-react';
+import { Button, Table, Spinner } from 'flowbite-react';
 import React, { useEffect, useState } from 'react'
 import { HiAnnotation, HiArrowUp, HiDocumentText, HiOutlineUserGroup } from 'react-icons/hi';
 import { useSelector } from 'react-redux';
@@ -18,10 +18,15 @@ const DashBoardComp = () => {
     const [lastMonthPosts, setLastMonthPosts] = useState(0);
     const [lastMonthComments, setLastMonthComments] = useState(0);
 
+    const [loadingUsers, setLoadingUsers] = useState(false);
+    const [loadingPosts, setLoadingPosts] = useState(false);
+    const [loadingComments, setLoadingComments] = useState(false);
+
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchUsers = async () => {
+            setLoadingUsers(true);
             try {
                 const res = await fetch(`/api/user/get-users?limit=5`);
                 const data = await res.json();
@@ -39,10 +44,13 @@ const DashBoardComp = () => {
 
             } catch (error) {
                 toast.error('Failed to fetch users.');
+            } finally {
+                setLoadingUsers(false);
             }
         };
 
         const fetchPosts = async () => {
+            setLoadingPosts(true)
             try {
                 const res = await fetch(`/api/post/get-posts?limit=5`);
                 const data = await res.json();
@@ -60,10 +68,13 @@ const DashBoardComp = () => {
 
             } catch (error) {
                 toast.error('Failed to fetch posts.');
+            } finally {
+                setLoadingPosts(false);
             }
         };
 
         const fetchComments = async () => {
+            setLoadingComments(true);
             try {
                 const res = await fetch(`/api/comment/get-comments?limit=5`);
                 const data = await res.json();
@@ -81,6 +92,8 @@ const DashBoardComp = () => {
 
             } catch (error) {
                 toast.error('Failed to fetch comments.');
+            } finally {
+                setLoadingComments(false);
             }
         }
 
@@ -92,7 +105,7 @@ const DashBoardComp = () => {
             toast.error('You do not have permission to view this page.');
             navigate('/login')
         }
-    }, [currentUser]);
+    }, [currentUser, navigate]);
 
     return (
         <div className='p-3 mx-auto'>
@@ -199,7 +212,11 @@ const DashBoardComp = () => {
                             <Table.HeadCell>Email</Table.HeadCell>
                         </Table.Head>
                         <Table.Body className='divide-y divide-gray-400'>
-                            {
+                            {loadingUsers ? (
+                                <div className='flex justify-center p-5'>
+                                    <Spinner size='lg' />
+                                </div>
+                            ) : (
                                 users.map((user) => (
                                     <Table.Row key={user._id}>
                                         <Table.Cell>
@@ -221,7 +238,7 @@ const DashBoardComp = () => {
                                         </Table.Cell>
                                     </Table.Row>
                                 ))
-                            }
+                            )}
                         </Table.Body>
                     </Table>
                 </div>
@@ -247,7 +264,11 @@ const DashBoardComp = () => {
                             <Table.HeadCell>Likes</Table.HeadCell>
                         </Table.Head>
                         <Table.Body className='divide-y divide-gray-400'>
-                            {
+                            {loadingComments ? (
+                                <div className='flex justify-center p-5'>
+                                    <Spinner size='lg' />
+                                </div>
+                            ) : (
                                 comments.map((comment) => (
                                     <Table.Row key={comment._id}>
                                         <Table.Cell className='w-96'>
@@ -256,7 +277,7 @@ const DashBoardComp = () => {
                                         <Table.Cell>{comment.numberOfLikes}</Table.Cell>
                                     </Table.Row>
                                 ))
-                            }
+                            )}
                         </Table.Body>
                     </Table>
                 </div>
@@ -282,7 +303,11 @@ const DashBoardComp = () => {
                             <Table.HeadCell>Category</Table.HeadCell>
                         </Table.Head>
                         <Table.Body className='divide-y divide-gray-400'>
-                            {
+                            {loadingPosts ? (
+                                <div className='flex justify-center p-5'>
+                                    <Spinner size='lg' />
+                                </div>
+                            ) : (
                                 posts.map((post) => (
                                     <Table.Row key={post._id}>
                                         <Table.Cell>
@@ -304,7 +329,7 @@ const DashBoardComp = () => {
                                         </Table.Cell>
                                     </Table.Row>
                                 ))
-                            }
+                            )}
                         </Table.Body>
                     </Table>
                 </div>

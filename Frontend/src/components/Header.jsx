@@ -55,8 +55,8 @@ const Header = () => {
         e.preventDefault();
         const urlParams = new URLSearchParams(location.search);
         urlParams.set('searchTerm', searchTerm);
-        const searchQuery = urlParams.toString(); 
-        navigate(`/search?${searchQuery}`);  
+        const searchQuery = urlParams.toString();
+        navigate(`/search?${searchQuery}`);
     }
 
     return (
@@ -81,14 +81,15 @@ const Header = () => {
                 </form>
 
                 <div className='flex gap-4 items-center md:order-2'>
-
-                    <Button
-                        className='w-10 h-10 lg:hidden'
-                        color='gray'
-                        pill
-                    >
-                        <IoSearchOutline size='20' />
-                    </Button>
+                    <Link to='/search'>
+                        <Button
+                            className='w-10 h-10 lg:hidden'
+                            color='gray'
+                            pill
+                        >
+                            <IoSearchOutline size='20' />
+                        </Button>
+                    </Link>
 
                     <Button
                         className='w-10 h-10 max-sm:hidden'
@@ -136,6 +137,16 @@ const Header = () => {
                                     </Link>
 
                                     <Dropdown.Divider />
+
+                                    <Dropdown.Item
+                                        icon={theme === 'light' ? BsMoonFill : BsSun}
+                                        onClick={() => dispatch(toggleTheme())}
+                                    >
+                                        <span className='font-semibold'>{theme === 'light' ? 'Dark Mode' : 'Light Mode'}</span>
+                                    </Dropdown.Item>
+
+                                    <Dropdown.Divider />
+                                    
                                     <Dropdown.Item icon={HiLogout} onClick={handleSignout}>
                                         <span className='font-semibold'>Sign Out</span>
                                     </Dropdown.Item>
