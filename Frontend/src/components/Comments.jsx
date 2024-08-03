@@ -95,8 +95,7 @@ function Comments({ comment, onLike, onEdit, onDelete }) {
                             value={editedContent}
                             placeholder='Edit your comment...'
                             onChange={(e) => setEditedContent(e.target.value)}
-
-                            className='mb-3'
+                            className='mb-3 h-24'
                         />
                         <div className='flex justify-between'>
                             <p className='max-sm:text-xs text-md text-gray-500'>

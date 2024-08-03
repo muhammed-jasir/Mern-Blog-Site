@@ -203,8 +203,7 @@ const CommentSection = ({ postId }) => {
                         <form onSubmit={handleSubmit}>
                             <Textarea
                                 placeholder='Write a comment...'
-                                rows={3}
-                                className='w-full'
+                                className='w-full h-24'
                                 onChange={(e) => setComment(e.target.value)}
                                 value={comment}
                             />

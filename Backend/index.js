@@ -3,9 +3,10 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
 const userRoutes = require('./routes/user-route')
-const authRoutes = require('./routes/auth-routes');
+const authRoutes = require('./routes/auth-route');
 const postRoutes = require('./routes/post-route');
 const commentRoutes = require('./routes/comment-route');
+const contactRoutes = require('./routes/contact-route');
 
 const cookieParser = require('cookie-parser');
 
@@ -28,6 +29,7 @@ app.use("/api/user", userRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/post", postRoutes);
 app.use("/api/comment", commentRoutes);
+app.use("/api/contact", contactRoutes);
 
 app.get('/', function (req, res) {
     res.send('Hello World')

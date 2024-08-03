@@ -1,4 +1,4 @@
-import { Button } from 'flowbite-react'
+import { Button, Spinner } from 'flowbite-react'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import CallToAction from '../components/CallToAction';
@@ -102,7 +102,7 @@ const Home = () => {
             )}
 
             <Link
-                to='/blog'
+                to='/blogs'
                 className='flex justify-center mb-8'
             >
                 <Button

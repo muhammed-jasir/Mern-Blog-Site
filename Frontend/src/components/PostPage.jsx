@@ -150,7 +150,7 @@ function PostPage() {
                         </h1>
 
                         <IoChevronBackOutline
-                            className={`hidden md:flex text-white text-[30px] absolute left-[-20px] top-1/2 transform -translate-y-1/2 z-10 cursor-pointer`}
+                            className={`hidden md:flex text-gray-700 dark:text-white text-[30px] absolute left-[-20px] top-1/2 transform -translate-y-1/2 z-10 cursor-pointer`}
                             onClick={() => sliderLeft(elementRef.current)}
                         />
 
@@ -173,7 +173,7 @@ function PostPage() {
                         </div>
 
                         <IoChevronForwardOutline
-                            className={`hidden md:flex text-white z-10 right-[-20px] top-1/2 transform -translate-y-1/2 text-[30px] absolute cursor-pointer `}
+                            className={`hidden md:flex text-gray-700 dark:text-white z-10 right-[-20px] top-1/2 transform -translate-y-1/2 text-[30px] absolute cursor-pointer `}
                             onClick={() => sliderRight(elementRef.current)}
                         />
                     </div>
