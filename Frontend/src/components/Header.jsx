@@ -171,7 +171,7 @@ const Header = () => {
                     <NavbarLink as={Link} to="/" active={path === '/'}>
                         Home
                     </NavbarLink>
-                    <NavbarLink as={Link} to="/about" active={path === '/about'}>
+                    <NavbarLink as={Link} to="/about-us" active={path === '/about-us'}>
                         About
                     </NavbarLink>
                     <NavbarLink as={Link} to="/projects" active={path === '/projects'}>
