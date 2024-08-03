@@ -20,6 +20,7 @@ const Home = () => {
 
     useEffect(() => {
         const fetchPosts = async () => {
+            setLoading(true);
             try {
                 const res = await fetch(`/api/post/get-posts`);
                 const data = await res.json();
@@ -35,6 +36,8 @@ const Home = () => {
 
             } catch (error) {
                 toast.error('Something went wrong. Please try again.');
+            } finally {
+                setLoading(false);
             }
         }
 
@@ -99,7 +102,7 @@ const Home = () => {
             )}
 
             <Link
-                to='/search'
+                to='/blog'
                 className='flex justify-center mb-8'
             >
                 <Button

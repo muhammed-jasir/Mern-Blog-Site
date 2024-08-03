@@ -162,8 +162,7 @@ const Header = () => {
                                 </Link>
                             )
                     }
-
-
+                    
                     <NavbarToggle />
                 </div>
 
@@ -171,14 +170,14 @@ const Header = () => {
                     <NavbarLink as={Link} to="/" active={path === '/'}>
                         Home
                     </NavbarLink>
+                    <NavbarLink as={Link} to="/blogs" active={path === '/blogs'}>
+                        Blogs
+                    </NavbarLink>
                     <NavbarLink as={Link} to="/about-us" active={path === '/about-us'}>
-                        About
+                        About Us
                     </NavbarLink>
-                    <NavbarLink as={Link} to="/projects" active={path === '/projects'}>
-                        Projects
-                    </NavbarLink>
-                    <NavbarLink as={Link} to="/contact" active={path === '/contact'}>
-                        Contact
+                    <NavbarLink as={Link} to="/contact-us" active={path === '/contact-us'}>
+                        Contact Us
                     </NavbarLink>
                 </NavbarCollapse>
             </Navbar>

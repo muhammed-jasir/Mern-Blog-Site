@@ -5,7 +5,7 @@ import About from './pages/AboutPage';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
-import Projects from './pages/Projects';
+import Blogs from './pages/Blogs';
 import Header from './components/Header';
 import FooterComp from './components/Footer';
 import PrivateRoute from './components/PrivateRoute';
@@ -19,6 +19,7 @@ import PostPage from './components/PostPage';
 import Search from './pages/Search';
 import ScrollToTop from './components/ScrollToTop';
 import DashComments from './components/DashComments';
+import Contact from './pages/Contact';
 
 const App = () => {
     return (
@@ -43,7 +44,8 @@ const App = () => {
                     <Route path='/comments' element={<DashComments />} />
                 </Route>
                 <Route path='/post/:slug' element={<PostPage />} />
-                <Route path='/projects' element={<Projects />} />
+                <Route path='/blogs' element={<Blogs />} />
+                <Route path='/contact-us' element={<Contact />} />
             </Routes>
             <FooterComp />
         </BrowserRouter >
