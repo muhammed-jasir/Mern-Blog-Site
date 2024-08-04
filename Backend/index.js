@@ -2,6 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
+const path = require('path');
+
 const userRoutes = require('./routes/user-route')
 const authRoutes = require('./routes/auth-route');
 const postRoutes = require('./routes/post-route');
@@ -15,6 +17,8 @@ dotenv.config();
 mongoose.connect(process.env.MONGO)
     .then(() => console.log('MongoDB is connected !!'))
     .catch((error) => console.log(error));
+
+const _dirname = path.resolve();
 
 const app = express();
 
@@ -30,6 +34,12 @@ app.use("/api/auth", authRoutes);
 app.use("/api/post", postRoutes);
 app.use("/api/comment", commentRoutes);
 app.use("/api/contact", contactRoutes);
+
+app.use(express.static(path.join(_dirname, '/frontend/dist')));
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(_dirname, '/frontend/dist/index.html'));
+});
 
 app.get('/', function (req, res) {
     res.send('Hello World')
