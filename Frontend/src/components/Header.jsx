@@ -60,15 +60,15 @@ const Header = () => {
     }
 
     return (
-        <header>
-            <Navbar className='bg-slate-200 dark:bg-slate-800 flex items-center justify-between w-full sm:px-10 px-2 py-2 z-10'>
-                <Link to='/'>
-                    <h2 className='flex items-center whitespace-nowrap text-2xl font-semibold dark:text-white'>
-                        <span className='bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% rounded-3xl px-2 py-1 pb-2 text-white'>The Blog </span> Spot
+        <header className='w-full z-10'>
+            <Navbar className='flex items-center justify-between py-2 px-4 xl:px-8 bg-slate-200 dark:bg-slate-800'>            
+                <Link to='/' className='flex items-center'>
+                    <h2 className='whitespace-nowrap text-2xl font-semibold dark:text-white'>
+                        <span className='bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% rounded-3xl px-2 py-1 text-white'>The Blog </span> Spot
                     </h2>
                 </Link>
 
-                <form className='hidden lg:flex' onSubmit={handleSubmit}>
+                <form className='hidden lg:flex ml-4' onSubmit={handleSubmit}>
                     <TextInput
                         type='text'
                         placeholder='Search...'
@@ -113,6 +113,7 @@ const Header = () => {
                                         <Avatar
                                             img={currentUser.profilePic}
                                             alt='user'
+                                            className='w-10 h-10'
                                             rounded
                                         />
                                     }

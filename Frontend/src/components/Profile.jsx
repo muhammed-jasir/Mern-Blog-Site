@@ -111,6 +111,16 @@ const Profile = () => {
             return;
         }
 
+        if (formData.username === '') {
+            toast.error('Username is required.');
+            return;
+        }
+
+        if (formData.email === '') {
+            toast.error('Email is required.');
+            return;
+        }
+
         try {
             dispatch(updateStart());
             const res = await fetch(`/api/user/update/${currentUser._id}`, {

@@ -1,6 +1,6 @@
 import { Sidebar } from 'flowbite-react'
 import React, { useEffect, useState } from 'react'
-import { HiAnnotation, HiChartPie, HiDocumentText, HiLogout, HiOutlineUserGroup, HiUser } from 'react-icons/hi'
+import { HiAnnotation, HiChartPie, HiDocumentText, HiLogout, HiOutlineMailOpen, HiOutlineUserGroup, HiUser } from 'react-icons/hi'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import { logoutFailure, logoutSuccess } from '../redux/user/userSlice'
@@ -48,7 +48,7 @@ const DashSidebar = () => {
     }
 
     return (
-        <Sidebar className={`w-full md:h-full md:md:min-w-60 md:min-h-screen${theme === 'dark' ? 'bg-slate-900 text-gray-100' : 'bg-slate-200 text-gray-900'}`}>
+        <Sidebar className={`w-full md:h-full md:min-w-60 md:min-h-screen ${theme === 'dark' ? 'bg-slate-900 text-gray-100' : 'bg-slate-200 text-gray-900'}`}>
             <Sidebar.Items className='flex gap-1 md:gap-3 flex-col pt-3 px-1'>
                 <Sidebar.ItemGroup className='flex flex-col gap-1'>
                     {
@@ -77,6 +77,10 @@ const DashSidebar = () => {
 
                     <Sidebar.Item as={Link} to={`/dashboard?tab=comments`} active={tab === 'comments'} icon={HiAnnotation}>
                         Comments
+                    </Sidebar.Item>
+
+                    <Sidebar.Item as={Link} to={`/dashboard?tab=responses`} active={tab === 'responses'} icon={HiOutlineMailOpen}>
+                        Responses
                     </Sidebar.Item>
 
                 </Sidebar.ItemGroup>

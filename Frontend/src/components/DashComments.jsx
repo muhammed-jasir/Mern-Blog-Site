@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { HiOutlineExclamationCircle } from "react-icons/hi";
-import { FaCheck, FaTimes } from 'react-icons/fa';
 
 const DashComments = () => {
     const { currentUser } = useSelector(state => state.user);
@@ -90,28 +89,28 @@ const DashComments = () => {
             const data = await res.json();
 
             if (!res.ok || data.success === false) {
-                toast.error(data.message || 'Failed to delete comments.');
+                toast.error(data.message || 'Failed to delete comment.');
                 return;
             }
 
             if (res.ok) {
-                toast.success(data.message || 'Comments deleted successfully!');
+                toast.success(data.message || 'Comment deleted successfully!');
                 setComments((prevComments) => prevComments.filter((comments) => comments._id !== commentIdToDelete));
             }
         } catch (error) {
-            toast.error(error.message || 'Failed to delete comments.');
+            toast.error('Failed to delete comment.');
         }
     };
 
     return (
-        <div className='flex justify-center my-10 px-8'>
+        <div className='flex justify-center my-10 px-8 md:px-3 max-w-6xl mx-auto'>
             {loading ? (
                 <div className="flex justify-center items-center min-h-screen">
                     <Spinner size="xl" />
                 </div>
             ) : currentUser.isAdmin ? (
                 comments.length > 0 ? (
-                    <div className='overflow-x-auto scrollbar-hide'>
+                    <div className='overflow-x-auto w-full md:max-w-lg lg:max-w-3xl xl:max-w-5xl scrollbar-hide'>
                         <Table hoverable className='shadow-md text-center bg-slate-200 text-slate-900 dark:bg-slate-800 dark:text-slate-300 rounded-lg'>
                             <Table.Head>
                                 <Table.HeadCell>Date</Table.HeadCell>

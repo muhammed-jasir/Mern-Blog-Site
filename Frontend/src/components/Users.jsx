@@ -104,14 +104,14 @@ const Users = () => {
     };
 
     return (
-        <div className='flex justify-center my-10 px-8'>
+        <div className='flex justify-center my-10 px-8 md:px-3 max-w-6xl mx-auto'>
             {loading ? (
                 <div className="flex justify-center items-center min-h-screen">
                     <Spinner size="xl" />
                 </div>
             ) : currentUser.isAdmin ? (
                 users.length > 0 ? (
-                    <div className='overflow-x-auto scrollbar-hide'>
+                    <div className='overflow-x-auto w-full md:max-w-lg lg:max-w-3xl xl:max-w-5xl scrollbar-hide'>
                         <Table hoverable className='shadow-md text-center bg-slate-200 text-slate-900 dark:bg-slate-800 dark:text-slate-300 rounded-lg'>
                             <Table.Head>
                                 <Table.HeadCell>Date</Table.HeadCell>

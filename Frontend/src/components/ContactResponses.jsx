@@ -5,45 +5,46 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 
-const Posts = () => {
+const ContactResponses = () => {
     const { currentUser } = useSelector(state => state.user);
-    const [posts, setPosts] = useState([]);
+
+    const [responses, setResponses] = useState([]);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const [showMore, setShowMore] = useState(true);
     const [showModal, setShowModal] = useState(false);
     const { theme } = useSelector(state => state.theme)
-    const [postIdToDelete, setPostIdToDelete] = useState('');
+    const [responseIdToDelete, setResponseIdToDelete] = useState('');
     const [loadingMore, setLoadingMore] = useState(false);
 
     useEffect(() => {
-        const FetchPosts = async () => {
+        const FetchResponses = async () => {
             setLoading(true);
             try {
-                const res = await fetch(`/api/post/get-posts?userId=${currentUser._id}`);
+                const res = await fetch(`/api/contact/get-responses`);
                 const data = await res.json();
 
                 if (!res.ok || data.success === false) {
-                    toast.error(data.message || 'Failed to fetch posts.');
+                    toast.error(data.message || 'Failed to fetch responses.');
                     return;
                 }
 
                 if (res.ok) {
-                    setPosts(data.posts);
-                    if (data.posts.length < 9) {
+                    setResponses(data)
+                    if (data.length < 9) {
                         setShowMore(false);
                     }
                 }
 
             } catch (error) {
-                toast.error(error.message || 'Failed to fetch posts.');
+                toast.error('Failed to fetch responses.');
             } finally {
                 setLoading(false);
             }
         };
 
         if (currentUser.isAdmin) {
-            FetchPosts();
+            FetchResponses();
         } else {
             toast.error('You do not have permission to view this page.');
             navigate('/login')
@@ -53,34 +54,35 @@ const Posts = () => {
 
     const handleShowMore = async () => {
         setLoadingMore(true);
-        const startIndex = posts.length;
+        const startIndex = responses.length;
         try {
-            const res = await fetch(`/api/post/get-posts?userId=${currentUser._id}&startIndex=${startIndex}`);
+            const res = await fetch(`/api/contact/get-responses?startIndex=${startIndex}`);
             const data = await res.json();
 
             if (!res.ok || data.success === false) {
-                toast.error(data.message || 'Failed to fetch more posts.');
+                toast.error(data.message || 'Failed to fetch more responses.');
                 return;
             }
 
             if (res.ok) {
-                setPosts((prevPosts) => [...prevPosts, ...data.posts]);
-                if (data.posts.length < 9) {
+                setResponses((prevResponses) => [...prevResponses, ...data]);
+                if (data.length < 9) {
                     setShowMore(false);
                 }
             }
 
         } catch (error) {
-            toast.error(error.message || 'Failed to fetch more posts.');
+            toast.error('Failed to fetch more responses.');
         } finally {
             setLoadingMore(false);
         }
     };
 
-    const handleDeletePost = async () => {
+    const handleDeleteResponse = async () => {
         setShowModal(false);
+
         try {
-            const res = await fetch(`/api/post/delete-post/${postIdToDelete}/${currentUser._id}`,
+            const res = await fetch(`/api/contact/delete-response/${responseIdToDelete}`,
                 {
                     method: 'DELETE',
                 }
@@ -88,72 +90,62 @@ const Posts = () => {
             const data = await res.json();
 
             if (!res.ok || data.success === false) {
-                toast.error(data.message || 'Failed to delete post.');
+                toast.error(data.message || 'Failed to delete response.');
                 return;
             }
 
             if (res.ok) {
-                toast.success(data.message || 'Post deleted successfully!');
-                setPosts((prevPosts) => prevPosts.filter((post) => post._id !== postIdToDelete));
+                toast.success(data.message || 'Response deleted successfully!');
+                setResponses((prevResponses) => prevResponses.filter((responses) => responses._id !== responseIdToDelete));
             }
         } catch (error) {
-            toast.error(error.message || 'Failed to delete post.');
+            toast.error('Failed to delete response.');
         }
     };
 
     return (
-        <div className='flex justify-center my-10 px-8 md:px-3 max-w-6xl mx-auto'>
+        <div className='flex justify-center px-8 md:px-3 my-10 max-w-6xl mx-auto'>
             {loading ? (
                 <div className="flex justify-center items-center min-h-screen">
                     <Spinner size="xl" />
                 </div>
             ) : currentUser.isAdmin ? (
-                posts.length > 0 ? (
+                responses.length > 0 ? (
                     <div className='overflow-x-auto w-full md:max-w-lg lg:max-w-3xl xl:max-w-5xl scrollbar-hide'>
                         <Table hoverable className='shadow-md text-center bg-slate-200 text-slate-900 dark:bg-slate-800 dark:text-slate-300 rounded-lg'>
                             <Table.Head>
                                 <Table.HeadCell>Date</Table.HeadCell>
-                                <Table.HeadCell>Image</Table.HeadCell>
-                                <Table.HeadCell>Title</Table.HeadCell>
-                                <Table.HeadCell>Category</Table.HeadCell>
+                                <Table.HeadCell>Name</Table.HeadCell>
+                                <Table.HeadCell>Email</Table.HeadCell>
+                                <Table.HeadCell>Phone</Table.HeadCell>
+                                <Table.HeadCell>Message</Table.HeadCell>
                                 <Table.HeadCell>Actions</Table.HeadCell>
                             </Table.Head>
                             <Table.Body className='divide-y divide-gray-400'>
-                                {posts.map((post) => (
-                                    <Table.Row key={post._id}>
+                                {responses.map((response) => (
+                                    <Table.Row key={response._id}>
                                         <Table.Cell>
-                                            {new Date(post.updatedAt).toLocaleDateString()}
+                                            {new Date(response.createdAt).toLocaleDateString()}
                                         </Table.Cell>
                                         <Table.Cell>
-                                            <img
-                                                src={post.image}
-                                                alt='post image'
-                                                className='w-20 object-cover rounded-md bg-gray-500'
-                                            />
+                                            {response.name}
                                         </Table.Cell>
                                         <Table.Cell>
-                                            {post.title}
+                                            {response.email}
                                         </Table.Cell>
-                                        <Table.Cell className='capitalize'>
-                                            {post.category}
+                                        <Table.Cell>
+                                            {response.phone}
+                                        </Table.Cell>
+                                        <Table.Cell className='max-w-xs break-words'>
+                                            {response.message}
                                         </Table.Cell>
                                         <Table.Cell>
                                             <div className='flex gap-3'>
-                                                <Link to={`/post/${post.slug}`}>
-                                                    <Button color='blue'>
-                                                        View
-                                                    </Button>
-                                                </Link>
-                                                <Link to={`/update-post/${post._id}`}>
-                                                    <Button color='success'>
-                                                        Update
-                                                    </Button>
-                                                </Link>
                                                 <Button
                                                     color='failure'
                                                     onClick={() => {
                                                         setShowModal(true);
-                                                        setPostIdToDelete(post._id);
+                                                        setResponseIdToDelete(response._id);
                                                     }}
                                                 >
                                                     Delete
@@ -195,12 +187,12 @@ const Posts = () => {
                     </div>
                 ) : (
                     <div>
-                        <h1 className='text-lg font-semibold'>
-                            You have no Posts to view. Please create a new post.
+                        <h1>
+                            No Responses found.
                         </h1>
                     </div>
                 )) : (
-                <div className='text-center text-lg font-semibold'>
+                <div className='text-center'>
                     <h1>You do not have permission to view this page.</h1>
                 </div>
             )
@@ -220,10 +212,10 @@ const Posts = () => {
                             Are you sure ?
                         </h2>
                         <h3 className={`mb-5 text-lg font-semibold text-gray-800 ${theme === 'dark' && 'text-slate-200'}`}>
-                            Do you want to delete this Post ?
+                            Do you want to delete this Response ?
                         </h3>
                         <div className="flex justify-around mb-5">
-                            <Button color="failure" onClick={handleDeletePost}>
+                            <Button color="failure" onClick={handleDeleteResponse}>
                                 <span className='text-md font-bold'>Yes, I'm sure</span>
                             </Button>
                             <Button color="gray" onClick={() => setShowModal(false)}>
@@ -238,4 +230,4 @@ const Posts = () => {
     )
 }
 
-export default Posts
+export default ContactResponses;

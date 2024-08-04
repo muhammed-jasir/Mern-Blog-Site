@@ -189,7 +189,7 @@ const DashBoardComp = () => {
                 </div>
             </div>
             <div className='mt-5 flex flex-wrap gap-5 py-5 mx-auto justify-center'>
-                <div className='flex flex-col w-full md:w-auto shadow-md rounded-md bg-slate-200 dark:bg-slate-800 overflow-auto'>
+                <div className='flex flex-col w-full md:w-auto shadow-md rounded-md bg-slate-200 dark:bg-slate-800 overflow-x-auto scrollbar-hide'>
                     <div className='flex justify-between p-3 font-semibold text-md'>
                         <h1 className='text-center p-2'>
                             Recent Users
@@ -213,9 +213,11 @@ const DashBoardComp = () => {
                         </Table.Head>
                         <Table.Body className='divide-y divide-gray-400'>
                             {loadingUsers ? (
-                                <div className='flex justify-center p-5'>
-                                    <Spinner size='lg' />
-                                </div>
+                                <Table.Row>
+                                    <Table.Cell colSpan="3" className='text-center py-10'>
+                                        <Spinner size='lg' />
+                                    </Table.Cell>
+                                </Table.Row>
                             ) : (
                                 users.map((user) => (
                                     <Table.Row key={user._id}>
@@ -242,7 +244,7 @@ const DashBoardComp = () => {
                         </Table.Body>
                     </Table>
                 </div>
-                <div className='flex flex-col w-full md:w-auto shadow-md rounded-md bg-slate-200 dark:bg-slate-800 overflow-auto'>
+                <div className='flex flex-col w-full md:w-auto shadow-md rounded-md bg-slate-200 dark:bg-slate-800 overflow-x-auto scrollbar-hide'>
                     <div className='flex justify-between p-3 font-semibold text-md'>
                         <h1 className='text-center p-2'>
                             Recent Comments
@@ -265,9 +267,11 @@ const DashBoardComp = () => {
                         </Table.Head>
                         <Table.Body className='divide-y divide-gray-400'>
                             {loadingComments ? (
-                                <div className='flex justify-center p-5'>
-                                    <Spinner size='lg' />
-                                </div>
+                                <Table.Row>
+                                    <Table.Cell colSpan="2" className='text-center py-10'>
+                                        <Spinner size='lg' />
+                                    </Table.Cell>
+                                </Table.Row>
                             ) : (
                                 comments.map((comment) => (
                                     <Table.Row key={comment._id}>
@@ -281,7 +285,7 @@ const DashBoardComp = () => {
                         </Table.Body>
                     </Table>
                 </div>
-                <div className='flex flex-col w-full md:w-auto shadow-md rounded-md bg-slate-200 dark:bg-slate-800 overflow-auto'>
+                <div className='flex flex-col w-full md:w-auto shadow-md rounded-md bg-slate-200 dark:bg-slate-800 overflow-x-auto scrollbar-hide'>
                     <div className='flex justify-between p-3 font-semibold text-md'>
                         <h1 className='text-center p-2'>
                             Recent Posts
@@ -304,9 +308,11 @@ const DashBoardComp = () => {
                         </Table.Head>
                         <Table.Body className='divide-y divide-gray-400'>
                             {loadingPosts ? (
-                                <div className='flex justify-center p-5'>
-                                    <Spinner size='lg' />
-                                </div>
+                                <Table.Row>
+                                    <Table.Cell colSpan="3" className='text-center py-10'>
+                                        <Spinner size='lg' />
+                                    </Table.Cell>
+                                </Table.Row>
                             ) : (
                                 posts.map((post) => (
                                     <Table.Row key={post._id}>

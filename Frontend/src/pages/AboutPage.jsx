@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 
 const AboutPage = () => {
     return (
-        <div className='flex flex-col item-center justify-center max-w-6xl mx-auto my-8'>
+        <div className='flex flex-col item-center justify-center max-w-6xl mx-auto my-8 px-3'>
             <h1 className='text-center text-3xl my-5 font-bold'>
                 About Us
             </h1>
-            <div className='max-w-4xl mx-auto flex flex-col gap-5 max-sm:p-4  p-6 bg-white dark:bg-slate-800 rounded-lg mt-5 shadow-lg mb-5'>
+            <div className='max-w-4xl mx-auto flex flex-col gap-5 max-sm:p-4 p-6 bg-white dark:bg-slate-800 rounded-lg mt-5 shadow-lg mb-5'>
                 <div className='flex flex-col gap-3'>
                     <h2 className='text-2xl font-semibold'>
                         Welcome to The Blog Spot!

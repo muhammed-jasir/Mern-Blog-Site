@@ -97,7 +97,7 @@ const deleteComment = async (req, res, next) => {
         }
 
         if (comment.userId !== req.user.id && !req.user.isAdmin) {
-            return next(errorHandlers(403, 'You are not allowed to edit this comment'));
+            return next(errorHandlers(403, 'You are not allowed to delete this comment'));
         }
 
         await Comment.findByIdAndDelete(req.params.commentId);
@@ -121,12 +121,12 @@ const getAllComments = async (req, res, next) => {
             .sort({ createdAt: sortDirection })
             .skip(startIndex)
             .limit(limit);
-        
+
         const totalComments = await Comment.countDocuments();
         const now = new Date();
         const oneMonthAgo = new Date(
             now.getFullYear(),
-            now.getMonth() -1, 
+            now.getMonth() - 1,
             now.getDate()
         );
 

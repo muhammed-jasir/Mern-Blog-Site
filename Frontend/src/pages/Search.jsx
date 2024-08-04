@@ -146,7 +146,7 @@ const Search = () => {
         <div className='flex flex-col md:flex-row'>
             <div className='p-7 md:py-10 md:px-4 border-b md:border-r md:min-h-screen border-gray-500 md:w-1/4'>
                 <form className='flex flex-col gap-5' onSubmit={handleSubmit}>
-                    <div className='flex item-center gap-2'>
+                    <div className='flex flex-col gap-2'>
                         <Label className='text-md whitespace-nowrap font-semibold' htmlFor='searchTerm'>Search</Label>
                         <TextInput
                             id='searchTerm'
@@ -157,19 +157,19 @@ const Search = () => {
                             onChange={handleChange}
                         />
                     </div>
-                    <div className='flex item-center gap-5'>
+                    <div className='flex flex-col gap-2'>
                         <Label className='text-md font-semibold' htmlFor='sort'>Sort</Label>
                         <Select
                             onChange={handleChange}
                             value={sidebarData.sort}
                             id='sort'
-                            className='w-1/2 '
+                            className='w-full'
                         >
                             <option value='desc'>Latest</option>
                             <option value='asc'>Oldest</option>
                         </Select>
                     </div>
-                    <div className='flex item-center gap-5'>
+                    <div className='flex flex-col gap-2'>
                         <Label className='text-md font-semibold' htmlFor='category'>Category</Label>
                         <Select
                             id='category'
@@ -195,7 +195,11 @@ const Search = () => {
                                 value={newCategory}
                                 onChange={handleNewCategoryChange}
                             />
-                            <Button onClick={handleAddCategory}>Add Category</Button>
+                            <Button
+                                onClick={handleAddCategory}
+                            >
+                                Add Category
+                            </Button>
                         </div>
                     )}
                     <Button
@@ -235,11 +239,11 @@ const Search = () => {
                             ))
                         }
                     </div>
-                    
+
                     {
                         showMore && (
                             <div className='flex justify-center items-center mt-5'>
-                                <Button onClick={handleShowMore}>Load More</Button>
+                                <Button onClick={handleShowMore} color='light'>Load More</Button>
                             </div>
                         )
                     }

@@ -45,31 +45,31 @@ const Home = () => {
     }, []);
 
     return (
-        <div className=''>
-            <div className='flex flex-col md:flex-row py-10'>
-                <div className='w-full md:w-1/2 gap-6 p-10 sm:p-20'>
-                    <h1 className='text-4xl font-bold max-sm:text-center md:whitespace-nowrap leading-normal'>
+        <div className='px-4 md:px-8 lg:px-16'>
+            <div className='max-w-6xl mx-auto flex flex-col md:flex-row items-center py-10 gap-8'>
+                <div className='flex flex-col gap-6'>
+                    <h1 className='text-4xl font-bold text-center md:text-left leading-normal'>
                         Welcome to My Blog Website
                     </h1>
-                    <p className='text-md sm:text-lg my-8 font-medium text-gray-500 text-center md:text-left'>
+                    <p className='text-lg font-medium text-gray-500 text-center md:text-left'>
                         Here you will find the latest posts, articles, and tutorials on wide variety of topics. Feel free to explore and share your
                         thoughts and opinions. Remember, we are always here to help.
                     </p>
-                    <Link to='/search'>
+                    <Link to='/search' className='flex justify-center md:justify-start mt-3'>
                         <Button
                             outline
                             gradientDuoTone='greenToBlue'
-                            className='max-sm:mx-auto md:text-left'
+                            className=''
                         >
                             Get Started
                         </Button>
                     </Link>
                 </div>
-                <div className='w-full md:w-1/2 mt-8 md:mt-0 p-3 md:p-10 md:me-5'>
+                <div className='flex justify-center w-full'>
                     <img
                         src="https://careforlifecharitabletrust.org/wp-content/uploads/2020/02/blog2-1.png"
                         alt="Welcome"
-                        className="rounded shadow-lg bg-slate-400"
+                        className="rounded-md shadow-lg bg-slate-400 object-cover max-w-sm"
                     />
                 </div>
             </div>

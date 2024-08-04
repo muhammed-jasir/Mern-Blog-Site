@@ -70,7 +70,7 @@ const Blogs = () => {
     };
 
     return (
-        <div className='max-w-6xl mx-auto my-8 flex flex-col'>
+        <div className='max-w-6xl mx-auto my-8 flex flex-col px-3'>
             <h1 className='text-center text-3xl font-bold'>
                 Blogs
             </h1>

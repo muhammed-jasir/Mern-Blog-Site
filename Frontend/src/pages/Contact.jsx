@@ -1,11 +1,17 @@
 import { Button, Label, Spinner, Textarea, TextInput } from 'flowbite-react';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 const Contact = () => {
-    const [formData, setFormData] = useState({});
+    const { currentUser } = useSelector(state => state.user);
     const [loading, setLoading] = useState(false);
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        phone: '',
+        message: ''
+    })
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.id]: e.target.value.trim() })
@@ -13,6 +19,10 @@ const Contact = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!currentUser) {
+            return toast.error('You must be logged in to submit the form');
+        }
 
         if (!formData.name || !formData.email || !formData.phone || !formData.message) {
             return toast.error('All Fields are Required');
@@ -26,6 +36,10 @@ const Contact = () => {
         const phoneRegex = /^\d{10}$/;
         if (!phoneRegex.test(String(formData.phone))) {
             return toast.error('Phone number must be 10 digits long');
+        }
+
+        if (message.length > 300) {
+            return toast.error('Message should not exceed 300 characters');
         }
 
         try {
@@ -60,7 +74,7 @@ const Contact = () => {
     }
 
     return (
-        <div className='max-w-4xl mx-auto my-16'>
+        <div className='max-w-4xl mx-auto my-16 px-3'>
             <h1 className='text-center text-3xl font-bold mb-10'>Contact Us</h1>
             <form className='flex flex-col max-w-3xl mx-auto gap-5 bg-slate-200 dark:bg-slate-800 p-10 rounded-lg shadow-lg' onSubmit={handleSubmit}>
                 <div>
@@ -92,8 +106,8 @@ const Contact = () => {
                         id='phone'
                         placeholder='Enter your phone number'
                         className='mt-1'
-                        value={formData.phone}
                         onChange={handleChange}
+                        value={formData.phone}
                     />
                 </div>
                 <div>
@@ -105,6 +119,9 @@ const Contact = () => {
                         onChange={handleChange}
                         value={formData.message}
                     />
+                    <p className='max-sm:text-xs text-md text-gray-500 mt-3'>
+                        {300 - formData.message.length} characters remaining...
+                    </p>
                 </div>
                 <div className='flex justify-center'>
                     <Button

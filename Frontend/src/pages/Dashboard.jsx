@@ -7,6 +7,7 @@ import Posts from '../components/Posts';
 import Users from '../components/Users';
 import DashComments from '../components/DashComments';
 import DashBoardComp from '../components/DashBoardComp';
+import ContactResponses from '../components/ContactResponses';
 
 const Dashboard = () => {
     const location = useLocation();
@@ -16,7 +17,7 @@ const Dashboard = () => {
         const urlParams = new URLSearchParams(location.search);
         const tabFromUrl = urlParams.get('tab');
 
-        const validTabs = ['profile', 'create-post', 'posts', 'users', 'comments', 'dash'];
+        const validTabs = ['profile', 'create-post', 'posts', 'users', 'comments', 'dash', 'responses'];
         if (tabFromUrl && validTabs.includes(tabFromUrl)) {
             setTab(tabFromUrl);
         } else {
@@ -37,6 +38,7 @@ const Dashboard = () => {
                 {tab === 'users' && <Users />}
                 {tab === 'comments' && <DashComments />}
                 {tab === 'dash' && <DashBoardComp />}
+                {tab === 'responses' && <ContactResponses />}
             </main>
         </div>
     )
