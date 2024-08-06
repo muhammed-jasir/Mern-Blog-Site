@@ -11,7 +11,7 @@ const Toast = () => {
             newestOnTop={true}
             draggable
             pauseOnHover={false}
-            pauseOnFocusLoss={false}
+            pauseOnFocusLoss={true}
             theme={theme === 'dark' ? 'dark' : 'light'}
         />
     )

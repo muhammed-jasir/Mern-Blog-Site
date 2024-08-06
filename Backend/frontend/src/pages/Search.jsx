@@ -215,7 +215,7 @@ const Search = () => {
                 <h1 className='text-3xl font-semibold sm:border-b border-gray-500 p-3 mt-5'>
                     Post Results:
                 </h1>
-                <div className='p-7'>
+                <div className='p-4 sm:p-7'>
                     {
                         !loading && posts.length === 0 && (
                             <div className='flex justify-center items-center mt-5'>

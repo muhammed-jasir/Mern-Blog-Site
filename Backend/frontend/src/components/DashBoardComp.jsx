@@ -209,7 +209,6 @@ const DashBoardComp = () => {
                         <Table.Head >
                             <Table.HeadCell>Profile</Table.HeadCell>
                             <Table.HeadCell>Username</Table.HeadCell>
-                            <Table.HeadCell>Email</Table.HeadCell>
                         </Table.Head>
                         <Table.Body className='divide-y divide-gray-400'>
                             {loadingUsers ? (
@@ -221,21 +220,16 @@ const DashBoardComp = () => {
                             ) : (
                                 users.map((user) => (
                                     <Table.Row key={user._id}>
-                                        <Table.Cell>
+                                        <Table.Cell className='w-5'>
                                             <img
                                                 src={user.profilePic}
                                                 alt='avatar'
                                                 className='w-10 h-10 object-cover rounded-full bg-gray-500'
                                             />
                                         </Table.Cell>
-                                        <Table.Cell className=''>
+                                        <Table.Cell className='w-92'>
                                             <p>
                                                 {user.username}
-                                            </p>
-                                        </Table.Cell>
-                                        <Table.Cell className=''>
-                                            <p>
-                                                {user.email}
                                             </p>
                                         </Table.Cell>
                                     </Table.Row>
@@ -316,11 +310,11 @@ const DashBoardComp = () => {
                             ) : (
                                 posts.map((post) => (
                                     <Table.Row key={post._id}>
-                                        <Table.Cell>
+                                        <Table.Cell className='w-5'>
                                             <img
                                                 src={post.image}
                                                 alt='post'
-                                                className='h-10 w-16 sm:w-32 sm:h-auto object-cover rounded-sm bg-gray-500'
+                                                className='h-10 w-20 sm:w-32 sm:h-10 object-fill rounded-sm bg-gray-500'
                                             />
                                         </Table.Cell>
                                         <Table.Cell className='w-9/12'>

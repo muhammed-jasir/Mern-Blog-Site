@@ -215,10 +215,10 @@ const Users = () => {
                     <div className="text-center">
                         <HiOutlineExclamationCircle className="mx-auto mb-2 h-14 w-14 text-red-700" />
                         <h2 className={`mb-2 text-lg font-bold text-gray-800 ${theme === 'dark' && 'text-slate-200'}`}>
-                            Are you sure ?
+                            Are you sure?
                         </h2>
                         <h3 className={`mb-5 text-lg font-semibold text-gray-800 ${theme === 'dark' && 'text-slate-200'}`}>
-                            Do you want to delete this User ?
+                            Do you want to delete this User?
                         </h3>
                         <div className="flex justify-around mb-5">
                             <Button color="failure" onClick={handleDeleteUser}>

@@ -110,62 +110,62 @@ const Posts = () => {
             ) : currentUser.isAdmin ? (
                 posts.length > 0 ? (
                     <div className="overflow-hidden">
-                    <div className='overflow-x-auto w-full md:max-w-lg lg:max-w-3xl xl:max-w-5xl scrollbar-hide'>
-                        <Table hoverable className='shadow-md text-center bg-slate-200 text-slate-900 dark:bg-slate-800 dark:text-slate-300 rounded-lg'>
-                            <Table.Head>
-                                <Table.HeadCell>Date</Table.HeadCell>
-                                <Table.HeadCell>Image</Table.HeadCell>
-                                <Table.HeadCell>Title</Table.HeadCell>
-                                <Table.HeadCell>Category</Table.HeadCell>
-                                <Table.HeadCell>Actions</Table.HeadCell>
-                            </Table.Head>
-                            <Table.Body className='divide-y divide-gray-400'>
-                                {posts.map((post) => (
-                                    <Table.Row key={post._id}>
-                                        <Table.Cell>
-                                            {new Date(post.updatedAt).toLocaleDateString()}
-                                        </Table.Cell>
-                                        <Table.Cell>
-                                            <img
-                                                src={post.image}
-                                                alt='post image'
-                                                className='h-10 w-16 sm:w-32 sm:h-auto object-cover rounded-sm bg-gray-500'
-                                            />
-                                        </Table.Cell>
-                                        <Table.Cell>
-                                            {post.title}
-                                        </Table.Cell>
-                                        <Table.Cell className='capitalize'>
-                                            {post.category}
-                                        </Table.Cell>
-                                        <Table.Cell>
-                                            <div className='flex gap-3'>
-                                                <Link to={`/post/${post.slug}`}>
-                                                    <Button color='blue'>
-                                                        View
+                        <div className='overflow-x-auto w-full md:max-w-lg lg:max-w-3xl xl:max-w-5xl scrollbar-hide'>
+                            <Table hoverable className='shadow-md text-center bg-slate-200 text-slate-900 dark:bg-slate-800 dark:text-slate-300 rounded-lg'>
+                                <Table.Head>
+                                    <Table.HeadCell>Date</Table.HeadCell>
+                                    <Table.HeadCell>Image</Table.HeadCell>
+                                    <Table.HeadCell>Title</Table.HeadCell>
+                                    <Table.HeadCell>Category</Table.HeadCell>
+                                    <Table.HeadCell>Actions</Table.HeadCell>
+                                </Table.Head>
+                                <Table.Body className='divide-y divide-gray-400'>
+                                    {posts.map((post) => (
+                                        <Table.Row key={post._id}>
+                                            <Table.Cell>
+                                                {new Date(post.updatedAt).toLocaleDateString()}
+                                            </Table.Cell>
+                                            <Table.Cell>
+                                                <img
+                                                    src={post.image}
+                                                    alt='post image'
+                                                    className='h-12 w-20 object-fill sm:w-36 sm:h-12 sm:object-cover rounded-sm bg-gray-500'
+                                                />
+                                            </Table.Cell>
+                                            <Table.Cell>
+                                                {post.title}
+                                            </Table.Cell>
+                                            <Table.Cell className='capitalize'>
+                                                {post.category}
+                                            </Table.Cell>
+                                            <Table.Cell>
+                                                <div className='flex gap-3'>
+                                                    <Link to={`/post/${post.slug}`}>
+                                                        <Button color='blue'>
+                                                            View
+                                                        </Button>
+                                                    </Link>
+                                                    <Link to={`/update-post/${post._id}`}>
+                                                        <Button color='success'>
+                                                            Update
+                                                        </Button>
+                                                    </Link>
+                                                    <Button
+                                                        color='failure'
+                                                        onClick={() => {
+                                                            setShowModal(true);
+                                                            setPostIdToDelete(post._id);
+                                                        }}
+                                                    >
+                                                        Delete
                                                     </Button>
-                                                </Link>
-                                                <Link to={`/update-post/${post._id}`}>
-                                                    <Button color='success'>
-                                                        Update
-                                                    </Button>
-                                                </Link>
-                                                <Button
-                                                    color='failure'
-                                                    onClick={() => {
-                                                        setShowModal(true);
-                                                        setPostIdToDelete(post._id);
-                                                    }}
-                                                >
-                                                    Delete
-                                                </Button>
-                                            </div>
-                                        </Table.Cell>
-                                    </Table.Row>
-                                ))}
-                            </Table.Body>
-                        </Table>
-                    </div>
+                                                </div>
+                                            </Table.Cell>
+                                        </Table.Row>
+                                    ))}
+                                </Table.Body>
+                            </Table>
+                        </div>
                         <div className='mt-5 flex justify-center'>
                             {
                                 showMore && (
@@ -194,7 +194,7 @@ const Posts = () => {
                                 )
                             }
                         </div>
-                        </div>
+                    </div>
                 ) : (
                     <div>
                         <h1 className='text-center text-lg font-semibold'>
@@ -219,10 +219,10 @@ const Posts = () => {
                     <div className="text-center">
                         <HiOutlineExclamationCircle className="mx-auto mb-2 h-14 w-14 text-red-700" />
                         <h2 className={`mb-2 text-lg font-bold text-gray-800 ${theme === 'dark' && 'text-slate-200'}`}>
-                            Are you sure ?
+                            Are you sure?
                         </h2>
                         <h3 className={`mb-5 text-lg font-semibold text-gray-800 ${theme === 'dark' && 'text-slate-200'}`}>
-                            Do you want to delete this Post ?
+                            Do you want to delete this Post?
                         </h3>
                         <div className="flex justify-around mb-5">
                             <Button color="failure" onClick={handleDeletePost}>

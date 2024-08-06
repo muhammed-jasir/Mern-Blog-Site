@@ -46,7 +46,7 @@ const Home = () => {
 
     return (
         <div className='px-4 md:px-8 lg:px-16'>
-            <div className='max-w-6xl mx-auto flex flex-col md:flex-row items-center py-10 gap-8'>
+            <div className='max-w-6xl mx-auto flex flex-col md:flex-row items-center py-10 gap-8 overflow-x-hidden'>
                 <div className='flex flex-col gap-6'>
                     <h1 className='text-4xl font-bold text-center md:text-left leading-normal'>
                         Welcome to My Blog Website

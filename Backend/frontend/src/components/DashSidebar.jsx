@@ -49,7 +49,7 @@ const DashSidebar = () => {
 
     return (
         <Sidebar className={`w-full md:h-full md:min-w-60 md:min-h-screen ${theme === 'dark' ? 'bg-slate-900 text-gray-100' : 'bg-slate-200 text-gray-900'}`}>
-            <Sidebar.Items className='flex gap-1 md:gap-3 flex-col pt-3 px-1'>
+            <Sidebar.Items className='flex gap-1 md:gap-2 flex-col pt-3 px-1'>
                 <Sidebar.ItemGroup className='flex flex-col gap-1'>
                     {
                         currentUser && currentUser.isAdmin && (

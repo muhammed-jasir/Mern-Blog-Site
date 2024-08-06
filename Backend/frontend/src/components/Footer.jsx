@@ -74,11 +74,11 @@ const FooterComp = () => {
                         className='dark:text-white'
                     />
                     <div className="mt-5 flex gap-6 sm:mt-0 sm:justify-center">
-                        <Footer.Icon href="https://facebook.com" icon={BsFacebook} target='_blank' />
-                        <Footer.Icon href="https://instagram.com" icon={BsInstagram} target='_blank' />
-                        <Footer.Icon href="https://twitter.com" icon={BsTwitter} target='_blank' />
-                        <Footer.Icon href="https://github.com/muhammed-jasir" icon={BsGithub} target='_blank' />
-                        <Footer.Icon href="#" icon={BsDribbble} target='_blank' />
+                        <Footer.Icon href="https://facebook.com" icon={BsFacebook} target='_blank' rel='noopener noreferrer' />
+                        <Footer.Icon href="https://instagram.com" icon={BsInstagram} target='_blank' rel='noopener noreferrer' />
+                        <Footer.Icon href="https://twitter.com" icon={BsTwitter} target='_blank' rel='noopener noreferrer' />
+                        <Footer.Icon href="https://github.com/muhammed-jasir" icon={BsGithub} target='_blank' rel='noopener noreferrer' />
+                        <Footer.Icon href="#" icon={BsDribbble} target='_blank' rel='noopener noreferrer'/>
                     </div>
                 </div>
             </div>
