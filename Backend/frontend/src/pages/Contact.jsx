@@ -14,7 +14,7 @@ const Contact = () => {
     })
 
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.id]: e.target.value.trim() })
+        setFormData({ ...formData, [e.target.id]: e.target.value })
     }
 
     const handleSubmit = async (e) => {
@@ -76,7 +76,7 @@ const Contact = () => {
     return (
         <div className='max-w-4xl mx-auto my-16 px-3'>
             <h1 className='text-center text-3xl font-bold mb-10'>Contact Us</h1>
-            <form className='flex flex-col max-w-3xl mx-auto gap-5 bg-slate-200 dark:bg-slate-800 p-10 rounded-lg shadow-lg' onSubmit={handleSubmit}>
+            <form className='flex flex-col max-w-3xl mx-auto gap-5 bg-slate-200 dark:bg-slate-800 p-3 max-sm:py-5 sm:p-10 rounded-lg shadow-lg' onSubmit={handleSubmit}>
                 <div>
                     <Label htmlFor="name">Name</Label>
                     <TextInput

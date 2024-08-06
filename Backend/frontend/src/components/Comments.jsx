@@ -68,23 +68,23 @@ function Comments({ comment, onLike, onEdit, onDelete }) {
     }
 
     return (
-        <div className='flex item-center gap-3 w-full p-4 border border-slate-500 rounded-md mb-3 overflow-hidden bg-slate-200 dark:bg-slate-800'>
+        <div className='flex item-center gap-2 sm:gap-5 w-full p-3 sm:p-5 border border-slate-500 rounded-xl mb-3 overflow-hidden bg-slate-200 dark:bg-slate-800'>
             <div className='flex-shrink-0'>
                 <img
                     src={user.profilePic}
                     alt='profile'
-                    className='w-12 h-12 rounded-full object-cover'
+                    className='w-9 h-9 sm:w-12 sm:h-12 rounded-full object-cover'
                 />
             </div>
-            <div className='flex-1 w-full p-2'>
+            <div className='flex-1 w-full'>
                 <div className='flex items-center mb-2'>
                     <span
-                        className='me-2 font-bold text-sm truncate'
+                        className='me-2 font-bold text-sm sm:text-md truncate'
                     >
                         {user ? `@${user.username}` : 'anonymous user'}
                     </span>
                     <span
-                        className='font-normal text-sm'
+                        className='font-normal text-xs sm:text-sm'
                     >
                         {moment(comment.createdAt).fromNow()}
                     </span>
@@ -95,10 +95,10 @@ function Comments({ comment, onLike, onEdit, onDelete }) {
                             value={editedContent}
                             placeholder='Edit your comment...'
                             onChange={(e) => setEditedContent(e.target.value)}
-                            className='mb-3 h-24'
+                            className='mb-3 h-20 sm:h-24'
                         />
                         <div className='flex justify-between'>
-                            <p className='max-sm:text-xs text-md text-gray-500'>
+                            <p className='text-xs sm:text-md text-gray-500'>
                                 {300 - editedContent.length} characters remaining...
                             </p>
                             <div className='flex justify-end gap-3 mb-3'>

@@ -109,6 +109,7 @@ const Posts = () => {
                 </div>
             ) : currentUser.isAdmin ? (
                 posts.length > 0 ? (
+                    <div className="overflow-hidden">
                     <div className='overflow-x-auto w-full md:max-w-lg lg:max-w-3xl xl:max-w-5xl scrollbar-hide'>
                         <Table hoverable className='shadow-md text-center bg-slate-200 text-slate-900 dark:bg-slate-800 dark:text-slate-300 rounded-lg'>
                             <Table.Head>
@@ -128,7 +129,7 @@ const Posts = () => {
                                             <img
                                                 src={post.image}
                                                 alt='post image'
-                                                className='w-20 object-cover rounded-md bg-gray-500'
+                                                className='h-10 w-16 sm:w-32 sm:h-auto object-cover rounded-sm bg-gray-500'
                                             />
                                         </Table.Cell>
                                         <Table.Cell>
@@ -164,6 +165,7 @@ const Posts = () => {
                                 ))}
                             </Table.Body>
                         </Table>
+                    </div>
                         <div className='mt-5 flex justify-center'>
                             {
                                 showMore && (
@@ -192,10 +194,10 @@ const Posts = () => {
                                 )
                             }
                         </div>
-                    </div>
+                        </div>
                 ) : (
                     <div>
-                        <h1 className='text-lg font-semibold'>
+                        <h1 className='text-center text-lg font-semibold'>
                             You have no Posts to view. Please create a new post.
                         </h1>
                     </div>

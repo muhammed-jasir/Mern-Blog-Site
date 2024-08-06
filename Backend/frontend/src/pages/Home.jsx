@@ -69,7 +69,7 @@ const Home = () => {
                     <img
                         src="https://careforlifecharitabletrust.org/wp-content/uploads/2020/02/blog2-1.png"
                         alt="Welcome"
-                        className="rounded-md shadow-lg bg-slate-400 object-cover max-w-sm"
+                        className="rounded-lg sm:shadow-lg sm:bg-slate-400 object-cover max-w-sm max-sm:p-3"
                     />
                 </div>
             </div>
@@ -83,7 +83,7 @@ const Home = () => {
                     <Spinner size='xl' />
                 </div>
             ) : (
-                <div className='max-w-6xl mx-auto px-4 my-8'>
+                <div className='max-w-6xl mx-auto px-2 sm:px-4 my-8'>
                     {posts && posts.length > 0 && (
                         <div className='flex flex-col'>
                             <h1 className='text-2xl sm:text-4xl text-center font-semibold mb-8'>

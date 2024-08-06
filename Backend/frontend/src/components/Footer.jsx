@@ -8,19 +8,19 @@ const FooterComp = () => {
         {
             title: "Company",
             links: [
-                { href: "/about", label: "About" },
-                { href: "#", label: "Careers" },
-                { href: "#", label: "Our Team" },
-                { href: "/projects", label: "Blog" },
+                { href: "/about-us", label: "About" },
+                { href: "/about-us", label: "Careers" },
+                { href: "/about-us", label: "Our Team" },
+                { href: "/about-us", label: "Blog" },
             ]
         },
         {
             title: "Help Center",
             links: [
-                { href: "#", label: "Support" },
-                { href: "#", label: "FAQ" },
-                { href: "#", label: "Guides" },
-                { href: "/contact", label: "Contact Us" },
+                { href: "/contact-us", label: "Support" },
+                { href: "/contact-us", label: "FAQ" },
+                { href: "/contact-us", label: "Guides" },
+                { href: "/contact-us", label: "Contact Us" },
             ]
         },
         {
@@ -74,10 +74,10 @@ const FooterComp = () => {
                         className='dark:text-white'
                     />
                     <div className="mt-5 flex gap-6 sm:mt-0 sm:justify-center">
-                        <Footer.Icon href="#" icon={BsFacebook} target='_blank' />
-                        <Footer.Icon href="#" icon={BsInstagram} target='_blank' />
-                        <Footer.Icon href="#" icon={BsTwitter} target='_blank' />
-                        <Footer.Icon href="#" icon={BsGithub} target='_blank' />
+                        <Footer.Icon href="https://facebook.com" icon={BsFacebook} target='_blank' />
+                        <Footer.Icon href="https://instagram.com" icon={BsInstagram} target='_blank' />
+                        <Footer.Icon href="https://twitter.com" icon={BsTwitter} target='_blank' />
+                        <Footer.Icon href="https://github.com/muhammed-jasir" icon={BsGithub} target='_blank' />
                         <Footer.Icon href="#" icon={BsDribbble} target='_blank' />
                     </div>
                 </div>

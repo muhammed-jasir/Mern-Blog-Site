@@ -111,55 +111,57 @@ const Users = () => {
                 </div>
             ) : currentUser.isAdmin ? (
                 users.length > 0 ? (
-                    <div className='overflow-x-auto w-full md:max-w-lg lg:max-w-3xl xl:max-w-5xl scrollbar-hide'>
-                        <Table hoverable className='shadow-md text-center bg-slate-200 text-slate-900 dark:bg-slate-800 dark:text-slate-300 rounded-lg'>
-                            <Table.Head>
-                                <Table.HeadCell>Date</Table.HeadCell>
-                                <Table.HeadCell>Image</Table.HeadCell>
-                                <Table.HeadCell>Username</Table.HeadCell>
-                                <Table.HeadCell>Email</Table.HeadCell>
-                                <Table.HeadCell>Admin</Table.HeadCell>
-                                <Table.HeadCell>Actions</Table.HeadCell>
-                            </Table.Head>
-                            <Table.Body className='divide-y divide-gray-400'>
-                                {users.map((user) => (
-                                    <Table.Row key={user._id}>
-                                        <Table.Cell>
-                                            {new Date(user.createdAt).toLocaleDateString()}
-                                        </Table.Cell>
-                                        <Table.Cell>
-                                            <img
-                                                src={user.profilePic}
-                                                alt='user'
-                                                className='max-sm:h-10 h-16 w-16 object-cover rounded-full bg-gray-500'
-                                            />
-                                        </Table.Cell>
-                                        <Table.Cell>
-                                            {user.username}
-                                        </Table.Cell>
-                                        <Table.Cell>
-                                            {user.email}
-                                        </Table.Cell>
-                                        <Table.Cell>
-                                            {user.isAdmin ? <FaCheck className='text-green-600' /> : <FaTimes className='text-red-600' />}
-                                        </Table.Cell>
-                                        <Table.Cell>
-                                            <div className='flex gap-3'>
-                                                <Button
-                                                    color='failure'
-                                                    onClick={() => {
-                                                        setShowModal(true);
-                                                        setUserIdToDelete(user._id);
-                                                    }}
-                                                >
-                                                    Delete
-                                                </Button>
-                                            </div>
-                                        </Table.Cell>
-                                    </Table.Row>
-                                ))}
-                            </Table.Body>
-                        </Table>
+                    <div className="overflow-hidden">
+                        <div className='overflow-x-auto w-full md:max-w-lg lg:max-w-3xl xl:max-w-5xl scrollbar-hide'>
+                            <Table hoverable className='shadow-md text-center bg-slate-200 text-slate-900 dark:bg-slate-800 dark:text-slate-300 rounded-lg'>
+                                <Table.Head>
+                                    <Table.HeadCell>Date</Table.HeadCell>
+                                    <Table.HeadCell>Image</Table.HeadCell>
+                                    <Table.HeadCell>Username</Table.HeadCell>
+                                    <Table.HeadCell>Email</Table.HeadCell>
+                                    <Table.HeadCell>Admin</Table.HeadCell>
+                                    <Table.HeadCell>Actions</Table.HeadCell>
+                                </Table.Head>
+                                <Table.Body className='divide-y divide-gray-400'>
+                                    {users.map((user) => (
+                                        <Table.Row key={user._id}>
+                                            <Table.Cell>
+                                                {new Date(user.createdAt).toLocaleDateString()}
+                                            </Table.Cell>
+                                            <Table.Cell>
+                                                <img
+                                                    src={user.profilePic}
+                                                    alt='user'
+                                                    className='h-9 w-9 sm:h-12 sm:w-12 object-cover rounded-full bg-gray-500'
+                                                />
+                                            </Table.Cell>
+                                            <Table.Cell>
+                                                {user.username}
+                                            </Table.Cell>
+                                            <Table.Cell>
+                                                {user.email}
+                                            </Table.Cell>
+                                            <Table.Cell>
+                                                {user.isAdmin ? <FaCheck className='text-green-600' /> : <FaTimes className='text-red-600' />}
+                                            </Table.Cell>
+                                            <Table.Cell>
+                                                <div className='flex gap-3'>
+                                                    <Button
+                                                        color='failure'
+                                                        onClick={() => {
+                                                            setShowModal(true);
+                                                            setUserIdToDelete(user._id);
+                                                        }}
+                                                    >
+                                                        Delete
+                                                    </Button>
+                                                </div>
+                                            </Table.Cell>
+                                        </Table.Row>
+                                    ))}
+                                </Table.Body>
+                            </Table>
+                        </div>
                         <div className='mt-5 flex justify-center'>
                             {
                                 showMore && (
@@ -191,12 +193,12 @@ const Users = () => {
                     </div>
                 ) : (
                     <div>
-                        <h1>
+                        <h1 className='text-center text-lg font-semibold'>
                             No users found.
                         </h1>
                     </div>
                 )) : (
-                <div className='text-center'>
+                <div className='text-center text-lg font-semibold'>
                     <h1>You do not have permission to view this page.</h1>
                 </div>
             )

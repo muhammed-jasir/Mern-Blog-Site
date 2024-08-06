@@ -24,7 +24,6 @@ function PostPage() {
         return shuffledPosts;
     };
 
-
     useEffect(() => {
         const FetchPost = async () => {
             try {
@@ -117,7 +116,7 @@ function PostPage() {
                         <img
                             src={post.image}
                             alt={post.title}
-                            className='mt-10 w-full p-3 object-cover max-h-[600px] rounded-md'
+                            className='mt-10 w-full p-3 sm:object-cover h-[225px] sm:max-h-[600px] rounded-md'
                         />
                     )}
 
@@ -184,4 +183,3 @@ function PostPage() {
 }
 
 export default PostPage
-

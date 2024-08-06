@@ -198,7 +198,7 @@ const Profile = () => {
     return (
         <div className='flex flex-col items-center mt-5 mb-10 px-4 sm:px-6 lg:px-8'>
             <h1 className='text-3xl mt-5 mb-8 font-semibold'>Profile</h1>
-            <div className='bg-slate-200 dark:bg-slate-800 px-8 py-8 max-w-lg lg:max-w-xl w-full rounded-lg shadow-lg'>
+            <div className='bg-slate-200 dark:bg-slate-800 px-4 sm:px-8 py-8 max-w-lg lg:max-w-xl w-full rounded-lg shadow-lg'>
                 <form className='flex flex-col items-center justify-center gap-5 w-full' onSubmit={handleSubmit}>
                     <div className='relative flex cursor-pointer w-full justify-center'>
                         <img

@@ -110,7 +110,8 @@ const DashComments = () => {
                 </div>
             ) : currentUser.isAdmin ? (
                 comments.length > 0 ? (
-                    <div className='overflow-x-auto w-full md:max-w-lg lg:max-w-3xl xl:max-w-5xl scrollbar-hide'>
+                    <div className='overflow-hidden'>
+                        <div className='overflow-x-auto w-full md:max-w-lg lg:max-w-3xl xl:max-w-5xl scrollbar-hide'>
                         <Table hoverable className='shadow-md text-center bg-slate-200 text-slate-900 dark:bg-slate-800 dark:text-slate-300 rounded-lg'>
                             <Table.Head>
                                 <Table.HeadCell>Date</Table.HeadCell>
@@ -155,43 +156,40 @@ const DashComments = () => {
                                 ))}
                             </Table.Body>
                         </Table>
-                        <div className='mt-5 flex justify-center'>
-                            {
-                                showMore && (
-                                    <Button
-                                        className='px-5 font-bold'
-                                        color='light'
-                                        onClick={handleShowMore}
-                                        disabled={loadingMore}
-                                    >
-                                        {
-                                            loadingMore
-                                                ? (
-                                                    <>
-                                                        <Spinner size='md' />
-                                                        <span className='pl-3 text-md'>
-                                                            Loading ...
-                                                        </span>
-                                                    </>
-                                                )
-                                                : (
-                                                    <span className='text-md'>
-                                                        Show More
-                                                    </span>)
-                                        }
-                                    </Button>
-                                )
-                            }
-                        </div>
                     </div>
+                    <div className='mt-5 flex justify-center'>
+                            {showMore && (
+                                <Button
+                                    className='px-5 font-bold'
+                                    color='light'
+                                    onClick={handleShowMore}
+                                    disabled={loadingMore}
+                                >
+                                    {loadingMore
+                                        ? (
+                                            <>
+                                                <Spinner size='md' />
+                                                <span className='pl-3 text-md'>
+                                                    Loading ...
+                                                </span>
+                                            </>
+                                        )
+                                        : (
+                                            <span className='text-md'>
+                                                Show More
+                                            </span>)}
+                                </Button>
+                            )}
+                        </div>
+                        </div>
                 ) : (
                     <div>
-                        <h1>
+                        <h1 className='text-center text-lg font-semibold'>
                             No Comments found.
                         </h1>
                     </div>
                 )) : (
-                <div className='text-center'>
+                <div className='text-center text-lg font-semibold'>
                     <h1>You do not have permission to view this page.</h1>
                 </div>
             )

@@ -187,15 +187,15 @@ const CommentSection = ({ postId }) => {
     return (
         <div className='max-w-4xl mx-auto w-full'>
             {currentUser ? (
-                <div className='flex gap-3 w-full p-5 border border-slate-500 rounded-xl bg-slate-200 dark:bg-slate-800'>
+                <div className='flex gap-2 sm:gap-5 w-full p-3 sm:p-5 border border-slate-500 rounded-xl bg-slate-200 dark:bg-slate-800'>
                         
                     <img
                         src={currentUser.profilePic}
                         alt='avatar'
-                        className='w-12 h-12 rounded-full object-cover'
+                        className='w-9 h-9 sm:w-12 sm:h-12 rounded-full object-cover'
                     />
                     <div className='w-full'>
-                        <div className='mb-2 font-medium text-md'>
+                        <div className='mb-2 font-medium text-sm sm:text-md'>
                             <Link to={`/profile/${currentUser._id}`} className='hover:underline hover:underline-offset-2' >
                                 @{currentUser.username}
                             </Link>
@@ -203,12 +203,12 @@ const CommentSection = ({ postId }) => {
                         <form onSubmit={handleSubmit}>
                             <Textarea
                                 placeholder='Write a comment...'
-                                className='w-full h-24'
+                                className='w-full h-20 sm:h-24'
                                 onChange={(e) => setComment(e.target.value)}
                                 value={comment}
                             />
-                            <div className='flex justify-between items-center mt-5'>
-                                <p className='max-sm:text-xs text-md text-gray-500'>
+                            <div className='flex justify-between items-center mt-3 sm:mt-5'>
+                                <p className='text-xs sm:text-md text-gray-500'>
                                     {300 - comment.length} characters remaining...
                                 </p>
                                 <Button
@@ -245,7 +245,7 @@ const CommentSection = ({ postId }) => {
                     <>
                         <div className='flex items-center gap-2 text-md mb-5 font-semibold'>
                             <p>Comments:</p>
-                            <div className='border border-slate-600 py-1 px-2 rounded-sm'>
+                            <div className='border border-slate-600 py-1 px-3 rounded-sm'>
                                 <p>{comments.length}</p>
                             </div>
                         </div>

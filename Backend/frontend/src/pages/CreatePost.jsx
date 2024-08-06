@@ -139,6 +139,11 @@ const CreatePost = () => {
             return;
         }
 
+        if (imageFile && !formData.image) {
+            toast.error('Please upload the selected image.');
+            return;
+        }
+
         try {
             setLoading(true);
 
@@ -168,9 +173,9 @@ const CreatePost = () => {
     }
 
     return (
-        <div className='flex items-center flex-col mb-10  mt-5 min-h-screen px-4 sm:px-6 lg:px-8'>
+        <div className='flex items-center flex-col mb-10  mt-5 min-h-screen px-3 sm:px-6 lg:px-8'>
             <h1 className='font-semibold text-3xl mb-8 mt-5'>Create post</h1>
-            <div className='bg-slate-200 dark:bg-slate-800 px-8 py-8 max-w-3xl lg:max-w-4xl w-full rounded-lg shadow-lg'>
+            <div className='bg-slate-200 dark:bg-slate-800 px-4 sm:px-8 py-8 max-w-3xl lg:max-w-4xl w-full rounded-lg shadow-lg'>
                 <form className='flex flex-col gap-10 items-center justify-center' onSubmit={handleSubmit}>
                     <div className='w-full'>
                         <Label className='text-md font-semibold text-gray-700 dark:text-gray-300' htmlFor='title'>
@@ -219,7 +224,7 @@ const CreatePost = () => {
                     </div>
 
                     {isOther && (
-                        <div className='flex gap-3 w-full'>
+                        <div className='flex flex-col sm:flex-row gap-3 w-full'>
                             <TextInput
                                 type='text'
                                 placeholder='Add new category'
@@ -328,7 +333,7 @@ const CreatePost = () => {
                             modules={modules}
                         />
                     </div>
-                    <div className='w-full mt-20 max-sm:mt-28'>
+                    <div className='w-full mt-32 sm:mt-20'>
                         <Button
                             type='submit'
                             gradientDuoTone='greenToBlue'

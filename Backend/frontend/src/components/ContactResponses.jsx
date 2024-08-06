@@ -111,51 +111,53 @@ const ContactResponses = () => {
                 </div>
             ) : currentUser.isAdmin ? (
                 responses.length > 0 ? (
-                    <div className='overflow-x-auto w-full md:max-w-lg lg:max-w-3xl xl:max-w-5xl scrollbar-hide'>
-                        <Table hoverable className='shadow-md text-center bg-slate-200 text-slate-900 dark:bg-slate-800 dark:text-slate-300 rounded-lg'>
-                            <Table.Head>
-                                <Table.HeadCell>Date</Table.HeadCell>
-                                <Table.HeadCell>Name</Table.HeadCell>
-                                <Table.HeadCell>Email</Table.HeadCell>
-                                <Table.HeadCell>Phone</Table.HeadCell>
-                                <Table.HeadCell>Message</Table.HeadCell>
-                                <Table.HeadCell>Actions</Table.HeadCell>
-                            </Table.Head>
-                            <Table.Body className='divide-y divide-gray-400'>
-                                {responses.map((response) => (
-                                    <Table.Row key={response._id}>
-                                        <Table.Cell>
-                                            {new Date(response.createdAt).toLocaleDateString()}
-                                        </Table.Cell>
-                                        <Table.Cell>
-                                            {response.name}
-                                        </Table.Cell>
-                                        <Table.Cell>
-                                            {response.email}
-                                        </Table.Cell>
-                                        <Table.Cell>
-                                            {response.phone}
-                                        </Table.Cell>
-                                        <Table.Cell className='max-w-xs break-words'>
-                                            {response.message}
-                                        </Table.Cell>
-                                        <Table.Cell>
-                                            <div className='flex gap-3'>
-                                                <Button
-                                                    color='failure'
-                                                    onClick={() => {
-                                                        setShowModal(true);
-                                                        setResponseIdToDelete(response._id);
-                                                    }}
-                                                >
-                                                    Delete
-                                                </Button>
-                                            </div>
-                                        </Table.Cell>
-                                    </Table.Row>
-                                ))}
-                            </Table.Body>
-                        </Table>
+                    <div className='overflow-hidden'>
+                        <div className='overflow-x-auto w-full md:max-w-lg lg:max-w-3xl xl:max-w-5xl scrollbar-hide'>
+                            <Table hoverable className='shadow-md text-center bg-slate-200 text-slate-900 dark:bg-slate-800 dark:text-slate-300 rounded-lg'>
+                                <Table.Head>
+                                    <Table.HeadCell>Date</Table.HeadCell>
+                                    <Table.HeadCell>Name</Table.HeadCell>
+                                    <Table.HeadCell>Email</Table.HeadCell>
+                                    <Table.HeadCell>Phone</Table.HeadCell>
+                                    <Table.HeadCell>Message</Table.HeadCell>
+                                    <Table.HeadCell>Actions</Table.HeadCell>
+                                </Table.Head>
+                                <Table.Body className='divide-y divide-gray-400'>
+                                    {responses.map((response) => (
+                                        <Table.Row key={response._id}>
+                                            <Table.Cell>
+                                                {new Date(response.createdAt).toLocaleDateString()}
+                                            </Table.Cell>
+                                            <Table.Cell>
+                                                {response.name}
+                                            </Table.Cell>
+                                            <Table.Cell>
+                                                {response.email}
+                                            </Table.Cell>
+                                            <Table.Cell>
+                                                {response.phone}
+                                            </Table.Cell>
+                                            <Table.Cell className='max-w-xs break-words'>
+                                                {response.message}
+                                            </Table.Cell>
+                                            <Table.Cell>
+                                                <div className='flex gap-3'>
+                                                    <Button
+                                                        color='failure'
+                                                        onClick={() => {
+                                                            setShowModal(true);
+                                                            setResponseIdToDelete(response._id);
+                                                        }}
+                                                    >
+                                                        Delete
+                                                    </Button>
+                                                </div>
+                                            </Table.Cell>
+                                        </Table.Row>
+                                    ))}
+                                </Table.Body>
+                            </Table>
+                        </div>
                         <div className='mt-5 flex justify-center'>
                             {
                                 showMore && (
@@ -187,12 +189,12 @@ const ContactResponses = () => {
                     </div>
                 ) : (
                     <div>
-                        <h1>
+                        <h1 className='text-center text-lg font-semibold'>
                             No Responses found.
                         </h1>
                     </div>
                 )) : (
-                <div className='text-center'>
+                <div className='text-center text-lg font-semibold'>
                     <h1>You do not have permission to view this page.</h1>
                 </div>
             )

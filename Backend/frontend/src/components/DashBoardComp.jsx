@@ -108,7 +108,7 @@ const DashBoardComp = () => {
     }, [currentUser, navigate]);
 
     return (
-        <div className='p-3 mx-auto'>
+        <div className='p-3 mx-auto max-sm:mt-5'>
             <div className='flex-wrap flex gap-4 justify-center'>
                 <div className='flex flex-col p-3 gap-4 w-full bg-slate-200 dark:bg-slate-800 md:w-72 rounded-md shadow-md font-semibold'>
                     <div className='flex justify-between'>
@@ -188,7 +188,7 @@ const DashBoardComp = () => {
                     </div>
                 </div>
             </div>
-            <div className='mt-5 flex flex-wrap gap-5 py-5 mx-auto justify-center'>
+            <div className='mt-5 flex flex-wrap gap-8 py-5 justify-center'>
                 <div className='flex flex-col w-full md:w-auto shadow-md rounded-md bg-slate-200 dark:bg-slate-800 overflow-x-auto scrollbar-hide'>
                     <div className='flex justify-between p-3 font-semibold text-md'>
                         <h1 className='text-center p-2'>
@@ -196,7 +196,7 @@ const DashBoardComp = () => {
                         </h1>
                         <Link to={`/dashboard?tab=users`}>
                             <Button
-                                className=''
+                                className='flex jusitfy-end'
                                 gradientDuoTone='greenToBlue'
                                 outline
                             >
@@ -251,7 +251,7 @@ const DashBoardComp = () => {
                         </h1>
                         <Link to={`/dashboard?tab=comments`}>
                             <Button
-                                className=''
+                                className='flex justify-end'
                                 gradientDuoTone='greenToBlue'
                                 outline
                             >
@@ -300,7 +300,7 @@ const DashBoardComp = () => {
                             </Button>
                         </Link>
                     </div>
-                    <Table hoverable className='text-center'>
+                    <Table hoverable className='text-center overflow-x-auto'>
                         <Table.Head>
                             <Table.HeadCell>Image</Table.HeadCell>
                             <Table.HeadCell>Title</Table.HeadCell>
@@ -320,15 +320,15 @@ const DashBoardComp = () => {
                                             <img
                                                 src={post.image}
                                                 alt='post'
-                                                className='w-16 h-14 object-cover rounded-sm bg-gray-500'
+                                                className='h-10 w-16 sm:w-32 sm:h-auto object-cover rounded-sm bg-gray-500'
                                             />
                                         </Table.Cell>
-                                        <Table.Cell className='w-96'>
+                                        <Table.Cell className='w-9/12'>
                                             <p className='line-clamp-2'>
                                                 {post.title}
                                             </p>
                                         </Table.Cell>
-                                        <Table.Cell className='w-5'>
+                                        <Table.Cell className='w-10'>
                                             <p className='line-clamp-2'>
                                                 {post.category}
                                             </p>

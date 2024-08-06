@@ -60,130 +60,116 @@ const Header = () => {
     }
 
     return (
-        <header className='w-full z-10'>
-            <Navbar className='flex items-center justify-between py-2 px-4 xl:px-8 bg-slate-200 dark:bg-slate-800'>            
-                <Link to='/' className='flex items-center'>
-                    <h2 className='whitespace-nowrap text-2xl font-semibold dark:text-white'>
-                        <span className='bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% rounded-3xl px-2 py-1 text-white'>The Blog </span> Spot
-                    </h2>
-                </Link>
+        <Navbar className='flex bg-slate-200 dark:bg-slate-800 w-full z-10 border-b-2 lg:px-8'>
+            <Link to='/' className=''>
+                <h2 className='self-center whitespace-nowrap text-xl sm:text-2xl font-semibold dark:text-white'>
+                    <span className='bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% rounded-3xl px-2 py-1 text-white'>The Blog </span> Spot
+                </h2>
+            </Link>
 
-                <form className='hidden lg:flex ml-4' onSubmit={handleSubmit}>
-                    <TextInput
-                        type='text'
-                        placeholder='Search...'
-                        rightIcon={IoSearchOutline}
-                        className='w-full'
-                        sizing='md'
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                    />
-                </form>
+            <form className='hidden lg:flex' onSubmit={handleSubmit}>
+                <TextInput
+                    type='text'
+                    placeholder='Search...'
+                    rightIcon={IoSearchOutline}
+                    className='w-full'
+                    sizing='md'
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
+            </form>
 
-                <div className='flex gap-4 items-center md:order-2'>
-                    <Link to='/search'>
-                        <Button
-                            className='w-10 h-10 lg:hidden'
-                            color='gray'
-                            pill
-                        >
-                            <IoSearchOutline size='20' />
-                        </Button>
-                    </Link>
-
+            <div className='flex gap-4 items-center md:order-2'>
+                <Link to='/search'>
                     <Button
-                        className='w-10 h-10 max-sm:hidden'
+                        className='w-10 h-10 lg:hidden'
                         color='gray'
                         pill
-                        onClick={() => dispatch(toggleTheme())}
                     >
-                        {
-                            theme === 'light' ? <BsMoonFill size='20' /> : <BsSun size='20' />
-                        }
-
+                        <IoSearchOutline size='20' />
                     </Button>
+                </Link>
+                <Button
+                    className='w-10 h-10 max-sm:hidden'
+                    color='gray'
+                    pill
+                    onClick={() => dispatch(toggleTheme())}
+                >
+                    {theme === 'light' ? <BsMoonFill size='20' /> : <BsSun size='20' />}
+                </Button>
 
-                    {
-                        currentUser
-                            ? (
-                                <Dropdown
-                                    arrowIcon={false}
-                                    inline
-                                    label={
-                                        <Avatar
-                                            img={currentUser.profilePic}
-                                            alt='user'
-                                            className='w-10 h-10'
-                                            rounded
-                                        />
-                                    }
-                                >
-                                    <Dropdown.Header>
-                                        <span className='block text-md font-bold mb-1'>{currentUser.username}</span>
-                                        <span className='block text-sm font-semibold truncate'>{currentUser.email}</span>
-                                    </Dropdown.Header>
+                {currentUser ? (
+                    <Dropdown
+                        arrowIcon={false}
+                        inline
+                        label={
+                            <Avatar
+                                img={currentUser.profilePic}
+                                alt='user'
+                                className='sm:w-10 sm:h-10'
+                                rounded
+                            />
+                        }
+                    >
+                        <Dropdown.Header>
+                            <span className='block text-md font-bold mb-1'>{currentUser.username}</span>
+                            <span className='block text-sm font-semibold truncate'>{currentUser.email}</span>
+                        </Dropdown.Header>
 
-                                    {currentUser && currentUser.isAdmin &&
-                                        <Link to='/dashboard?tab=dash'>
-                                            <Dropdown.Item icon={HiViewGrid}>
-                                                <span className='font-semibold'>Dashboard</span>
-                                            </Dropdown.Item>
-                                        </Link>
-                                    }
+                        {currentUser && currentUser.isAdmin && (
+                            <Link to='/dashboard?tab=dash'>
+                                <Dropdown.Item icon={HiViewGrid}>
+                                    <span className='font-semibold'>Dashboard</span>
+                                </Dropdown.Item>
+                            </Link>
+                        )}
 
-                                    <Link to={currentUser.isAdmin ? '/dashboard?tab=profile' : '/profile'}>
-                                        <Dropdown.Item icon={HiUser}>
-                                            <span className='font-semibold'>Profile</span>
-                                        </Dropdown.Item>
-                                    </Link>
+                        <Link to={currentUser.isAdmin ? '/dashboard?tab=profile' : '/profile'}>
+                            <Dropdown.Item icon={HiUser}>
+                                <span className='font-semibold'>Profile</span>
+                            </Dropdown.Item>
+                        </Link>
 
-                                    <Dropdown.Divider />
+                        <Dropdown.Divider />
 
-                                    <Dropdown.Item
-                                        icon={theme === 'light' ? BsMoonFill : BsSun}
-                                        onClick={() => dispatch(toggleTheme())}
-                                    >
-                                        <span className='font-semibold'>{theme === 'light' ? 'Dark Mode' : 'Light Mode'}</span>
-                                    </Dropdown.Item>
+                        <Dropdown.Item
+                            icon={theme === 'light' ? BsMoonFill : BsSun}
+                            onClick={() => dispatch(toggleTheme())}
+                        >
+                            <span className='font-semibold'>{theme === 'light' ? 'Dark Mode' : 'Light Mode'}</span>
+                        </Dropdown.Item>
 
-                                    <Dropdown.Divider />
-                                    
-                                    <Dropdown.Item icon={HiLogout} onClick={handleSignout}>
-                                        <span className='font-semibold'>Sign Out</span>
-                                    </Dropdown.Item>
-                                </Dropdown>
-                            )
-                            : (
-                                <Link to='/login' className='flex'>
-                                    <Button
-                                        gradientDuoTone="greenToBlue"
-                                    >
-                                        Login
-                                    </Button>
-                                </Link>
-                            )
-                    }
-                    
-                    <NavbarToggle />
-                </div>
+                        <Dropdown.Divider />
 
-                <NavbarCollapse>
-                    <NavbarLink as={Link} to="/" active={path === '/'}>
-                        Home
-                    </NavbarLink>
-                    <NavbarLink as={Link} to="/blogs" active={path === '/blogs'}>
-                        Blogs
-                    </NavbarLink>
-                    <NavbarLink as={Link} to="/about-us" active={path === '/about-us'}>
-                        About Us
-                    </NavbarLink>
-                    <NavbarLink as={Link} to="/contact-us" active={path === '/contact-us'}>
-                        Contact Us
-                    </NavbarLink>
-                </NavbarCollapse>
-            </Navbar>
-        </header>
+                        <Dropdown.Item icon={HiLogout} onClick={handleSignout}>
+                            <span className='font-semibold'>Sign Out</span>
+                        </Dropdown.Item>
+                    </Dropdown>
+                ) : (
+                    <Link to='/login' className='flex'>
+                        <Button gradientDuoTone="greenToBlue">Login</Button>
+                    </Link>
+                )}
+
+                <NavbarToggle />
+            </div>
+
+            <NavbarCollapse>
+                <NavbarLink as={Link} to="/" active={path === '/'}>
+                    Home
+                </NavbarLink>
+                <NavbarLink as={Link} to="/blogs" active={path === '/blogs'}>
+                    Blogs
+                </NavbarLink>
+                <NavbarLink as={Link} to="/about-us" active={path === '/about-us'}>
+                    About Us
+                </NavbarLink>
+                <NavbarLink as={Link} to="/contact-us" active={path === '/contact-us'}>
+                    Contact Us
+                </NavbarLink>
+            </NavbarCollapse>
+        </Navbar>
     )
 }
 
-export default Header
+export default Header;
